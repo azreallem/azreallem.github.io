@@ -78,30 +78,15 @@
                                     
                                 
                                     
-                                        <li><a href="/archives/"><i class="fa fa-file"></i>档案馆</a></li>
+                                        <li><a href="/archives/"><i class="fa fa-archive"></i>档案馆</a></li>
                                     
                                 
                                     
-                                        <li><a href="/friends/"><i class="fa fa-paw"></i>好伙伴</a></li>
+                                        <li><a href="/friends/"><i class="fa fa-mars-double"></i>朋友们</a></li>
                                     
                                 
                                     
-                                        <li>
-                                            <a><i class="fa fa-link"></i>链接</a>
-                                            <ul class="sub-menu">
-                                                
-                                                    
-                                                
-                                                    
-                                                        <li><a target="_blank" rel="noopener" href="https://candinya.com">作者博客</a></li>
-                                                    
-                                                
-                                                    
-                                                        <li><a target="_blank" rel="noopener" href="https://github.com/Candinya/Kratos-Rebirth">项目链接</a></li>
-                                                    
-                                                
-                                            </ul>
-                                        </li>
+                                        <li><a href="/about/"><i class="fa fa-rocket"></i>关于我</a></li>
                                     
                                 
                             </ul>
@@ -162,6 +147,12 @@
                     字
                 </li>
                 
+                    <li id="/2021/07/15/hello-world/" class="leancloud_visitors" data-flag-title="Hello World">
+                        <i class="fa fa-eye"></i>
+                        <span class="leancloud-visitors-count"> </span> 次阅读
+                    </li>
+                    
+                
             </ul>
         </header>
         <div class="kratos-post-content">
@@ -185,10 +176,6 @@
 <p>More info: <a target="_blank" rel="noopener" href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
 
         </div>
-        
-            <div class="kratos-copyright text-center clearfix">
-                <h5>本作品采用 <a rel="license nofollow" target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
-            </div>
         
         <footer class="kratos-entry-footer clearfix">
             
@@ -279,6 +266,30 @@
     </div>
     
     
+        <div id="v-comments" class="post-comments"></div>
+<script>
+    var load_comm = () => {
+        const init = () => {
+            new Valine({
+                el: '#v-comments',
+                appId: 'Y4RT8kYqhRKjWWeQr1r5HNDx-gzGzoHsz',
+                appKey: 'gMt4uIBOkEnhGwihqUj8CEwR',
+                visitor: true,
+                enableQQ: true,
+                path: '/2021/07/15/hello-world/'
+            });
+        }
+        if (typeof Valine == 'undefined') {
+            const src = 'https://cdn.jsdelivr.net/npm/valine@1.4.14/dist/Valine.min.js';
+            $.getScript(src, init);
+        } else {
+            init();
+        }
+    };
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://valine.js.org/">comments powered by Valine.</a></noscript>
+
+    
 </article>
 
         
@@ -364,13 +375,13 @@
                 <div class="col-md-6 col-md-offset-3 footer-list text-center">
                     <ul class="kratos-social-icons">
                         
-                        
-                        <li><a target="_blank" rel="nofollow" href="https://t.me/CandyUnion"><i class="fa fa-telegram"></i></a></li>
-                        
+                        <li><a href="mailto:961616044@qq.com"><i class="fa fa-envelope"></i></a></li>
                         
                         
-                        <li><a target="_blank" rel="me" href="https://nya.one/@Candinya"><i class="fa fa fa-share-alt-square"></i></a></li>
-                        <li><a target="_blank" rel="nofollow" href="https://github.com/Candinya"><i class="fa fa-github"></i></a></li>
+                        
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://github.com/azreallem"><i class="fa fa-github"></i></a></li>
                         
                     </ul>
                     <ul class="kratos-copyright">
@@ -384,7 +395,7 @@
                         </div>
                         <div>
                             <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
-                            <li>Hosted on <a href="https://github.io" target="_blank">Github Pages</a></li>
+                            
                         </div>
                         <div>
                             
