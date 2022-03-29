@@ -186,7 +186,7 @@
 <li>初始化SP寄存器，SP是堆栈指针；</li>
 <li>最后的 b start_kernel 是跳转到第二入口处继续执行，第二入口即 start_kernel()函数；</li>
 </ol>
-<h3 id="处理器0的Status寄存器"><a href="#处理器0的Status寄存器" class="headerlink" title="处理器0的Status寄存器"></a>处理器0的Status寄存器</h3><p><img src="/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90%20dec185e191e8455f8511acea0cea2d3d/Untitled.png"></p>
+<h3 id="处理器0的Status寄存器"><a href="#处理器0的Status寄存器" class="headerlink" title="处理器0的Status寄存器"></a>处理器0的Status寄存器</h3><p><img src="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/Untitled.png"></p>
 <ul>
 <li>IE：全局中断使能位，为 1 表示开中断，为 0 表示关中断；</li>
 <li>EXL：异常级别指示，为 1 表示 CPU 处于异常模式，异常模式表示发生了除复位、NMI和 Cache 错误以外的某种异常。</li>
@@ -214,9 +214,9 @@
 <h2 id="第二入口：start-kernel"><a href="#第二入口：start-kernel" class="headerlink" title="第二入口：start_kernel()"></a>第二入口：start_kernel()</h2><p><a target="_blank" rel="noopener" href="https://elixir.bootlin.com/linux/v5.14/source/init/main.c">init&#x2F;main.c</a></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">asmlinkage __visible <span class="type">void</span> __init __no_sanitize_address <span class="title function_">start_kernel</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p><img src="/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90%20dec185e191e8455f8511acea0cea2d3d/Untitled%201.png"></p>
-<p><img src="/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90%20dec185e191e8455f8511acea0cea2d3d/Untitled%202.png"></p>
-<p><img src="/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90%20dec185e191e8455f8511acea0cea2d3d/Untitled%203.png"></p>
+<p><img src="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/Untitled%201.png"></p>
+<p><img src="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/Untitled%202.png"></p>
+<p><img src="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/Untitled%203.png"></p>
 <p>虽然这棵树很庞大，但我们大致可以将整个 start_kernel()的过程分为三个大的阶段：关中断单线程阶段（从 start_kernel()头部开始直到 local_irq_enable()结束）；开中断单线程阶段（从local_irq_enable()开始直到 rest_init()前夕）；开中断多线程阶段（rest_init()的整个过程）。</p>
 <h1 id="第一阶段：关中断单线程阶段"><a href="#第一阶段：关中断单线程阶段" class="headerlink" title="第一阶段：关中断单线程阶段"></a>第一阶段：关中断单线程阶段</h1><p>启动初期的初始化过程必须关中断进行（中断处理的基础设施尚未准备好），所以start_kernel()开始执行不久之后就通过 local_irq_disable()来关闭中断。</p>
 <p>boot_cpu_init()，这个函数是设置启动 CPU（通常是 0 号 CPU）的存在性状态。</p>
@@ -458,7 +458,7 @@
                 
   <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
     <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">内核分析</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">基础概念</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B%E6%96%87%E6%A1%A3/">教程文档</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">3</span></li></ul>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">内核分析</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">基础概念</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B%E6%96%87%E6%A1%A3/">教程文档</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">3</span></li></ul>
   </aside>
 
 
@@ -467,7 +467,7 @@
   <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
     <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
       <div class="tag-clouds">
-        <a href="/tags/C/" style="font-size: 0.73em;">C</a> <a href="/tags/FSM/" style="font-size: 0.6em;">FSM</a> <a href="/tags/book/" style="font-size: 0.67em;">book</a> <a href="/tags/hexo/" style="font-size: 0.6em;">hexo</a> <a href="/tags/linux/" style="font-size: 0.8em;">linux</a> <a href="/tags/note/" style="font-size: 0.73em;">note</a> <a href="/tags/setup-arch/" style="font-size: 0.67em;">setup_arch</a> <a href="/tags/source-code/" style="font-size: 0.73em;">source code</a> <a href="/tags/start-kernel/" style="font-size: 0.6em;">start_kernel</a> <a href="/tags/technique/" style="font-size: 0.6em;">technique</a> <a href="/tags/tlbex/" style="font-size: 0.6em;">tlbex</a>
+        <a href="/tags/C/" style="font-size: 0.8em;">C</a> <a href="/tags/FSM/" style="font-size: 0.6em;">FSM</a> <a href="/tags/book/" style="font-size: 0.7em;">book</a> <a href="/tags/hexo/" style="font-size: 0.6em;">hexo</a> <a href="/tags/linux/" style="font-size: 0.8em;">linux</a> <a href="/tags/note/" style="font-size: 0.8em;">note</a> <a href="/tags/setup-arch/" style="font-size: 0.6em;">setup_arch</a> <a href="/tags/source-code/" style="font-size: 0.7em;">source code</a> <a href="/tags/start-kernel/" style="font-size: 0.6em;">start_kernel</a> <a href="/tags/technique/" style="font-size: 0.6em;">technique</a> <a href="/tags/tlbex/" style="font-size: 0.6em;">tlbex</a>
       </div>
   </aside>
 
