@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/images/cake.webp">
+  <title>内核启动过程分析 | Azreallem's Blog</title>
+  <meta name="author" content="Azreallem" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="linux, source code, start_kernel" />
+  
+  <meta name="description" content="kernel_entry→start_kernel()vmlinux原始内核启动：内核的初始启动入口是位于arch&#x2F;loongarch&#x2F;kernel&#x2F;head.S中的kernel_entry → start_kernel() vmlinuxz压缩版内核启动：在解压前真正的执行入口是arch&#x2F;loongarch&#x2F;boot&#x2F;compresse">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内核启动过程分析">
+<meta property="og:url" content="https://azreallem.github.io/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Azreallem&#39;s Blog">
+<meta property="og:description" content="kernel_entry→start_kernel()vmlinux原始内核启动：内核的初始启动入口是位于arch&#x2F;loongarch&#x2F;kernel&#x2F;head.S中的kernel_entry → start_kernel() vmlinuxz压缩版内核启动：在解压前真正的执行入口是arch&#x2F;loongarch&#x2F;boot&#x2F;compresse">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://azreallem.github.io/images/cake.webp">
+<meta property="article:published_time" content="2021-10-30T10:37:14.000Z">
+<meta property="article:modified_time" content="2022-03-29T15:17:28.971Z">
+<meta property="article:author" content="Azreallem">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="source code">
+<meta property="article:tag" content="start_kernel">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://azreallem.github.io/images/cake.webp">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://unpkg.com/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="../../../../index.html"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="../../../../archives/"><i class="fa fa-archive"></i>档案馆</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="../../../../friends/"><i class="fa fa-mars-double"></i>朋友们</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="../../../../about/"><i class="fa fa-rocket"></i>关于我</a></li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="../../../../index.html">Azreallem&#39;s Blog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="../../../../index.html">
+                        <h2>Azreallem&#39;s Blog</h2> <br />
+                        <span>做一个纯粹的人</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">内核启动过程分析</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2021-10-30</li>
+                <li><i class="fa fa-user"></i> 作者 Azreallem</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~12.66K
+                    
+                    字
+                </li>
+                
+                    <li id="" class="leancloud_visitors" data-flag-title="内核启动过程分析">
+                        <i class="fa fa-eye"></i>
+                        <span class="leancloud-visitors-count"> </span> 次阅读
+                    </li>
+                    
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1648567048971"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#kernel-entry%E2%86%92start-kernel"><span class="toc-number">1.</span> <span class="toc-text">kernel_entry→start_kernel()</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%85%A5%E5%8F%A3%EF%BC%9Akernel-entry"><span class="toc-number">1.1.</span> <span class="toc-text">第一入口：kernel_entry</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%99%A80%E7%9A%84Status%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-number">1.1.1.</span> <span class="toc-text">处理器0的Status寄存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#init-thread-union%E7%9B%B8%E5%85%B3"><span class="toc-number">1.1.2.</span> <span class="toc-text">init_thread_union相关</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%85%A5%E5%8F%A3%EF%BC%9Astart-kernel"><span class="toc-number">1.2.</span> <span class="toc-text">第二入口：start_kernel()</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5%EF%BC%9A%E5%85%B3%E4%B8%AD%E6%96%AD%E5%8D%95%E7%BA%BF%E7%A8%8B%E9%98%B6%E6%AE%B5"><span class="toc-number">2.</span> <span class="toc-text">第一阶段：关中断单线程阶段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5%EF%BC%9A%E5%BC%80%E4%B8%AD%E6%96%AD%E5%8D%95%E7%BA%BF%E7%A8%8B%E9%98%B6%E6%AE%B5"><span class="toc-number">3.</span> <span class="toc-text">第二阶段：开中断单线程阶段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%98%B6%E6%AE%B5%EF%BC%9A%E5%BC%80%E4%B8%AD%E6%96%AD%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%98%B6%E6%AE%B5"><span class="toc-number">4.</span> <span class="toc-text">第三阶段：开中断多线程阶段</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <h1 id="kernel-entry→start-kernel"><a href="#kernel-entry→start-kernel" class="headerlink" title="kernel_entry→start_kernel()"></a>kernel_entry→start_kernel()</h1><p>vmlinux原始内核启动：内核的初始启动入口是位于arch&#x2F;loongarch&#x2F;kernel&#x2F;head.S中的kernel_entry → start_kernel()</p>
+<p>vmlinuxz压缩版内核启动：在解压前真正的执行入口是arch&#x2F;loongarch&#x2F;boot&#x2F;compressed&#x2F;head.S中的start →kernel_entry→start_kernel()</p>
+<ul>
+<li>执行decompress_kernel()进行自解压，解压内容释放到内存里面形成一个原始内核。</li>
+</ul>
+<h2 id="第一入口：kernel-entry"><a href="#第一入口：kernel-entry" class="headerlink" title="第一入口：kernel_entry"></a>第一入口：kernel_entry</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">SYM_CODE_START(kernel_entry)                    <span class="meta"># kernel entry point</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* We might not get launched at the address the kernel is linked to,</span></span><br><span class="line"><span class="comment">           so we jump there.  */</span></span><br><span class="line">        la.<span class="built_in">abs</span>          t0, <span class="number">0f</span></span><br><span class="line">        jirl            zero, t0, <span class="number">0</span></span><br><span class="line"><span class="number">0</span>:</span><br><span class="line">        la              t0, __bss_start         <span class="meta"># clear .bss</span></span><br><span class="line">        PTR_S           zero, t0, <span class="number">0</span></span><br><span class="line">        la              t1, __bss_stop - LONGSIZE</span><br><span class="line"><span class="number">1</span>:</span><br><span class="line">        PTR_ADDIU       t0, t0, LONGSIZE</span><br><span class="line">        PTR_S           zero, t0, <span class="number">0</span></span><br><span class="line">        bne             t0, t1, <span class="number">1b</span></span><br><span class="line"></span><br><span class="line">        la              t0, fw_arg0</span><br><span class="line">        PTR_S           a0, t0, <span class="number">0</span>               <span class="meta"># firmware arguments</span></span><br><span class="line">        la              t0, fw_arg1</span><br><span class="line">        PTR_S           a1, t0, <span class="number">0</span></span><br><span class="line">        la              t0, fw_arg2</span><br><span class="line">        PTR_S           a2, t0, <span class="number">0</span></span><br><span class="line">        la              t0, fw_arg3</span><br><span class="line">        PTR_S           a3, t0, <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Config direct window and set PG */</span></span><br><span class="line">        PTR_LI          t0, <span class="number">0xa0000011</span></span><br><span class="line">        csrwr           t0, LOONGARCH_CSR_DMWIN0</span><br><span class="line">        PTR_LI          t0, <span class="number">0x80000001</span></span><br><span class="line">        csrwr           t0, LOONGARCH_CSR_DMWIN1</span><br><span class="line">        <span class="comment">/* Enable PG */</span></span><br><span class="line">        li.w            t0, <span class="number">0xb0</span>                # PLV=<span class="number">0</span>, IE=<span class="number">0</span>, PG=<span class="number">1</span></span><br><span class="line">        csrwr           t0, LOONGARCH_CSR_CRMD</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* KScratch3 used for percpu base, initialized as 0 */</span></span><br><span class="line">        csrwr           zero, PERCPU_BASE_KS</span><br><span class="line">        <span class="comment">/* GPR21 used for percpu base (runtime), initialized as 0 */</span></span><br><span class="line">        or              x0, zero, zero</span><br><span class="line"></span><br><span class="line">        la              tp, init_thread_union</span><br><span class="line">        <span class="comment">/* Set the SP after an empty pt_regs.  */</span></span><br><span class="line">        PTR_LI          sp, (_THREAD_SIZE - <span class="number">32</span> - PT_SIZE)</span><br><span class="line">        PTR_ADDU        sp, sp, tp</span><br><span class="line">        set_saved_sp    sp, t0, t1</span><br><span class="line">        PTR_ADDIU       sp, sp, <span class="number">-4</span> * SZREG      <span class="meta"># init stack pointer</span></span><br><span class="line"></span><br><span class="line">        b               start_kernel</span><br><span class="line"></span><br><span class="line">SYM_CODE_END(kernel_entry)</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>通过一个循环来清零.bss 段中的全局数据；</li>
+<li>将 a0～a3 寄存器中的值保存到 fw_arg0～fw_arg3四个内存变量，这四个变量包含 BIOS 或者引导程序传递给内核的参数；</li>
+<li>配置DMWIN0和DMWIN1映射窗口地址；</li>
+<li>打开PG&#x3D;1；</li>
+<li>进行CPU类型相关的初始化；</li>
+<li>使用init_thread_union的地址来初始化GP寄存器，GP是全局指针；</li>
+<li>初始化SP寄存器，SP是堆栈指针；</li>
+<li>最后的 b start_kernel 是跳转到第二入口处继续执行，第二入口即 start_kernel()函数；</li>
+</ol>
+<h3 id="处理器0的Status寄存器"><a href="#处理器0的Status寄存器" class="headerlink" title="处理器0的Status寄存器"></a>处理器0的Status寄存器</h3><p><img src="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/Untitled.png"></p>
+<ul>
+<li>IE：全局中断使能位，为 1 表示开中断，为 0 表示关中断；</li>
+<li>EXL：异常级别指示，为 1 表示 CPU 处于异常模式，异常模式表示发生了除复位、NMI和 Cache 错误以外的某种异常。</li>
+<li>ERL：错误级别指示，为 1 表示 CPU 处于错误模式，错误模式表示发生了复位、NMI或者 Cache 错误之类的某种异常。</li>
+<li>KSU：特权模式位：为 0 表示 CPU 处于核心态（内核态），为 1 表示 CPU 处于管理态，为 2 表示 CPU 处于用户态，为 3 表示未定义。核心态权限最高，可以执行任意指令（特权指令和非特权令），可以访问任意地址空间（核心空间、管理空间和用户空间）；管理态权限居中，不能执行特权指令，能访问管理地址空间和用户地址空间；用户态权限最低，不能执行特权指令，只能访问用户地址空间。另外，当 EXL 或者 ERL 置位时，不管 KSU 如何取值，CPU 自动处于核心态。<ul>
+<li>UX：为 1 表示启用 64 位用户地址空间段；</li>
+<li>SX：为 1 表示启用 64 位管理地址空间段；</li>
+<li>KX：为 1 表示启用 64 位核心地址空间段；</li>
+</ul>
+</li>
+<li>IM7~IM0：中断掩码位，MIPS 在 CPU 层面一共有 8 个中断源，分别有 8 个掩码位与之对应，为 1 的位表示允许该中断触发，为 0 的位表示禁止该中断触发；</li>
+<li>NMI：为 1 表示发生了 NMI（不可屏蔽中断）；</li>
+<li>SR：为 1 表示发生了软件复位；BEV：控制异常向量的入口，为 1 表示使用启动时异常向量入口，为 0 表示使用运行时异常向量入口；</li>
+<li>PX：为 1 表示在用户态使能 64 位操作数指令（如 daddu、dsubu 等）；</li>
+<li>FR：浮点协处理器模式切换，为 1 表示有 32 个双精度浮点寄存器可用，为 0 表示只有16 个双精度浮点寄存器可用；</li>
+<li>CU3~CU0：标识四个协处理器是否可用，协处理器 0（CP0）是系统控制协处理器，在所有 MIPS 处理器上总是可用的；协处理器 1（CP1）通常是浮点协处理器（FPU），在所有龙芯处理器上总是可用的；协处理器 2（CP2）在龙芯 3 号上总是可用的，表示多媒体指令协处理器。</li>
+</ul>
+<p>龙芯 3 号总是使用 64 位内核，所以 setup_c0_status_pri 实际上就是设置当前模式为内核态模（KSU），启用内核的 64 位地址段访问能力（KX），启用系统控制协处理器（CU0），启用多媒体指令协处理器（CU2），清除异常状态并禁止中断（清零 EXL、ERL、IE）。BEV等位保持 BIOS 设置的原值（内核尚未建立运行时异常向量）。</p>
+<h3 id="init-thread-union相关"><a href="#init-thread-union相关" class="headerlink" title="init_thread_union相关"></a>init_thread_union相关</h3><p>在 Linux 中，进程和线程都是运行的程序实体，进程有独立的地址空间，若干个线程共享同一个地址空间；也就是说，线程是一种特殊的进程。Linux 中线程的容器并不是进程，而是线程组。例如：一个运行中的多线程程序是一个线程组，里面包含多个线程；一个运行中的单线程程序也是一个线程组，里面包含一个线程。单线程程序的那个唯一线程，就是一般意义上的进程。<br>内核本身也可以视为一个特殊的进程，它可以派生出很多共享地址空间的内核线程，因此这个拥有许多线程的内核又可以视为一个特殊的线程组。</p>
+<p><a target="_blank" rel="noopener" href="https://elixir.bootlin.com/linux/v5.14/source/include/linux/sched.h">线程相关的数据结构</a>：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">thread_union</span> &#123;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">thread_info</span> <span class="title">thread_info</span>;</span></span><br><span class="line">	<span class="type">unsigned</span> <span class="type">long</span> <span class="built_in">stack</span>[THREAD_SIZE/<span class="keyword">sizeof</span>(<span class="type">long</span>)];</span><br><span class="line">&#125;; </span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> <span class="title">init_task</span> =</span> INIT_TASK(init_task);</span><br><span class="line"><span class="class"><span class="keyword">union</span> <span class="title">thread_union</span> <span class="title">init_thread_union</span> =</span> &#123; INIT_THREAD_INFO(init_task) &#125;;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> init_thread_info (init_thread_union.thread_info)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> init_stack (init_thread_union.stack)</span></span><br><span class="line"></span><br><span class="line"><span class="type">unsigned</span> <span class="type">long</span> kernelsp[NR_CPUS];</span><br></pre></td></tr></table></figure>
+
+<p>每一个进程（包括普通进程和内核线程）用一个进程描述符 task_struct 表示；每一个进程都有一个体系结构相关的线程信息描述符，即 thread_info；每一个进程都有一个内核态栈，用于处理异常、中断或者系统调用。Linux 内核为每个进程分配一个大小为 THREAD_SIZE的内存区（大小通常就是一个页面），把 thread_info 和内核栈放在一起，即 thread_union。</p>
+<p>thread_union 地址从低处开始往上是 thread_info，从高处开始往下是内核栈，task_struct 中的stack 指针指向 thread_union。这里的 init_task 就是 Linux 中 0 号进程的 task_struct，0 号进程一开始就是内核自身，在完成启动初始化以后，变身为 Idle 进程（空闲进程）。</p>
+<h2 id="第二入口：start-kernel"><a href="#第二入口：start-kernel" class="headerlink" title="第二入口：start_kernel()"></a>第二入口：start_kernel()</h2><p><a target="_blank" rel="noopener" href="https://elixir.bootlin.com/linux/v5.14/source/init/main.c">init&#x2F;main.c</a></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">asmlinkage __visible <span class="type">void</span> __init __no_sanitize_address <span class="title function_">start_kernel</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">	......</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/Untitled%201.png"></p>
+<p><img src="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/Untitled%202.png"></p>
+<p><img src="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/Untitled%203.png"></p>
+<p>虽然这棵树很庞大，但我们大致可以将整个 start_kernel()的过程分为三个大的阶段：关中断单线程阶段（从 start_kernel()头部开始直到 local_irq_enable()结束）；开中断单线程阶段（从local_irq_enable()开始直到 rest_init()前夕）；开中断多线程阶段（rest_init()的整个过程）。</p>
+<h1 id="第一阶段：关中断单线程阶段"><a href="#第一阶段：关中断单线程阶段" class="headerlink" title="第一阶段：关中断单线程阶段"></a>第一阶段：关中断单线程阶段</h1><p>启动初期的初始化过程必须关中断进行（中断处理的基础设施尚未准备好），所以start_kernel()开始执行不久之后就通过 local_irq_disable()来关闭中断。</p>
+<p>boot_cpu_init()，这个函数是设置启动 CPU（通常是 0 号 CPU）的存在性状态。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">boot_cpu_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">int</span> cpu = smp_processor_id();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Mark the boot cpu &quot;present&quot;, &quot;online&quot; etc for SMP and UP case */</span></span><br><span class="line">        set_cpu_online(cpu, <span class="literal">true</span>);</span><br><span class="line">        set_cpu_active(cpu, <span class="literal">true</span>);</span><br><span class="line">        set_cpu_present(cpu, <span class="literal">true</span>);</span><br><span class="line">        set_cpu_possible(cpu, <span class="literal">true</span>);</span><br><span class="line">        </span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_SMP</span></span><br><span class="line">        __boot_cpu_id = cpu;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span>  </span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>一个逻辑 CPU 有四种存在性状态：possible，表示物理上有可能存在；present，表示物理上确实存在；online，表示已经在线；active，表示已经在线并且处于活动状态。possible 和 present 的区别跟 CPU 物理热插拔有关，如果物理上移除一个 CPU，present 数目就会减少一个。present 和online 的区别是CPU 逻辑热插拔，在不改变硬件的情况下，可以对 &#x2F;sys&#x2F;devices&#x2F;system&#x2F;cpu&#x2F;cpuN&#x2F;online 写 0来关闭一个 CPU，写 1 则重新打开。online 和 active 非常相似，前者表示这个 CPU 可以调度任务了，后者表示可以往这个 CPU 迁移任务了。两者的区别在于，在通过逻辑热插拔关闭一个 CPU 的过程中，被关闭的 CPU 首先必须退出 active 状态，然后才能退出 online 状态。</p>
+<p>整个 boot_cpu_init()的功能，就是将启动核（在龙芯上面就是 0 号核）的状态设置成 possible 的，present 的，online 的并且是 active 的。</p>
+<p>然后是一个重要函数 setup_arch()，这是根据体系结构进行相关的初始化，LOONGARCH的setup_arch()定义在 arch&#x2F;loongarch&#x2F;kernel&#x2F;setup.c 中。</p>
+<p>接下来的 trap_init()异常初始化，这个函数都是体系结构相关的并且非常重要。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">setup_arch</span><span class="params">(<span class="type">char</span> **cmdline_p)</span></span><br><span class="line">&#123;</span><br><span class="line">        cpu_probe();</span><br><span class="line">        early_init();</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_EARLY_PRINTK</span></span><br><span class="line">        setup_early_printk();</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">        bootcmdline_init(cmdline_p);</span><br><span class="line"></span><br><span class="line">        init_initrd();</span><br><span class="line">        platform_init();</span><br><span class="line">        finalize_initrd();</span><br><span class="line">        cpu_report();</span><br><span class="line"></span><br><span class="line">        arch_mem_init(cmdline_p);</span><br><span class="line"></span><br><span class="line">        resource_init();</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_SMP</span></span><br><span class="line">        plat_smp_setup();</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">        prefill_possible_map();</span><br><span class="line"></span><br><span class="line">        cpu_cache_init();</span><br><span class="line">        paging_init();</span><br><span class="line">        boot_cpu_trap_init();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>setup_command_line()，建立内核命令行参数。内核命令行参数可以写在启动配置文件（boot.cfg 或 grub.cfg）中，由 BIOS 或者启动器（BootLoader，如 Grub）传递给内核；或缺省参数。</p>
+<p>setup_nr_cpu_ids()，它获取 cpu_possible_mask 中的最大 CPU 编号（所有 possible 状态的逻辑 CPU 的最大编号），并将其赋值给全局变量 nr_cpu_ids。</p>
+<p>setup_per_cpu_areas()，建立每 CPU 变量区，每 CPU 变量用 DEFINE_PER_CPU(type, name)语句定义，在功能上等价于用 type name[NR_CPUS]定义一个数组。</p>
+<p>smp_prepare_boot_cpu()是一个体系结构相关的函数，在 LOONGARCH 上主要是把 0 号逻辑 CPU设成 possible 的和 online 的，该函数在功能上和 boot_cpu_init()有所重复。</p>
+<p>接下来的 trap_init()异常初始化，这个函数都是体系结构相关的并且非常重要。</p>
+<p>随后的 mm_init()是内存管理初始化。体系结构相关的内存管理部分已经在 setup_arch()里面完成（其中会将 BIOS 传递的固件内存分布图转换成 BootMem 内存分布图），这里主要是调用mem_init()建立内存分布图（将 BootMem 内存分布图转换为伙伴系统的内存分布图，对其中的每个可用的页帧调用set_page_count()将其引用计数设为0），调用kmem_cache_init()完成 SLAB 内存对象管理器的初始化，以及调用 vmalloc_init()完成非连续内存区管理器的初始化。</p>
+<p>sched_init()，调度器初始化，完成以后主核就可以进行任务调度了。sched_init()会通过for_each_possible_cpu()迭代器在初始化每个 CPU 的运行队列（运行队列 rq 用于进程组织和调度），其中包括将 CPU 负载水平（即 rq-&gt;cpu_load[]数组，记录了最近 5 个时钟节拍内的CPU 平均负载水平）初值设为 0。接下来，sched_init()里面还有几个比较重要的步骤就是对init_task 的操作：init_task 的大部分成员字段已经通过 INIT_TASK()在定义的时候就初始化好了，这里只需调用 set_load_weight()设置 init_task 的负荷权重（负荷权重跟基于优先级的进程调度有关，详见第 6 章），将其调度类设为 fair_sched_class（公平调度类，使用 CFS 调度策略对其进行调度），再调用 init_idle()将内核自己进程化（准备工作完成后，调度类会被重新设置为 idle_sched_class，使用专门的 IDLE 调度策略）。从现在开始内核也是一个“进程”了，即零号进程。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Set up the scheduler prior starting any interrupts (such as the</span></span><br><span class="line"><span class="comment"> * timer interrupt). Full topology setup happens at smp_init()</span></span><br><span class="line"><span class="comment"> * time - but meanwhile we still have a functioning scheduler.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">sched_init();</span><br></pre></td></tr></table></figure>
+
+<p>rcu_init()，RCU 是一种内核同步原语，全称 Read-Copy-Update（读-复制-更新），和自旋锁、信号量、读写锁等同步原语有类似的 API，但 RCU 本身并不是锁。</p>
+<p>early_irq_init()，初始化中断描述符。中断描述符就是 irq_desc[NR_IRQS]数组，包含了每个中断号（IRQ）的芯片数据 irq_data 和中断处理程序 irqaction 等各种信息。本函数只是设置缺省信息，比如芯片数据都设成 no_irq_chip ，中断处理程序都设成handle_bad_irq()。真正有意义的信息由后面体系结构相关的 init_IRQ()函数完成。</p>
+<p>init_timers()，基本定时器初始化；hrtimers_init()，高分辨率定时器初始化。</p>
+<p>softirq_init()，软中断初始化。软中断和硬中断的概念来自于早期内核中的“上半部”和“下半部”。上半部是中断处理里面非常紧急、必须立即完成的那部分工作；下半部是不那么紧急，可以延迟完成的那部分工作。软中断在概念上基本上就是继承自下半部。当前内核中定义了 11 种软中断（优先级从高到低）：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">enum</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">        HI_SOFTIRQ=<span class="number">0</span>,</span><br><span class="line">        TIMER_SOFTIRQ,</span><br><span class="line">        NET_TX_SOFTIRQ,</span><br><span class="line">        NET_RX_SOFTIRQ,</span><br><span class="line">        BLOCK_SOFTIRQ,</span><br><span class="line">        IRQ_POLL_SOFTIRQ,</span><br><span class="line">        TASKLET_SOFTIRQ,</span><br><span class="line">        SCHED_SOFTIRQ,</span><br><span class="line">        HRTIMER_SOFTIRQ,</span><br><span class="line">        RCU_SOFTIRQ,    <span class="comment">/* Preferable RCU should always be the last softirq */</span></span><br><span class="line"></span><br><span class="line">        NR_SOFTIRQS</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>SCHED_SOFTIRQ 在之前的 sched_init()里面进行初始化，RCU_SOFTIRQ 在之前的rcu_init()里面进行初始化，TIMER_SOFTIRQ 和 HRTIMER_SOFTIRQ 在之前的 init_timers(和 hrtimers_init()中进行初始化，本函数主要完成 HI_SOFTIRQ 和 TASKLET_SOFTIRQ 的初始化，其他类型的软中断分布在各自的子系统里面完成。</p>
+<p>timekeeping_init()，timekeeping 的意思是系统时间维护。该函数的作用主要是初始化各种时间相关的变量，如 jiffies，xtime 等等。Jiffies 记录了系统启动以来所经历的节拍数，而xtime 记录的时间可以精确到纳秒。随后的 time_init()是一个体系结构相关的函数，会进一步初始化计时系统。</p>
+<p>PerfEvents 和 OProfile 是 Linux 内核中的两种性能剖析工具，perf_event_init()和profileinit()分别完成其初始化。</p>
+<p>中断有关的初始化都已经完成，现在可以开中断了。开中断的函数是 local_irq_enable()，对于 LOONGARCH 来讲就是设置协处理器 0 中 Status 寄存器的 IE 位。</p>
+<h1 id="第二阶段：开中断单线程阶段"><a href="#第二阶段：开中断单线程阶段" class="headerlink" title="第二阶段：开中断单线程阶段"></a>第二阶段：开中断单线程阶段</h1><p>第二阶段中断已经打开，所以虽然现在内核还是以单线程的方式执行，但是一旦产生断就会切换控制流。因此，这一阶段除了按顺序执行代码流程以外，还可能以交错方式执行中断处理的代码。</p>
+<p>console_init()，控制台初始化。</p>
+<p>numa_policy_init()，NUMA 内存分配策略初始化。</p>
+<p>calibrate_delay()，用于计算 loops_per_jiffy 的值。loops_per_jiffy 的含义是每个时钟节拍对应的空循环数，这个值用于以后实现各种 delay()类的忙等函数。</p>
+<p>fork_init()，Linux 用 fork()系统调用来创建新进程。本函数的作用是初始化 fork()所用到的一些数据结构，如创建名为”task_struct”的 SLAB 内存对象缓存，将最大线程数设置为MAXTHREADS，等等。</p>
+<p>signals_init()，跟信号相关的数据结构初始化。信号之于进程，好比中断之于内核，用于打断当前的执行流程，去完成一些更重要的工作。</p>
+<p>cgroup_init()，CGroup 全称 Contol Group，即控制组，是内核一种控制资源分配的机制。本函数完成控制组相关数据结构的初始化，并且创建相应的 sysfs 和 procfs 节点。</p>
+<p>现在，所有调度有关的子系统已经全部初始化完成，接下来可以创建新的内核线程，以并发的方式继续内核启动了。因为显卡尚未初始化，所以第二阶段显示器上依然没有输出信息。</p>
+<h1 id="第三阶段：开中断多线程阶段"><a href="#第三阶段：开中断多线程阶段" class="headerlink" title="第三阶段：开中断多线程阶段"></a>第三阶段：开中断多线程阶段</h1><p>rest_init()，顾名思义，第三阶段就是余下的初始化工作任务。函数 rest_init()的主要工作是通过 kernel_thread()创建了 1 号进程 kernel_init 和 2 号进程 kthreadd（实际上是两个内核线程）。1 号进程的执行体函数是 kernel_init()，它完成接下来的大部分初始化工作。2 号进程则是除 0、1、2 号进程以外其他所有内核线程的祖先（如果 1号进程在运行过程中需要创建新的内核线程，会委托 2 号进程来创建）。</p>
+<p>1 号进程和 2 号进程创建以后，内核自己的初始化工作就基本完成了。但是别忘了，内核自己是 0 号进程，因此它也有必须持续进行的“工作”。内核初始化的最后一步是执行 cpu_startup_entry()，而后者的主要工作是调用cpu_idle_loop()。从名字可以看出，0 号进程现在成了空闲进程（即 IDLE 进程），它的工作就是“休息”（如果别的进程有事要做，就调度别的进程，反之意味着系统空闲，回到零号进程）。顺着调用链追踪下去，可以发现 0 号进程的核心过程是循环执行 arch_cpu_idle()，而具体到 LOONGARCH 处理器，则是 cpu_wait()。cpu_wait()可以有多种实现，一般就是执行 WAIT指令进入节能状态。</p>
+<p>1 号进程与 2 号进程会派生很多新的内核线程来完成各种内核功能。在 SMP 系统上，1号进程会打开所有辅核，让后面的内核启动真正并行起来。包括显卡驱动在内的各种设备驱动都在 1 号进程里面完成，因此第三阶段除了起始点以外的的大部分时间是有显示信息输出的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line">noinline <span class="type">void</span> __ref <span class="title function_">rest_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span> <span class="title">task_struct</span> *<span class="title">tsk</span>;</span></span><br><span class="line">        <span class="type">int</span> pid;</span><br><span class="line"></span><br><span class="line">        rcu_scheduler_starting();</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * We need to spawn init first so that it obtains pid 1, however</span></span><br><span class="line"><span class="comment">         * the init task will end up wanting to create kthreads, which, if</span></span><br><span class="line"><span class="comment">         * we schedule it before we create kthreadd, will OOPS.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        pid = kernel_thread(kernel_init, <span class="literal">NULL</span>, CLONE_FS);</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Pin init on the boot CPU. Task migration is not properly working</span></span><br><span class="line"><span class="comment">         * until sched_init_smp() has been run. It will set the allowed</span></span><br><span class="line"><span class="comment">         * CPUs for init to the non isolated CPUs.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        rcu_read_lock();</span><br><span class="line">        tsk = find_task_by_pid_ns(pid, &amp;init_pid_ns);</span><br><span class="line">        tsk-&gt;flags |= PF_NO_SETAFFINITY;</span><br><span class="line">        set_cpus_allowed_ptr(tsk, cpumask_of(smp_processor_id()));</span><br><span class="line">        rcu_read_unlock();</span><br><span class="line"></span><br><span class="line">        numa_default_policy();</span><br><span class="line">        pid = kernel_thread(kthreadd, <span class="literal">NULL</span>, CLONE_FS | CLONE_FILES);</span><br><span class="line">        rcu_read_lock();</span><br><span class="line">        kthreadd_task = find_task_by_pid_ns(pid, &amp;init_pid_ns);</span><br><span class="line">        rcu_read_unlock();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Enable might_sleep() and smp_processor_id() checks.</span></span><br><span class="line"><span class="comment">         * They cannot be enabled earlier because with CONFIG_PREEMPTION=y</span></span><br><span class="line"><span class="comment">         * kernel_thread() would trigger might_sleep() splats. With</span></span><br><span class="line"><span class="comment">         * CONFIG_PREEMPT_VOLUNTARY=y the init task might have scheduled</span></span><br><span class="line"><span class="comment">         * already, but it&#x27;s stuck on the kthreadd_done completion.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        system_state = SYSTEM_SCHEDULING;</span><br><span class="line"></span><br><span class="line">        complete(&amp;kthreadd_done);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * The boot idle thread must execute schedule()</span></span><br><span class="line"><span class="comment">         * at least once to get things moving:</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        schedule_preempt_disabled();</span><br><span class="line">        <span class="comment">/* Call into cpu_idle with preempt disabled */</span></span><br><span class="line">        cpu_startup_entry(CPUHP_ONLINE);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://azreallem.github.io/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://azreallem.github.io/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/";
+            const title         = "「内核启动过程分析」";
+            const excerpt       = `kernel_entry→start_kernel()vmlinux原始内核启动：内核的初始启动入口是位于arch&#x2F;loongarch&#x2F;kernel&#x2F;head.S中的kernel_entry → star...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="../../../../tags/linux/" rel="tag">linux</a>, <a class="tag-none-link" href="../../../../tags/source-code/" rel="tag">source code</a>, <a class="tag-none-link" href="../../../../tags/start-kernel/" rel="tag">start_kernel</a>
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2022-03-29</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 状态机" href="/2021/10/26/状态机/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" setup_arch()源码分析" href="/2021/10/31/setup-arch-源码分析/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+        <div id="v-comments" class="post-comments"></div>
+<script>
+    var load_comm = () => {
+        const init = () => {
+            new Valine({
+                el: '#v-comments',
+                appId: 'Y4RT8kYqhRKjWWeQr1r5HNDx-gzGzoHsz',
+                appKey: 'gMt4uIBOkEnhGwihqUj8CEwR',
+                visitor: true,
+                enableQQ: true,
+                path: ''
+            });
+        }
+        if (typeof Valine === 'undefined') {
+            const src = 'https://unpkg.com/valine/dist/Valine.min.js';
+            $.getScript(src, init);
+        } else {
+            init();
+        }
+    };
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://valine.js.org/">comments powered by Valine.</a></noscript>
+
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">路漫漫其修远兮，吾将上下而求索~~~</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="../../../../archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                9
+            </span>
+        </a>
+        <a class="meta-item" href="../../../../categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                4
+            </span>
+        </a>
+        <a class="meta-item" href="../../../../tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#kernel-entry%E2%86%92start-kernel"><span class="toc-text">kernel_entry→start_kernel()</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E5%85%A5%E5%8F%A3%EF%BC%9Akernel-entry"><span class="toc-text">第一入口：kernel_entry</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%84%E7%90%86%E5%99%A80%E7%9A%84Status%E5%AF%84%E5%AD%98%E5%99%A8"><span class="toc-text">处理器0的Status寄存器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#init-thread-union%E7%9B%B8%E5%85%B3"><span class="toc-text">init_thread_union相关</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E5%85%A5%E5%8F%A3%EF%BC%9Astart-kernel"><span class="toc-text">第二入口：start_kernel()</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%98%B6%E6%AE%B5%EF%BC%9A%E5%85%B3%E4%B8%AD%E6%96%AD%E5%8D%95%E7%BA%BF%E7%A8%8B%E9%98%B6%E6%AE%B5"><span class="toc-text">第一阶段：关中断单线程阶段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%98%B6%E6%AE%B5%EF%BC%9A%E5%BC%80%E4%B8%AD%E6%96%AD%E5%8D%95%E7%BA%BF%E7%A8%8B%E9%98%B6%E6%AE%B5"><span class="toc-text">第二阶段：开中断单线程阶段</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%98%B6%E6%AE%B5%EF%BC%9A%E5%BC%80%E4%B8%AD%E6%96%AD%E5%A4%9A%E7%BA%BF%E7%A8%8B%E9%98%B6%E6%AE%B5"><span class="toc-text">第三阶段：开中断多线程阶段</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="../../../../categories/%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">内核分析</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="../../../../categories/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">基础概念</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../../../categories/%E6%95%99%E7%A8%8B%E6%96%87%E6%A1%A3/">教程文档</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../../../categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="../../../../tags/C/" style="font-size: 0.8em;">C</a> <a href="../../../../tags/FSM/" style="font-size: 0.6em;">FSM</a> <a href="../../../../tags/book/" style="font-size: 0.7em;">book</a> <a href="../../../../tags/hexo/" style="font-size: 0.6em;">hexo</a> <a href="../../../../tags/linux/" style="font-size: 0.8em;">linux</a> <a href="../../../../tags/note/" style="font-size: 0.8em;">note</a> <a href="../../../../tags/setup-arch/" style="font-size: 0.6em;">setup_arch</a> <a href="../../../../tags/source-code/" style="font-size: 0.7em;">source code</a> <a href="../../../../tags/start-kernel/" style="font-size: 0.6em;">start_kernel</a> <a href="../../../../tags/technique/" style="font-size: 0.6em;">technique</a> <a href="../../../../tags/tlbex/" style="font-size: 0.6em;">tlbex</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="../../../../2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"><i class="fa  fa-book"></i> iproute2 中 tc qdisc cbs源码分析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="../../31/setup-arch-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"><i class="fa  fa-book"></i> setup_arch()源码分析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href=""><i class="fa  fa-book"></i> 内核启动过程分析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="../../26/%E7%8A%B6%E6%80%81%E6%9C%BA/"><i class="fa  fa-book"></i> 状态机</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="../../21/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> tlb异常处理</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:961616044@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://github.com/azreallem"><i class="fa fa-github"></i></a></li>
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 Azreallem's Blog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Azreallem.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://unpkg.com/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "../../../../index.html";
+</script>
+
+
+
+
+    <script defer src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    <meting-js
+        server="tencent"
+        type="playlist"
+        id="4214690386"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://unpkg.com/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>

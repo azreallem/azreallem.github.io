@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/images/cake.webp">
+  <title>setup_arch()源码分析 | Azreallem's Blog</title>
+  <meta name="author" content="Azreallem" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="linux, setup_arch, source code" />
+  
+  <meta name="description" content="setup_arch()start_kernel()中第一个重要的、体系结构密切相关的函数是 setup_arch()，定义在 arch&#x2F;loongarch&#x2F;kernel&#x2F;setup.c中。 123456789101112131415161718192021222324252627void __init setup_arch(char **cmdline_p)&amp;#123;        cpu_p">
+<meta property="og:type" content="article">
+<meta property="og:title" content="setup_arch()源码分析">
+<meta property="og:url" content="https://azreallem.github.io/2021/10/31/setup-arch-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="Azreallem&#39;s Blog">
+<meta property="og:description" content="setup_arch()start_kernel()中第一个重要的、体系结构密切相关的函数是 setup_arch()，定义在 arch&#x2F;loongarch&#x2F;kernel&#x2F;setup.c中。 123456789101112131415161718192021222324252627void __init setup_arch(char **cmdline_p)&amp;#123;        cpu_p">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://azreallem.github.io/images/cake.webp">
+<meta property="article:published_time" content="2021-10-31T13:52:05.000Z">
+<meta property="article:modified_time" content="2022-03-29T15:17:28.971Z">
+<meta property="article:author" content="Azreallem">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="source code">
+<meta property="article:tag" content="setup_arch">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://azreallem.github.io/images/cake.webp">
+<meta name="twitter:site" content="@null">
+  
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://unpkg.com/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="../../../../index.html"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="../../../../archives/"><i class="fa fa-archive"></i>档案馆</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="../../../../friends/"><i class="fa fa-mars-double"></i>朋友们</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="../../../../about/"><i class="fa fa-rocket"></i>关于我</a></li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="../../../../index.html">Azreallem&#39;s Blog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="../../../../index.html">
+                        <h2>Azreallem&#39;s Blog</h2> <br />
+                        <span>做一个纯粹的人</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
+        
+
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">setup_arch()源码分析</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2021-10-31</li>
+                <li><i class="fa fa-user"></i> 作者 Azreallem</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~19.04K
+                    
+                    字
+                </li>
+                
+                    <li id="" class="leancloud_visitors" data-flag-title="setup_arch()源码分析">
+                        <i class="fa fa-eye"></i>
+                        <span class="leancloud-visitors-count"> </span> 次阅读
+                    </li>
+                    
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1648567048971"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#setup-arch"><span class="toc-number">1.</span> <span class="toc-text">setup_arch()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cpu-probe"><span class="toc-number">1.0.1.</span> <span class="toc-text">cpu_probe()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#early-init"><span class="toc-number">1.0.2.</span> <span class="toc-text">early_init()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Others"><span class="toc-number">1.0.3.</span> <span class="toc-text">Others</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#arch-mem-init-char-cmdline-p"><span class="toc-number">1.0.4.</span> <span class="toc-text">arch_mem_init(char *cmdline_p)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Others-1"><span class="toc-number">1.0.5.</span> <span class="toc-text">Others</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#page-init"><span class="toc-number">1.0.6.</span> <span class="toc-text">page_init()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#boot-cpu-trap-init"><span class="toc-number">1.0.7.</span> <span class="toc-text">boot_cpu_trap_init()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#trap-init"><span class="toc-number">1.1.</span> <span class="toc-text">trap_init()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E6%96%AD%E8%AF%B7%E6%B1%82%E7%9B%B8%E5%85%B3"><span class="toc-number">1.2.</span> <span class="toc-text">中断请求相关</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <h1 id="setup-arch"><a href="#setup-arch" class="headerlink" title="setup_arch()"></a>setup_arch()</h1><p><code>start_kernel()</code>中第一个重要的、体系结构密切相关的函数是 <code>setup_arch()</code>，定义在 <code>arch/loongarch/kernel/setup.c</code>中。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">setup_arch</span><span class="params">(<span class="type">char</span> **cmdline_p)</span></span><br><span class="line">&#123;</span><br><span class="line">        cpu_probe();</span><br><span class="line">        early_init();</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_EARLY_PRINTK</span></span><br><span class="line">        setup_early_printk();</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">        bootcmdline_init(cmdline_p);</span><br><span class="line"></span><br><span class="line">        init_initrd();</span><br><span class="line">        platform_init();</span><br><span class="line">        finalize_initrd();</span><br><span class="line">        cpu_report();</span><br><span class="line"></span><br><span class="line">        arch_mem_init(cmdline_p);</span><br><span class="line"></span><br><span class="line">        resource_init();</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_SMP</span></span><br><span class="line">        plat_smp_setup();</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">        prefill_possible_map();</span><br><span class="line"></span><br><span class="line">        cpu_cache_init();</span><br><span class="line">        paging_init();</span><br><span class="line">        boot_cpu_trap_init();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="cpu-probe"><a href="#cpu-probe" class="headerlink" title="cpu_probe()"></a>cpu_probe()</h3><p>用来探测 CPU 类型、ID号、版本等等。探测的主要依据是 PRID 寄存器，即协处理器 0 中的 15 号寄存器。PRID 是一个 32 位寄存器，最高 8 位保留，次高 8 位是公司 ID，第三个 8 位是处理器 ID，最后一个 8 位是修订号 ID。</p>
+<h3 id="early-init"><a href="#early-init" class="headerlink" title="early_init()"></a>early_init()</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">early_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        fw_init_cmdline();</span><br><span class="line">        fw_init_environ();</span><br><span class="line">        early_memblock_init();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>fw_init_cmdline()</code>：还记得 <code>kernel_entry</code> 里面保存的 <code>fw_arg0</code>～<code>fw_arg3</code> 这几个变量吗？现在就要开始用了。<code>prom_init_cmdline()</code>中处理前两个变量，其中 <code>fw_arg0</code> 是参数的个数，<code>fw_arg1</code> 是参数的字符串数组。这个函数建立来自 BIOS 或 BootLoader 的内核命令行参数，以便给后面start_kernel()中的<code>setup_command_line()</code> 进 一 步 处 理 。</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">fw_init_cmdline</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">int</span> i;</span><br><span class="line"></span><br><span class="line">        fw_argc = fw_arg0;</span><br><span class="line">        _fw_argv = (<span class="type">long</span> *)fw_arg1;</span><br><span class="line">        _fw_envp = (<span class="type">long</span> *)fw_arg2;</span><br><span class="line"></span><br><span class="line">        arcs_cmdline[<span class="number">0</span>] = <span class="string">&#x27;\0&#x27;</span>;</span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">1</span>; i &lt; fw_argc; i++) &#123;</span><br><span class="line">                strlcat(arcs_cmdline, fw_argv(i), COMMAND_LINE_SIZE);</span><br><span class="line">                <span class="keyword">if</span> (i &lt; (fw_argc - <span class="number">1</span>))</span><br><span class="line">                        strlcat(arcs_cmdline, <span class="string">&quot; &quot;</span>, COMMAND_LINE_SIZE);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>fw_init_environ()</code>：用于初始化环境变量，环境变量来源于 <code>fw_arg2</code>。引入了类似于 UEFI 的 LEFI 接口，<code>fw_arg2</code> 仅仅提供一个地址，该地址指向 BIOS 中的一片数据区，数据区有着特定的结构，可以通过它获得丰富的接口信息。LEFI 接口规范所使用的各种数据结果定义在 <code>arch/loongarch/include/asm/mach-loongson64/boot_param.h</code> 中。</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">fw_init_environ</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        efi_bp = (<span class="keyword">struct</span> bootparamsinterface *)_fw_envp;</span><br><span class="line">        loongson_sysconf.bpi_ver = get_bpi_version(&amp;efi_bp-&gt;signature);</span><br><span class="line"></span><br><span class="line">        register_addrs_set(smp_group, TO_UNCAC(<span class="number">0x1fe01000</span>), <span class="number">16</span>);</span><br><span class="line">        register_addrs_set(loongson_chipcfg, TO_UNCAC(<span class="number">0x1fe00180</span>), <span class="number">16</span>);</span><br><span class="line">        register_addrs_set(loongson_chiptemp, TO_UNCAC(<span class="number">0x1fe0019c</span>), <span class="number">16</span>);</span><br><span class="line">        register_addrs_set(loongson_freqctrl, TO_UNCAC(<span class="number">0x1fe001d0</span>), <span class="number">16</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (list_find(efi_bp-&gt;extlist))</span><br><span class="line">                pr_warn(<span class="string">&quot;Scan bootparam failed\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">loongsonlist_mem_map</span> &#123;</span>     <span class="comment">/* 内存分布图 */</span></span><br><span class="line">        <span class="class"><span class="keyword">struct</span>  _<span class="title">extention_list_hdr</span> <span class="title">header</span>;</span>     <span class="comment">/* &#123;&quot;M&quot;, &quot;E&quot;, &quot;M&quot;&#125; */</span></span><br><span class="line">        u8      map_count;</span><br><span class="line">        <span class="class"><span class="keyword">struct</span>  <span class="title">loongson_mem_map</span> &#123;</span></span><br><span class="line">                u32 mem_type;</span><br><span class="line">                u64 mem_start;</span><br><span class="line">                u64 mem_size;</span><br><span class="line">        &#125; __packed <span class="built_in">map</span>[LOONGSON3_BOOT_MEM_MAP_MAX];</span><br><span class="line">&#125; __packed;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">loongson_system_configuration</span> &#123;</span>    <span class="comment">/* CPU信息 */</span></span><br><span class="line">        <span class="type">int</span> bpi_ver;</span><br><span class="line">        <span class="type">int</span> nr_cpus;</span><br><span class="line">        <span class="type">int</span> nr_nodes;</span><br><span class="line">        <span class="type">int</span> nr_pch_pics;</span><br><span class="line">        <span class="type">int</span> boot_cpu_id;</span><br><span class="line">        <span class="type">int</span> cores_per_node;</span><br><span class="line">        <span class="type">int</span> cores_per_package;</span><br><span class="line">        <span class="type">char</span> *cpuname;</span><br><span class="line">        u64 vgabios_addr;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="class"><span class="keyword">struct</span> <span class="title">loongsonlist_mem_map</span> *<span class="title">loongson_mem_map</span>;</span></span><br><span class="line"><span class="keyword">extern</span> <span class="class"><span class="keyword">struct</span> <span class="title">loongson_system_configuration</span> <span class="title">loongson_sysconf</span>;</span></span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>early_memblock_init()</code>：对<code>boot_param.h</code>里定义声明的内存分布图进行初始化。</p>
+<p>  通常情况下我们使用的是支持 NUMA 的版本，它首先初始化 NUMA 节点的距离矩阵，然后逐个解析内存分布图并将最终结果保存于 loongson_memmap。</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">early_memblock_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">int</span> i;</span><br><span class="line">        u32 mem_type;</span><br><span class="line">        u64 mem_start, mem_end, mem_size;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* parse memory information */</span></span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; loongson_mem_map-&gt;map_count; i++) &#123;</span><br><span class="line">                mem_type = loongson_mem_map-&gt;<span class="built_in">map</span>[i].mem_type;</span><br><span class="line">                mem_start = loongson_mem_map-&gt;<span class="built_in">map</span>[i].mem_start;</span><br><span class="line">                mem_size = loongson_mem_map-&gt;<span class="built_in">map</span>[i].mem_size;</span><br><span class="line">                mem_end = mem_start + mem_size;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">switch</span> (mem_type) &#123;</span><br><span class="line">                <span class="keyword">case</span> ADDRESS_TYPE_SYSRAM:</span><br><span class="line">                        memblock_add(mem_start, mem_size);</span><br><span class="line">                        <span class="keyword">if</span> (max_low_pfn &lt; (mem_end &gt;&gt; PAGE_SHIFT))</span><br><span class="line">                                max_low_pfn = mem_end &gt;&gt; PAGE_SHIFT;</span><br><span class="line">                        <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        memblock_set_current_limit(PFN_PHYS(max_low_pfn));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Others"><a href="#Others" class="headerlink" title="Others"></a>Others</h3><ul>
+<li><p><code>bootcmdline_init(cmdline_p)</code>：启动命令行的初始化；</p>
+</li>
+<li><p><code>init_initrd()</code>：初始化临时根文件系统，如果正常，则使用它们；</p>
+<p>  <strong>Linux初始RAM磁盘</strong>（initrd）是在系统引导过程中挂载的一个临时根文件系统，用来支持两阶段的引导过程。 initrd文件中包含了各种可执行程序和驱动程序，它们可以用来挂载实际的根文件系统，然后再将这个 initrd RAM磁盘卸载，并释放内存。</p>
+</li>
+<li><p><code>platform_init()</code>：控制台相关初始化</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">platform_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="comment">/* init base address of io space */</span></span><br><span class="line">        set_io_port_base((<span class="type">unsigned</span> <span class="type">long</span>)</span><br><span class="line">                ioremap(LOONGSON_LIO_BASE, LOONGSON_LIO_SIZE));</span><br><span class="line"></span><br><span class="line">        efi_init();</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_ACPI_TABLE_UPGRADE</span></span><br><span class="line">        acpi_table_upgrade();</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_ACPI</span></span><br><span class="line">        acpi_gbl_use_default_register_widths = <span class="literal">false</span>;</span><br><span class="line">        acpi_boot_table_init();</span><br><span class="line">        acpi_boot_init();</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> CONFIG_NUMA</span></span><br><span class="line">        fw_init_memory();</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line">        fw_init_numa_memory();</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">        dmi_setup();</span><br><span class="line">        smbios_parse();</span><br><span class="line">        pr_info(<span class="string">&quot;The BIOS Version: %s\n&quot;</span>, b_info.bios_version);</span><br><span class="line"></span><br><span class="line">        efi_runtime_init();</span><br><span class="line"></span><br><span class="line">        register_smp_ops(&amp;loongson3_smp_ops);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>finalize_initrd()</code>:将 initrd&#x2F;initramfs 所在的内存段设置为保留。</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">unsigned</span> <span class="type">long</span> __init <span class="title function_">init_initrd</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Board specific code or command line parser should have</span></span><br><span class="line"><span class="comment">         * already set up initrd_start and initrd_end. In these cases</span></span><br><span class="line"><span class="comment">         * perfom sanity checks and use them if all looks good.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">if</span> (!initrd_start || initrd_end &lt;= initrd_start)</span><br><span class="line">                <span class="keyword">goto</span> disable;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (initrd_start &amp; ~PAGE_MASK) &#123;</span><br><span class="line">                pr_err(<span class="string">&quot;initrd start must be page aligned\n&quot;</span>);</span><br><span class="line">                <span class="keyword">goto</span> disable;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (initrd_start &lt; PAGE_OFFSET) &#123;</span><br><span class="line">                pr_err(<span class="string">&quot;initrd start &lt; PAGE_OFFSET\n&quot;</span>);</span><br><span class="line">                <span class="keyword">goto</span> disable;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        ROOT_DEV = Root_RAM0;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">disable:</span><br><span class="line">        initrd_start = <span class="number">0</span>;</span><br><span class="line">        initrd_end = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="type">void</span> __init <span class="title function_">finalize_initrd</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">long</span> size = initrd_end - initrd_start;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (size == <span class="number">0</span>) &#123;</span><br><span class="line">                pr_info(<span class="string">&quot;Initrd not found or empty&quot;</span>);</span><br><span class="line">                <span class="keyword">goto</span> disable;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (__pa(initrd_end) &gt; PFN_PHYS(max_low_pfn)) &#123;</span><br><span class="line">                pr_err(<span class="string">&quot;Initrd extends beyond end of memory&quot;</span>);</span><br><span class="line">                <span class="keyword">goto</span> disable;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        memblock_reserve(__pa(initrd_start), size);</span><br><span class="line">        initrd_below_start_ok = <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">        pr_info(<span class="string">&quot;Initial ramdisk at: 0x%lx (%lu bytes)\n&quot;</span>,</span><br><span class="line">                initrd_start, size);</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">disable:</span><br><span class="line">        pr_cont(<span class="string">&quot; - disabling initrd\n&quot;</span>);</span><br><span class="line">        initrd_start = <span class="number">0</span>;</span><br><span class="line">        initrd_end = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>cpu_report()</code></p>
+</li>
+</ul>
+<h3 id="arch-mem-init-char-cmdline-p"><a href="#arch-mem-init-char-cmdline-p" class="headerlink" title="arch_mem_init(char *cmdline_p)"></a>arch_mem_init(char *cmdline_p)</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * arch_mem_init - initialize memory management subsystem</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">static</span> <span class="type">void</span> __init <span class="title function_">arch_mem_init</span><span class="params">(<span class="type">char</span> **cmdline_p)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="keyword">if</span> (usermem)</span><br><span class="line">                pr_info(<span class="string">&quot;User-defined physical RAM map overwrite\n&quot;</span>);</span><br><span class="line"></span><br><span class="line">        check_kernel_sections_mem();</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> CONFIG_NUMA</span></span><br><span class="line">        memblock_set_node(<span class="number">0</span>, PHYS_ADDR_MAX, &amp;memblock.memory, <span class="number">0</span>);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Prevent memblock from allocating high memory.</span></span><br><span class="line"><span class="comment">         * This cannot be done before max_low_pfn is detected, so up</span></span><br><span class="line"><span class="comment">         * to this point is possible to only reserve physical memory</span></span><br><span class="line"><span class="comment">         * with memblock_reserve; memblock_alloc* can be used</span></span><br><span class="line"><span class="comment">         * only after this point</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        memblock_set_current_limit(PFN_PHYS(max_low_pfn));</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * In order to reduce the possibility of kernel panic when failed to</span></span><br><span class="line"><span class="comment">         * get IO TLB memory under CONFIG_SWIOTLB, it is better to allocate</span></span><br><span class="line"><span class="comment">         * low memory as small as possible before plat_swiotlb_setup(), so</span></span><br><span class="line"><span class="comment">         * make sparse_init() using top-down allocation.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        memblock_set_bottom_up(<span class="literal">false</span>);</span><br><span class="line">        sparse_init();</span><br><span class="line">        memblock_set_bottom_up(<span class="literal">true</span>);</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_64BIT</span></span><br><span class="line">        plat_swiotlb_setup();</span><br><span class="line"></span><br><span class="line">        dma_contiguous_reserve(PFN_PHYS(max_low_pfn));</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">        memblock_dump_all();</span><br><span class="line"></span><br><span class="line">        early_memtest(PFN_PHYS(ARCH_PFN_OFFSET), PFN_PHYS(max_low_pfn));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>sparse_init()</code>：即稀疏内存模型初始化。内存模型指的是物理地址空间分布的模型，Linux 内核支持三种内存模型：平坦模型，非连续模型和稀疏模型。包括龙芯在内的现代体系结构大都采用了比较自由的稀疏模型。如果不采用稀疏模型，sparse_init()是空操作；如果采用稀疏模型，sparse_init()会初始化一些稀疏模型专有的数据结构（如全局区段描述符数组 mem_section[]及其附带的页描述符数组）。</p>
+</li>
+<li><p><code>plat_swiotlb_setup()</code>：定义在 <code>arch/loongarch/loongson64/dma.c</code> 中。先我们简单介绍一下 SWIOTLB，这是一种 DMA API。龙芯 3 号的访存能力是 48 位，但是由于芯片组或者设备本身的限制，设备的访存能力往往没有这么大。比如龙芯的顶级 I&#x2F;O 总线（HT 总线）位宽只有 40 位，一部分 PCI 设备的访存能力只有 32 位，而 ISA&#x2F;LPC 设备的访问能力甚至只有 24 位。<strong>为了让任意设备能够对任意内存地址发起 DMA 访问，就必须在硬件上设置一个“DMA 地址-物理地址”翻译表，或者由内核在设备可访问的地址范围内预先准备一块内存做中转站。</strong>许多 X86 处理器在硬件上提供翻译表，称为 IOMMU；龙芯没有IOMMU，于是提供了<strong>软件中转站</strong>，也就是 SWIOTLB。plat_swiotlb_setup()调用 swiotlb_init()初始化 SWIOTLB 的元数据并在 32 位地址范围内分配中转缓冲区（缺省为 64MB），然后注册了一个 DMA API 操作集 loongson_linear_dma_map_ops。操作集里面的“物理地址-DMA地址”转换函数（即 loongson_linear_dma_map_ops 中的 phys_to_dma 和 dma_to_phys 两个函数指针）是同芯片组相关的：</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">plat_swiotlb_setup</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        swiotlb_init(<span class="number">1</span>);</span><br><span class="line">        node_id_offset = ((readl(LS7A_DMA_CFG) &amp; LS7A_DMA_NODE_MASK) &gt;&gt; LS7A_DMA_NODE_SHF) + <span class="number">36</span>;</span><br><span class="line"></span><br><span class="line">        xlate_ops.phys_to_dma = loongson_phys_to_dma;</span><br><span class="line">        xlate_ops.dma_to_phys = loongson_dma_to_phys;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="Others-1"><a href="#Others-1" class="headerlink" title="Others"></a>Others</h3><ul>
+<li><p><code>resource_init()</code></p>
+</li>
+<li><p><code>plat_smp_setup()</code></p>
+</li>
+<li><p><code>prefill_possible_map()</code>：它会建立合理的逻辑 CPU 的 possible 值。prefill_possible_map()会通过 set_cpu_possible()来更新 cpu_possible_mask，最后将 possible 值赋给全局变量 nr_cpu_ids。</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_SMP</span></span><br><span class="line"><span class="type">static</span> <span class="type">void</span> __init <span class="title function_">prefill_possible_map</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">int</span> i, possible;</span><br><span class="line"></span><br><span class="line">        possible = num_processors + disabled_cpus;</span><br><span class="line">        <span class="keyword">if</span> (possible &gt; nr_cpu_ids)</span><br><span class="line">                possible = nr_cpu_ids;</span><br><span class="line"></span><br><span class="line">        pr_info(<span class="string">&quot;SMP: Allowing %d CPUs, %d hotplug CPUs\n&quot;</span>,</span><br><span class="line">                        possible, max((possible - num_processors), <span class="number">0</span>));</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; possible; i++)</span><br><span class="line">                set_cpu_possible(i, <span class="literal">true</span>);</span><br><span class="line">        <span class="keyword">for</span> (; i &lt; NR_CPUS; i++)</span><br><span class="line">                set_cpu_possible(i, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">        nr_cpu_ids = possible;</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">else</span></span></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="type">void</span> <span class="title function_">prefill_possible_map</span><span class="params">(<span class="type">void</span>)</span> &#123;&#125;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>cpu_cache_init()</code></p>
+<p>  在龙芯处理器手册中，将 P-Cache 称之为一级 Cache，将 V-Cache 称之为二级 Cache，将 S-Cache 称之为三级 Cache。</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">cpu_cache_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        probe_pcache();</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_64_BIT</span></span><br><span class="line">        probe_vcache();</span><br><span class="line">        probe_scache();</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">        shm_align_mask = PAGE_SIZE - <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  <code>r4k_cache_init()</code>通过调用 <code>probe_pcache()</code>、<code>probe_vcache()</code>和 <code>setup_scache()</code>完成各级 Cache的容量、行大小和相联度探测。然后给各个 Cache 刷新操作函数赋值（刷新即 Flush，对于指令 Cache 指的是作废，对于数据 Cache 指的是写回并作废）。</p>
+</li>
+</ul>
+<h3 id="page-init"><a href="#page-init" class="headerlink" title="page_init()"></a>page_init()</h3><p>该函数初始化各个内存页面管理区（Zone）。页面管理区的类型包括 ZONE_DMA、ZONE_DMA32、ZONE_NORMAL 和 ZONE_HIGHME几种。ZONE_DMA 区包括所有物理地址为小于 16MB 的页面，设置这个区的目的是为ISA&#x2F;LPC 等 DMA 能力只有 24 位地址的设备服务。ZONE_DMA32 区包括所有 ZONE_DMA区之外的物理地址小于 4GB 的页面，设置这个区的目的是为 DMA 能力只有 32 位地址的 PCI设备服务。设置 ZONE_HIGHMEM 的目的是为物理地址超过线性地址表达能力的内存服务：对于 32 位的 MIPS 内核，线性地址表达能力只有 512M，因此 512M 以外的页面被放置到ZONE_HIGHMEM 区；对于 64 位的 MIPS 内核，物理地址暂时还没有超过线性地址的表达能力，因此通常不设置 ZONE_HIGHMEM 区。ZONE_NORMAL 区则包括了上述几个区以外的所有页面。在初始化每个 Zone 的时候，会调用 init_page_count()将每个页帧的初始引用计数设置为 1。因为此时此刻内存还处于 BootMem 管理器的控制下，这些页帧尚未转交到伙伴系统（内存页帧管理器），不是自由页帧（自由页帧的引用计数为 1），不可以被伙伴系统的页帧分配函数分配。</p>
+<h3 id="boot-cpu-trap-init"><a href="#boot-cpu-trap-init" class="headerlink" title="boot_cpu_trap_init()"></a>boot_cpu_trap_init()</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">boot_cpu_trap_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">long</span> size = (<span class="number">64</span> + <span class="number">14</span>) * vec_size;</span><br><span class="line"></span><br><span class="line">        memblock_set_bottom_up(<span class="literal">true</span>);</span><br><span class="line">        eentry = (<span class="type">unsigned</span> <span class="type">long</span>)memblock_alloc(size, <span class="number">1</span> &lt;&lt; fls(size));</span><br><span class="line">        tlbrentry = (<span class="type">unsigned</span> <span class="type">long</span>)memblock_alloc(PAGE_SIZE, PAGE_SIZE);</span><br><span class="line">        printk(<span class="string">&quot;eentry %lx, tlbrentry %lx\n&quot;</span>, eentry, tlbrentry);</span><br><span class="line">        memblock_set_bottom_up(<span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">        setup_vint_size(vec_size);</span><br><span class="line">        configure_exception_vector();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!cpu_data[<span class="number">0</span>].asid_cache)</span><br><span class="line">                cpu_data[<span class="number">0</span>].asid_cache = asid_first_version(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        mmgrab(&amp;init_mm);</span><br><span class="line">        current-&gt;active_mm = &amp;init_mm;</span><br><span class="line">        BUG_ON(current-&gt;mm);</span><br><span class="line">        enter_lazy_tlb(&amp;init_mm, current);</span><br><span class="line"></span><br><span class="line">        tlb_init();</span><br><span class="line">        TLBMISS_HANDLER_SETUP();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p><code>vec_size</code>：向量大小</p>
+</li>
+<li><p><code>eentry</code>：通用例外入口地址</p>
+</li>
+<li><p><code>tlbrentry</code>：tlb refill例外入口地址</p>
+</li>
+<li><p><code>configure_exception_vector()</code>：配置例外向量</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">configure_exception_vector</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_64BIT</span></span><br><span class="line">        csr_writeq(eentry, LOONGARCH_CSR_EENTRY);</span><br><span class="line">        csr_writeq(eentry, LOONGARCH_CSR_MERRENTRY);</span><br><span class="line">        csr_writeq(tlbrentry, LOONGARCH_CSR_TLBRENTRY);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_32BIT</span></span><br><span class="line">        csr_writel(eentry + <span class="number">0x4000</span>, LOONGARCH_CSR_EENTRY);</span><br><span class="line">        csr_writel(tlbrentry, LOONGARCH_CSR_TLBRENTRY);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>tlb_init()</code>：主要做的事就是<code>handle_tlb_refill</code></p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">setup_tlb_handler</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">static</span> <span class="type">int</span> run_once = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        setup_pw();</span><br><span class="line">        output_pgtable_bits_defines();</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* The tlb handlers are generated only once */</span></span><br><span class="line">        <span class="keyword">if</span> (!run_once) &#123;</span><br><span class="line">                <span class="built_in">memcpy</span>((<span class="type">void</span> *)tlbrentry, handle_tlb_refill, <span class="number">0x80</span>);</span><br><span class="line">                local_flush_icache_range(tlbrentry, tlbrentry + <span class="number">0x80</span>);</span><br><span class="line">                run_once++;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">tlb_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        write_csr_pagesize(PS_DEFAULT_SIZE);</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_64BIT</span></span><br><span class="line">        write_csr_stlbpgsize(PS_DEFAULT_SIZE);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line">        <span class="keyword">if</span> (read_csr_pagesize() != PS_DEFAULT_SIZE)</span><br><span class="line">                panic(<span class="string">&quot;MMU doesn&#x27;t support PAGE_SIZE=0x%lx&quot;</span>, PAGE_SIZE);</span><br><span class="line"></span><br><span class="line">        setup_tlb_handler();</span><br><span class="line">        local_flush_tlb_all();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>  handle_tlb_refill</p>
+  <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">SYM_FUNC_START(handle_tlb_refill)</span><br><span class="line">        csrwr   t0, LOONGARCH_CSR_KS0</span><br><span class="line">        csrwr   t1, LOONGARCH_CSR_KS1</span><br><span class="line">        csrwr   ra, EXCEPTION_KS2</span><br><span class="line"></span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_PGD</span><br><span class="line">        csrrd   t1, LOONGARCH_CSR_BADV</span><br><span class="line">        srli.w  t1, t1, <span class="number">0x16</span></span><br><span class="line">        slli.w  t1, t1, <span class="number">0x2</span></span><br><span class="line">        add.w   t0, t0, t1</span><br><span class="line">        ld.w    t0, t0, <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        csrrd   t1, LOONGARCH_CSR_BADV</span><br><span class="line">        srli.w  t1, t1, <span class="number">0xa</span></span><br><span class="line">        andi    t1, t1, <span class="number">0xff8</span></span><br><span class="line">        add.w   t0, t0, t1</span><br><span class="line"></span><br><span class="line">        ld.w    t1, t0, <span class="number">0</span></span><br><span class="line">        srli.w  ra, t1, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x8</span></span><br><span class="line">        andi    t1, t1, <span class="number">0xff</span></span><br><span class="line">        add.w   t1, t1, ra</span><br><span class="line">        csrwr   t1, LOONGARCH_CSR_TLBELO0</span><br><span class="line"></span><br><span class="line">        ld.w    t1, t0, <span class="number">0x4</span></span><br><span class="line">        srli.w  ra, t1, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x8</span></span><br><span class="line">        andi    t1, t1, <span class="number">0xff</span></span><br><span class="line">        add.w   t1, t1, ra</span><br><span class="line">        csrwr   t1, LOONGARCH_CSR_TLBELO1</span><br><span class="line"></span><br><span class="line">        tlbfill</span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_KS0</span><br><span class="line">        csrrd   t1, LOONGARCH_CSR_KS1</span><br><span class="line">        csrrd   ra, EXCEPTION_KS2</span><br><span class="line">        ertn</span><br><span class="line"><span class="title function_">SYM_FUNC_END</span><span class="params">(handle_tlb_refill)</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>TLBMISS_HANDLER_SETUP()</code>：主要工作是建立内核页全局目录的基地址。</p>
+</li>
+</ul>
+<h2 id="trap-init"><a href="#trap-init" class="headerlink" title="trap_init()"></a>trap_init()</h2><p>其余的例外在<code>start_kernel()</code>中的<code>trap_init()</code>中。</p>
+<p><code>trap_init()</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">trap_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">long</span> i;</span><br><span class="line">        <span class="type">void</span> *vec_start;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Initialise exception handlers */</span></span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">64</span>; i++)</span><br><span class="line">                set_handler(i * vec_size, handle_reserved, vec_size);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Set interrupt vector handler */</span></span><br><span class="line">        <span class="keyword">for</span> (i = EXCCODE_INT_START; i &lt; EXCCODE_INT_END; i++) &#123;</span><br><span class="line">                vec_start = vi_table[i - EXCCODE_INT_START];</span><br><span class="line">                set_handler(i * vec_size, vec_start, vec_size);</span><br><span class="line">        &#125;</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_32BIT</span></span><br><span class="line">        set_handler(EXCCODE_GENERIC * vec_size , except_vec_vi_handler, vec_size);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">        set_handler(EXCCODE_TLBL * vec_size, handle_tlb_load, vec_size);</span><br><span class="line">        set_handler(EXCCODE_TLBS * vec_size, handle_tlb_store, vec_size);</span><br><span class="line">        set_handler(EXCCODE_TLBI * vec_size, handle_tlb_load, vec_size);</span><br><span class="line">        set_handler(EXCCODE_TLBM * vec_size, handle_tlb_modify, vec_size);</span><br><span class="line">        set_handler(EXCCODE_TLBRI * vec_size, handle_tlb_rixi, vec_size);</span><br><span class="line">        set_handler(EXCCODE_TLBXI * vec_size, handle_tlb_rixi, vec_size);</span><br><span class="line">        set_handler(EXCCODE_ADE * vec_size, handle_ade, vec_size);</span><br><span class="line">        set_handler(EXCCODE_ALE * vec_size, handle_ale, vec_size);</span><br><span class="line">        set_handler(EXCCODE_SYS * vec_size, handle_syscall, vec_size);</span><br><span class="line">        set_handler(EXCCODE_BP * vec_size, handle_bp, vec_size);</span><br><span class="line">        set_handler(EXCCODE_INE * vec_size, handle_ri, vec_size);</span><br><span class="line">        set_handler(EXCCODE_IPE * vec_size, handle_ri, vec_size);</span><br><span class="line">        set_handler(EXCCODE_FPDIS * vec_size, handle_fpu, vec_size);</span><br><span class="line">        set_handler(EXCCODE_LSXDIS * vec_size, handle_lsx, vec_size);</span><br><span class="line">        set_handler(EXCCODE_LASXDIS * vec_size, handle_lasx, vec_size);</span><br><span class="line">        set_handler(EXCCODE_FPE * vec_size, handle_fpe, vec_size);</span><br><span class="line">        set_handler(EXCCODE_BTDIS * vec_size, handle_lbt, vec_size);</span><br><span class="line">        set_handler(EXCCODE_WATCH * vec_size, handle_watch, vec_size);</span><br><span class="line"></span><br><span class="line">        cache_error_setup();</span><br><span class="line"></span><br><span class="line">        local_flush_icache_range(eentry, eentry + <span class="number">0x400</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>except_vec_vi_handler</code>：32位LOONGARCH</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">SYM_FUNC_START(except_vec_vi_handler)</span><br><span class="line"></span><br><span class="line">        csrwr   t0, LOONGARCH_CSR_KS0</span><br><span class="line">        csrwr   t1, LOONGARCH_CSR_KS1</span><br><span class="line"></span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_ESTAT</span><br><span class="line">        srli.w  t1, t0, <span class="number">0x10</span>   <span class="comment">/* get Ecode */</span></span><br><span class="line">        andi    t1, t1, <span class="number">0x3f</span></span><br><span class="line">        beq t1, zero, <span class="number">1f</span>        <span class="comment">/* if irq */</span></span><br><span class="line"></span><br><span class="line">        csrrd       t0, LOONGARCH_CSR_EENTRY</span><br><span class="line">        slli.w    t1, t1, <span class="number">0x9</span>  <span class="comment">/* get ex entry shift = Ecode * vec_size  */</span></span><br><span class="line">        add.w   t0, t0, t1</span><br><span class="line">        lu12i.w     t1, <span class="number">0x4</span></span><br><span class="line">        sub.w   t0, t0, t1</span><br><span class="line">        jirl zero,t0 , <span class="number">0</span>  <span class="comment">/* go to exception_handler */</span></span><br><span class="line"></span><br><span class="line"><span class="number">1</span>:</span><br><span class="line">        SAVE_ALL docfi=<span class="number">0</span></span><br><span class="line">        CLI</span><br><span class="line">        TRACE_IRQS_OFF</span><br><span class="line"></span><br><span class="line">        ld.w    s0, tp, TI_REGS</span><br><span class="line">        st.w    sp, tp, TI_REGS</span><br><span class="line">        move    s1, sp</span><br><span class="line"></span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_TMID</span><br><span class="line">        la.<span class="built_in">abs</span>  t1, irq_stack</span><br><span class="line">        slli.w  t0, t0, LONGLOG</span><br><span class="line">        ld.w    t0, t1, <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        li      t1, ~(_THREAD_SIZE<span class="number">-1</span>)</span><br><span class="line">        and     t1, t1, sp</span><br><span class="line">        beq     t0, t1, <span class="number">2f</span></span><br><span class="line"></span><br><span class="line">        li      t1, _IRQ_STACK_START</span><br><span class="line">        add.w   sp, t0, t1</span><br><span class="line">        st.w    s1,sp, <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="number">2</span>:</span><br><span class="line">        la.<span class="built_in">abs</span>  t0, plat_irq_dispatch</span><br><span class="line">        jirl    ra, t0, <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        move    sp, s1</span><br><span class="line"></span><br><span class="line">        la.<span class="built_in">abs</span>  t0, ret_from_irq</span><br><span class="line">        jirl    zero, t0, <span class="number">0</span></span><br><span class="line"></span><br><span class="line">SYM_FUNC_END(except_vec_vi_handler)</span><br></pre></td></tr></table></figure>
+
+<h2 id="中断请求相关"><a href="#中断请求相关" class="headerlink" title="中断请求相关"></a>中断请求相关</h2><p><code>start_kernel()</code>中的<code>init_IRQ()</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">init_IRQ</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        <span class="type">int</span> i;</span><br><span class="line">        <span class="type">unsigned</span> <span class="type">int</span> order = get_order(IRQ_STACK_SIZE);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; NR_IRQS; i++)</span><br><span class="line">                irq_set_noprobe(i);</span><br><span class="line"></span><br><span class="line">        arch_init_irq();</span><br><span class="line"></span><br><span class="line">        for_each_possible_cpu(i) &#123;</span><br><span class="line">                <span class="type">void</span> *s = (<span class="type">void</span> *)__get_free_pages(GFP_KERNEL, order);</span><br><span class="line"></span><br><span class="line">                per_cpu(irq_stack, i) = (<span class="type">unsigned</span> <span class="type">long</span>)s;</span><br><span class="line">                pr_debug(<span class="string">&quot;CPU%d IRQ stack at 0x%lx - 0x%lx\n&quot;</span>, i,</span><br><span class="line">                        per_cpu(irq_stack, i), per_cpu(irq_stack, i) + IRQ_STACK_SIZE);</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>调用<code>arch_init_irq()</code></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">arch_init_irq</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        clear_csr_ecfg(ECFG0_IM);</span><br><span class="line">        clear_csr_estat(ESTATF_IP);</span><br><span class="line"></span><br><span class="line">        setup_IRQ();</span><br><span class="line"><span class="meta">#<span class="keyword">ifdef</span> CONFIG_SMP</span></span><br><span class="line">        set_vi_handler(EXCCODE_IPI, loongson3_ipi_interrupt);</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br><span class="line">        set_csr_ecfg(ECFGF_IP0 | ECFGF_IP1 | ECFGF_IPI | ECFGF_PC);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>setup_IRQ()</code>：这一步的主要工作就是初始化通过 Device-Tree描述的中断控制器（即“IRQ 芯片”，数据结构用 irq_chip 描述）。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">setup_IRQ</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">        irqchip_init();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://azreallem.github.io/2021/10/31/setup-arch-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://azreallem.github.io/2021/10/31/setup-arch-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/";
+            const title         = "「setup_arch()源码分析」";
+            const excerpt       = `setup_arch()start_kernel()中第一个重要的、体系结构密切相关的函数是 setup_arch()，定义在 arch/loongarch/kernel/setup.c中。
+123456789101112131415...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="../../../../tags/linux/" rel="tag">linux</a>, <a class="tag-none-link" href="../../../../tags/setup-arch/" rel="tag">setup_arch</a>, <a class="tag-none-link" href="../../../../tags/source-code/" rel="tag">source code</a>
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2022-03-29</span>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" 内核启动过程分析" href="/2021/10/30/内核启动过程分析/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" iproute2 中 tc qdisc cbs源码分析" href="/2022/03/29/iproute2-中-tc-qdisc-cbs源码分析/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+        <div id="v-comments" class="post-comments"></div>
+<script>
+    var load_comm = () => {
+        const init = () => {
+            new Valine({
+                el: '#v-comments',
+                appId: 'Y4RT8kYqhRKjWWeQr1r5HNDx-gzGzoHsz',
+                appKey: 'gMt4uIBOkEnhGwihqUj8CEwR',
+                visitor: true,
+                enableQQ: true,
+                path: ''
+            });
+        }
+        if (typeof Valine === 'undefined') {
+            const src = 'https://unpkg.com/valine/dist/Valine.min.js';
+            $.getScript(src, init);
+        } else {
+            init();
+        }
+    };
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://valine.js.org/">comments powered by Valine.</a></noscript>
+
+    
+</article>
+
+        
+
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">路漫漫其修远兮，吾将上下而求索~~~</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="../../../../archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                9
+            </span>
+        </a>
+        <a class="meta-item" href="../../../../categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                4
+            </span>
+        </a>
+        <a class="meta-item" href="../../../../tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#setup-arch"><span class="toc-text">setup_arch()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#cpu-probe"><span class="toc-text">cpu_probe()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#early-init"><span class="toc-text">early_init()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Others"><span class="toc-text">Others</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#arch-mem-init-char-cmdline-p"><span class="toc-text">arch_mem_init(char *cmdline_p)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Others-1"><span class="toc-text">Others</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#page-init"><span class="toc-text">page_init()</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#boot-cpu-trap-init"><span class="toc-text">boot_cpu_trap_init()</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#trap-init"><span class="toc-text">trap_init()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%AD%E6%96%AD%E8%AF%B7%E6%B1%82%E7%9B%B8%E5%85%B3"><span class="toc-text">中断请求相关</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="../../../../categories/%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">内核分析</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="../../../../categories/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">基础概念</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../../../categories/%E6%95%99%E7%A8%8B%E6%96%87%E6%A1%A3/">教程文档</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="../../../../categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="../../../../tags/C/" style="font-size: 0.8em;">C</a> <a href="../../../../tags/FSM/" style="font-size: 0.6em;">FSM</a> <a href="../../../../tags/book/" style="font-size: 0.7em;">book</a> <a href="../../../../tags/hexo/" style="font-size: 0.6em;">hexo</a> <a href="../../../../tags/linux/" style="font-size: 0.8em;">linux</a> <a href="../../../../tags/note/" style="font-size: 0.8em;">note</a> <a href="../../../../tags/setup-arch/" style="font-size: 0.6em;">setup_arch</a> <a href="../../../../tags/source-code/" style="font-size: 0.7em;">source code</a> <a href="../../../../tags/start-kernel/" style="font-size: 0.6em;">start_kernel</a> <a href="../../../../tags/technique/" style="font-size: 0.6em;">technique</a> <a href="../../../../tags/tlbex/" style="font-size: 0.6em;">tlbex</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="../../../../2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"><i class="fa  fa-book"></i> iproute2 中 tc qdisc cbs源码分析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href=""><i class="fa  fa-book"></i> setup_arch()源码分析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="../../30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/"><i class="fa  fa-book"></i> 内核启动过程分析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="../../26/%E7%8A%B6%E6%80%81%E6%9C%BA/"><i class="fa  fa-book"></i> 状态机</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="../../21/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> tlb异常处理</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:961616044@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://github.com/azreallem"><i class="fa fa-github"></i></a></li>
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 Azreallem's Blog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Azreallem.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://unpkg.com/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "../../../../index.html";
+</script>
+
+
+
+
+    <script defer src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+    
+    <script defer src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    <meting-js
+        server="tencent"
+        type="playlist"
+        id="4214690386"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
+
+
+
+    <script defer src="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://unpkg.com/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
+</html>
