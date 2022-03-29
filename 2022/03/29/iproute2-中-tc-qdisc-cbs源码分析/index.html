@@ -171,7 +171,7 @@
             <hr />
             <h2 id="iproute2-用户空间"><a href="#iproute2-用户空间" class="headerlink" title="iproute2 用户空间"></a>iproute2 用户空间</h2><p>Sched 与 iproute2 的通信，是典型的 Linux 内核模块和用户空间的进程之间的通信，这 种通信一般由 Netlink Socket 来提供这种双向的通信连接。这种连接由标准的提供给用户进程的 socket 和提供给内核模块的 API 组成，用户空间的接口简单的说就是创建一个 family 为 AF_NETLINK 的 socket，然后使用这个 socket 进行通信。</p>
 <p><code>rtnl_open()</code> 函数的作用是打开一个AF_NETLINK 的 socket，<code>rtnl_close()</code> 函数的作用是关闭一个AF_NETLINK 的 socket。</p>
-<p><img src="/Untitled.png" alt="Untitled"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled.png" alt="Untitled"></p>
 <p>用户空间通信前的准备：填充 netlink 包；然后把 netlink 包发送到内核空间去。</p>
 <p>tc.c</p>
 <p><img src="/Untitled%201.png" alt="Untitled"></p>
