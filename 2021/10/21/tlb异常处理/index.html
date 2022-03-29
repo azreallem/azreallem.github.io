@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>tlb异常处理 | Azreallem&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="tlb异常相关的简要概述该内核源码为linux5.14中的32位loongarch架构下tlb异常相关部分。下面为相关部分的关键源代码和函数。 mm&#x2F;tlbex-32.S handle_tlb_load handle_tlb_store handle_tlb_modify heandle_tlb_refill kernel&#x2F;traps.c ebase eentry+0x4000">
+<meta property="og:type" content="article">
+<meta property="og:title" content="tlb异常处理">
+<meta property="og:url" content="https://azreallem.github.io/2021/10/21/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/index.html">
+<meta property="og:site_name" content="Azreallem&#39;s Blog">
+<meta property="og:description" content="tlb异常相关的简要概述该内核源码为linux5.14中的32位loongarch架构下tlb异常相关部分。下面为相关部分的关键源代码和函数。 mm&#x2F;tlbex-32.S handle_tlb_load handle_tlb_store handle_tlb_modify heandle_tlb_refill kernel&#x2F;traps.c ebase eentry+0x4000">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%201.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%202.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%203.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%204.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%205.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%206.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%207.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%208.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%209.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2010.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2011.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2012.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2013.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2014.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2012.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2015.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2016.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2017.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2018.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2019.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2020.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2021.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2022.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2023.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2024.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2025.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2026.png">
+<meta property="og:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2027.png">
+<meta property="article:published_time" content="2021-10-21T11:09:17.000Z">
+<meta property="article:modified_time" content="2022-03-29T15:17:28.967Z">
+<meta property="article:author" content="Azreallem">
+<meta property="article:tag" content="linux">
+<meta property="article:tag" content="tlbex">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://azreallem.github.io/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Azreallem's Blog" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Azreallem&#39;s Blog</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">做一个纯粹的人</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://azreallem.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-tlb异常处理" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2021/10/21/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" class="article-date">
+  <time class="dt-published" datetime="2021-10-21T11:09:17.000Z" itemprop="datePublished">2021-10-21</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">内核分析</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      tlb异常处理
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="tlb异常相关的简要概述"><a href="#tlb异常相关的简要概述" class="headerlink" title="tlb异常相关的简要概述"></a>tlb异常相关的简要概述</h2><p>该内核源码为linux5.14中的32位loongarch架构下tlb异常相关部分。下面为相关部分的关键源代码和函数。</p>
+<p>mm&#x2F;tlbex-32.S</p>
+<p>handle_tlb_load</p>
+<p>handle_tlb_store</p>
+<p>handle_tlb_modify</p>
+<p>heandle_tlb_refill</p>
+<p>kernel&#x2F;traps.c</p>
+<p>ebase</p>
+<p>eentry+0x4000</p>
+<p>LOONGARCH_CSR_EENTRY 例外入口地址</p>
+<p>0x200 * 32 &#x3D; 0x4000</p>
+<p>tlbrentr</p>
+<p>vec_size &#x3D; 0x200</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">do_raise_exception_err</span>: <span class="number">14</span> <span class="number">0</span></span><br><span class="line"><span class="attribute">mips_cpu_do_interrupt</span> enter: PC <span class="number">0018</span>c16c EPC <span class="number">0018</span>c024 RFEPC <span class="number">0</span>x000000000018c024 TLB refill exception</span><br><span class="line"><span class="attribute">mips_cpu_do_interrupt</span>: PC a0201000 EPC <span class="number">0</span>x0018c16c cause <span class="number">63</span>(refill)</span><br><span class="line">    <span class="attribute">EXST</span> <span class="number">003</span>f0000 EXCFG <span class="number">0</span>x00071c1c BADVA <span class="number">0</span>x002134d4 ENV_PGDL <span class="number">0</span>xa23e1000  BADI <span class="number">0</span>x00000000  SYS_NUM <span class="number">2381672</span> cpu <span class="number">0</span> asid <span class="number">0</span>x1</span><br><span class="line"><span class="attribute">exception_return</span>: EPC <span class="number">0</span>x18c16c</span><br><span class="line"><span class="attribute">do_raise_exception_err</span>: <span class="number">29</span> <span class="number">0</span></span><br><span class="line"><span class="attribute">mips_cpu_do_interrupt</span> enter: PC <span class="number">0018</span>c16c EPC <span class="number">0018</span>c16c RFEPC <span class="number">0</span>x000000000018c16c TLB load exception</span><br><span class="line"><span class="attribute">mips_cpu_do_interrupt</span>: PC a0214000 EPC <span class="number">0</span>x0018c16c cause <span class="number">1</span></span><br><span class="line">    <span class="attribute">EXST</span> <span class="number">00010000</span> EXCFG <span class="number">0</span>x00071c1c BADVA <span class="number">0</span>x002134d4 ENV_PGDL <span class="number">0</span>xa23e1000  BADI <span class="number">0</span>x00000000  SYS_NUM <span class="number">2381672</span> cpu <span class="number">0</span> asid <span class="number">0</span>x1</span><br><span class="line"><span class="attribute">do_raise_exception_err</span>: <span class="number">65538</span> <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p>tlb_load *(0xa0210000 + 0x200)</p>
+<p>gdb调试:</p>
+<figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">b</span> *<span class="number">0</span>xa0210200</span><br><span class="line"><span class="attribute">x</span> /<span class="number">32</span>i <span class="number">0</span>xa0210200</span><br></pre></td></tr></table></figure>
+
+<p>trap_init</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> __init <span class="title function_">trap_init</span><span class="params">(<span class="type">void</span>)</span></span><br><span class="line">&#123;</span><br><span class="line">  set_handler(EXCCODE_GENERIC * vec_size , except_vec_vi_handler, vec_size);</span><br><span class="line">	...</span><br><span class="line">	set_handler(EXCCODE_TLBL * vec_size, handle_tlb_load, vec_size);</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>kerne&#x2F;geneX.S</p>
+<p>except_vec_vi_handler</p>
+<p>loongarch32&#x2F;irq.c</p>
+<p>plat_irq_dispatch 中断</p>
+<p>0x800 时钟中断</p>
+<p>arch&#x2F;loongarch&#x2F;mm&#x2F;tlb.c</p>
+<p>__update_tlb</p>
+<p>arch&#x2F;loongarch&#x2F;mm&#x2F;fault.c</p>
+<p>do_page_fault</p>
+<hr>
+<h2 id="mm-x2F-tlbex-32-S中handle-tlb-load函数"><a href="#mm-x2F-tlbex-32-S中handle-tlb-load函数" class="headerlink" title="mm&#x2F;tlbex-32.S中handle_tlb_load函数"></a>mm&#x2F;tlbex-32.S中handle_tlb_load函数</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">SYM_FUNC_START(handle_tlb_load)</span><br><span class="line">				 <span class="comment">/* 保存现场 */</span></span><br><span class="line">        csrwr   ra, EXCEPTION_KS2</span><br><span class="line"></span><br><span class="line">				lu12i.w ra, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x10</span></span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_BADV</span><br><span class="line">        bgeu    t0, ra, vmalloc_load</span><br><span class="line">        csrrd   t1, LOONGARCH_CSR_PGD</span><br><span class="line"></span><br><span class="line">vmalloc_done_load:</span><br><span class="line">        <span class="comment">/* Get PGD offset in bytes */</span></span><br><span class="line">        srli.w  t0, t0, <span class="number">0x16</span></span><br><span class="line">        andi    t0, t0, <span class="number">0x3ff</span></span><br><span class="line">        slli.w  t0, t0, <span class="number">0x2</span>       <span class="comment">/* 页内偏移为12位，故t0为PGD OFFSET(也为12bit) */</span></span><br><span class="line">        add.w   t1, t1, t0        <span class="comment">/* PGD基址 + PGD_OFFSET = 该PTE基址 */</span></span><br><span class="line">        ld.w    t1, t1, <span class="number">0</span>         <span class="comment">/* 从t1内存中取出数据(页目录号)放到t1中 */</span>       </span><br><span class="line"></span><br><span class="line">				csrrd   t0, LOONGARCH_CSR_BADV</span><br><span class="line">        srli.w  t0, t0, <span class="number">0xc</span></span><br><span class="line">        andi    t0, t0, <span class="number">0x3ff</span>     <span class="comment">/* 获取虚拟地址中间的PTE10位 */</span></span><br><span class="line">        slli.w  t0, t0, <span class="number">0x2</span>       <span class="comment">/* 获得PTE_OFFSET */</span></span><br><span class="line">        add.w   t0, t0, t1      <span class="comment">/* 该PTE基址 + PTE_OFFSET = 包含物理页号的物理地址*/</span></span><br><span class="line"></span><br><span class="line">        ld.w    t1, t0, <span class="number">0</span>         <span class="comment">/* 由物理页号的物理地址取出Page table bits */</span></span><br><span class="line">        tlbsrch                   <span class="comment">/* 使用ASID和TLBEHI查询TLB */</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* 判断Page table bits的_PAGE_PRESENT是否为0 */</span></span><br><span class="line">				andi    ra, t1, _PAGE_PRESENT</span><br><span class="line">        beq     ra, zero, nopage_tlb_load</span><br><span class="line"></span><br><span class="line">        ori     t1, t1, _PAGE_VALID         <span class="comment">/* 将PTEE中_PAGE_VALID置1 */</span></span><br><span class="line">        st.w    t1, t0, <span class="number">0</span>                   <span class="comment">/* 更新page table bits */</span></span><br><span class="line">        </span><br><span class="line"><span class="comment">/* tlb一次取两页，t0的第3位为0时，0表示偶数物理页，1表示基数物理页 */</span></span><br><span class="line">        ori     t0, t0, <span class="number">0x4</span></span><br><span class="line">        xori    t0, t0, <span class="number">0x4</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* 只要PTEE的7:0位(flag位)和31:11位(PPN)，</span></span><br><span class="line"><span class="comment">*  并且将31:11位(PPN)移到31:8位上(高4位清0)，存入TLBELO0(1)寄存器。（见TLB表项寄存器）</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line">        ld.w    t1, t0, <span class="number">0</span>                   <span class="comment">/* 将t0内存的数据（PTE页表项）存到t1 */</span></span><br><span class="line">        srli.w  ra, t1, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x8</span></span><br><span class="line">        andi    ra, ra, <span class="number">0xff</span></span><br><span class="line">        or      t1, t1, ra</span><br><span class="line">        csrwr   t1, LOONGARCH_CSR_TLBELO0</span><br><span class="line"></span><br><span class="line">        ld.w    t0, t0, <span class="number">0x4</span></span><br><span class="line">        srli.w  ra, t0, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x8</span></span><br><span class="line">        andi    t0, t0, <span class="number">0xff</span></span><br><span class="line">        and.w   t0, t0, ra</span><br><span class="line">        csrwr   t0, LOONGARCH_CSR_TLBELO1</span><br><span class="line"></span><br><span class="line">				tlbwr                               <span class="comment">/* 将TLBELO0/1写入TLB表项 */</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">leave_load:</span><br><span class="line">        csrrd   t0, EXCEPTION_KS0              <span class="comment">/* 恢复现场 */</span></span><br><span class="line">        csrrd   t1, EXCEPTION_KS1</span><br><span class="line">        csrrd   ra, EXCEPTION_KS2</span><br><span class="line">        ertn</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">vmalloc_load:</span><br><span class="line">        la.<span class="built_in">abs</span>  t1, swapper_pg_dir</span><br><span class="line">        b       vmalloc_done_load</span><br><span class="line"></span><br><span class="line">nopage_tlb_load:</span><br><span class="line">        dbar    <span class="number">0</span></span><br><span class="line">        csrrd   ra, EXCEPTION_KS2</span><br><span class="line">        la.<span class="built_in">abs</span>  t0, tlb_do_page_fault_0</span><br><span class="line">        jirl    $r0, t0, <span class="number">0</span></span><br><span class="line"></span><br><span class="line">SYM_FUNC_END(handle_tlb_load)</span><br></pre></td></tr></table></figure>
+
+<p>传入的BADV为0x0022614c。其中PGD为0xa24b7000，*0xa24b7000 &#x3D; 0xa24bc000。<br>PTE基址 &#x3D; PGD基址 + PGD_OFFSET &#x3D; 0xa24bc000 + (0x000(10bits)&lt;&lt;2) &#x3D; 0xa24bc000<br>该PTE基址 + PTE_OFFSET &#x3D; 0xa24bc000 + (0x226(10bits)&lt;&lt;2) &#x3D; 0xa24bc898 &#x3D; 包含物理页号、页状态位的物理地址<br>将(*0xa24bc898)0xff3a09c的page_valid位置1，即改为0xff3a09d，其中0xff3a(高20bits为物理页号)<br>tlb取0xa24bc898、0xa24bc89c两页表项按规则填入TLBLO0和TLBLO1中<br>填入规则：31:12(PPN)→8:27(PPN)，7:0(page状态位)→7:0(page状态位)，最高4位清0</p>
+<h2 id="handle-tlb-load执行过程"><a href="#handle-tlb-load执行过程" class="headerlink" title="handle_tlb_load执行过程"></a>handle_tlb_load执行过程</h2><p>进入tlb_load过程时，首先保存现场(0x1213b8)，即执行csrwr，将r1的地址0x1213b8存到了0x32地址的内存处。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SYM_FUNC_START(handle_tlb_load)</span><br><span class="line">        csrwr   ra, EXCEPTION_KS2</span><br></pre></td></tr></table></figure>
+
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled.png"></p>
+<p>csrrd传入出错虚拟地址(BADV)0x2134d4到r12寄存器，0x2134d4比0xc0000000小，故继续顺序执行。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lu12i.w ra, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x10</span></span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_BADV</span><br><span class="line">        bgeu    t0, ra, vmalloc_load</span><br></pre></td></tr></table></figure>
+
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%201.png"></p>
+<p>将PGD基址0xa23e1000传入r13寄存器，其内存的值为0xa23de000</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">csrrd   t1, LOONGARCH_CSR_PGD</span><br></pre></td></tr></table></figure>
+
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%202.png"></p>
+<p>先获取t0(BADV)0x002134d4的前10bits再偏移2位，得到PGD_OFFSET(0x000)，加上PGD(0xa23e1000)，存到r13寄存器，为0xa23e1000。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">vmalloc_done_load:</span><br><span class="line">        <span class="comment">/* Get PGD offset in bytes */</span></span><br><span class="line">        srli.w  t0, t0, <span class="number">0x16</span></span><br><span class="line">        andi    t0, t0, <span class="number">0x3ff</span></span><br><span class="line">        slli.w  t0, t0, <span class="number">0x2</span></span><br><span class="line">        add.w   t1, t1, t0</span><br></pre></td></tr></table></figure>
+
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%203.png"></p>
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%204.png"></p>
+<p>接着获取t0(0x002134d4)的中间10bits再偏移2位，得到PTE_OFFSET(213&lt;&lt;2 &#x3D; 0x84c)，最后加上t1寄存器内存处的值0xa23de000，得到地址0xa23de84c存到t0寄存器。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">csrrd   t0, LOONGARCH_CSR_BADV</span><br><span class="line">        ld.w    t1, t1, <span class="number">0</span></span><br><span class="line">        srli.w  t0, t0, <span class="number">0xc</span></span><br><span class="line">        andi    t0, t0, <span class="number">0x3ff</span></span><br><span class="line">        slli.w  t0, t0, <span class="number">0x2</span></span><br><span class="line">        add.w   t0, t0, t1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%205.png"></p>
+<p>把r12内存处的值(*0xa23de84c&#x3D; 0)写入r13寄存器，再刷新tlb。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">label_smp_pgtable_load:</span><br><span class="line">        ld.w    t1, t0, <span class="number">0</span></span><br><span class="line">        tlbsrch</span><br></pre></td></tr></table></figure>
+
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%206.png"></p>
+<p>因为_PAGE_PRESENT为0(页不存在)，所以跳转到nopage_tlb_load处，即PC跳转到0xa02102b0处执行。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">andi    ra, t1, _PAGE_PRESENT</span><br><span class="line">        beq     ra, zero, nopage_tlb_load</span><br></pre></td></tr></table></figure>
+
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%207.png"></p>
+<p>接着恢复现场(r1&#x3D;0x1213b8)，跳转到tlb_do_page_fault函数处执行。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">nopage_tlb_load:</span><br><span class="line">        dbar    <span class="number">0</span></span><br><span class="line">        csrrd   ra, EXCEPTION_KS2</span><br><span class="line">        la.<span class="built_in">abs</span>  t0, tlb_do_page_fault_0</span><br><span class="line">        jirl    $r0, t0, <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%208.png"></p>
+<p>第二次tlb_load:</p>
+<p>继续(gdb) c之后，可以看到第二次触发tlb_load的BADV也为0x2134d4。</p>
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%209.png"></p>
+<p>继续(gdb) si调试到PTE+PTE_OFFSET可以得到r12为0x23de84c，此时该内存地址中有值，为0xff2309c，存到r13寄存器。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">vmalloc_done_load:</span><br><span class="line"><span class="comment">/* Get PGD offset in bytes */</span></span><br><span class="line">        srli.w  t0, t0, <span class="number">0x16</span></span><br><span class="line">        andi    t0, t0, <span class="number">0x3ff</span></span><br><span class="line">        slli.w  t0, t0, <span class="number">0x2</span></span><br><span class="line">        add.w   t1, t1, t0</span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_BADV</span><br><span class="line">        ld.w    t1, t1, <span class="number">0</span></span><br><span class="line">        srli.w  t0, t0, <span class="number">0xc</span></span><br><span class="line">        andi    t0, t0, <span class="number">0x3ff</span></span><br><span class="line">        slli.w  t0, t0, <span class="number">0x2</span></span><br><span class="line">        add.w   t0, t0, t1</span><br><span class="line"></span><br><span class="line">label_smp_pgtable_load:</span><br><span class="line">        ld.w    t1, t0, <span class="number">0</span></span><br><span class="line">        tlbsrch</span><br></pre></td></tr></table></figure>
+
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2010.png"></p>
+<p>0xff2309c的_PAGE_PRESENT(第8位，判断该页是否存在)为1，并将_PAGE_VALID(第1位，判断该页是否有效)置1，即0xff2309d，将0xff2309d写回r12寄存器的内存地址处(*0xa23de84c&#x3D;0xff2309d)。注意：该_PAGE_PRESENT、_PAGE_VALID都为页表的软件位，tlb只有硬件位。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">andi    ra, t1, _PAGE_PRESENT</span><br><span class="line">    beq     ra, zero, nopage_tlb_load</span><br><span class="line"></span><br><span class="line">    ori     t1, t1, _PAGE_VALID</span><br><span class="line">    st.w    t1, t0, <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2011.png"></p>
+<p>由于tlb一次存取两页，其中第3位表示奇偶页。故将0xa23de848和0xa23de84c内存地址处的值（包含PPN、页表标志位的地址）按规则存入TLBLO0和TLBLO1中。由于TLBLO0寄存器的31:8位表示PPN，而页表31:12位表示PPN，故需要将该页表*0xa23de848的高20位PPN写入到TLBLO0寄存器的31:8位(其中高4位清0)，低8位标志位写入到TLBLO0寄存器的7:0位。所以TLBO0 &#x3D; ( t1 &gt;&gt;12 &lt;&lt; 8) | (t1 &amp; 0xff)。所以通过csrwr写入寄存器，TLBLO0寄存器按0xff229c写入 。TLBLO1寄存器按0xff239d写入，将旧值写回t0,t1。由于TLBLO0寄存器实际第8位只读恒为0，故第8位写忽略。</p>
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2012.png"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">ori     t0, t0, <span class="number">0x4</span></span><br><span class="line">    xori    t0, t0, <span class="number">0x4</span></span><br><span class="line"></span><br><span class="line">    ld.w    t1, t0, <span class="number">0</span></span><br><span class="line">    srli.w  ra, t1, <span class="number">0xc</span></span><br><span class="line">    slli.w  ra, ra, <span class="number">0x8</span></span><br><span class="line">    andi    t1, t1, <span class="number">0xff</span></span><br><span class="line">    add.w   t1, t1, ra</span><br><span class="line">    csrwr   t1, LOONGARCH_CSR_TLBELO0</span><br><span class="line"></span><br><span class="line">    ld.w    t0, t0, <span class="number">0x4</span></span><br><span class="line">    srli.w  ra, t0, <span class="number">0xc</span></span><br><span class="line">    slli.w  ra, ra, <span class="number">0x8</span></span><br><span class="line">    andi    t0, t0, <span class="number">0xff</span></span><br><span class="line">    add.w   t0, t0, ra</span><br><span class="line">    csrwr   t0, LOONGARCH_CSR_TLBELO1</span><br></pre></td></tr></table></figure>
+
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2013.png"></p>
+<p>csrwr t0, LOONGARCH_CSR_TLBELO1</p>
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2014.png"></p>
+<p>接着恢复现场，从例外处理现场返回。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">tlbwr</span><br><span class="line"></span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_KS0</span><br><span class="line">        csrrd   t1, LOONGARCH_CSR_KS1</span><br><span class="line">        csrrd   ra, EXCEPTION_KS2</span><br><span class="line">        ertn</span><br></pre></td></tr></table></figure>
+
+<p>总结</p>
+<p>BADV: 0x002134d4</p>
+<p>*0xa23de848 &#x3D; 0xff2209c, TLBLO0 &#x3D; ff229c(实际为ff221c，第8位恒为0，其中第1位页有效位为0);</p>
+<p>*0xa23de84c &#x3D; 0xff2309d, TLBLO0 &#x3D; ff239d(实际为ff231d，第8位恒为0，其中第1位页有效位为1);</p>
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2012.png"></p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">do_raise_exception_err: <span class="number">29</span> <span class="number">0</span></span><br><span class="line">mips_cpu_do_interrupt enter: PC <span class="number">0018</span>c16c EPC <span class="number">0018</span>c16c RFEPC <span class="number">0x000000000018c16c</span> TLB load exception</span><br><span class="line">mips_cpu_do_interrupt: PC a0214000 EPC <span class="number">0x0018c16c</span> cause <span class="number">1</span></span><br><span class="line">    EXST <span class="number">00010000</span> EXCFG <span class="number">0x00071c1c</span> BADVA <span class="number">0x002134d4</span> ENV_PGDL <span class="number">0xa23e1000</span>  BADI <span class="number">0x00000000</span>  SYS_NUM <span class="number">2381672</span> cpu <span class="number">0</span> asid <span class="number">0x1</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><h3 id="四种TLB异常"><a href="#四种TLB异常" class="headerlink" title="四种TLB异常"></a>四种TLB异常</h3><p>TLB 异常总共有 4 种：TLB&#x2F;XTLB 重填异常（TLB Refill Exception，意味着 TLB 中没有对应项），TLB 加载无效异常（TLB Load Invalid Exception，意味着读请求、TLB 中有对应项、但对应项无效），TLB 存储无效异常（TLB Store Invalid Exception，意味着写请求、TLB 中有对应项、但对应项无效），TLB 修改异常（TLB Modify Exception，意味着写请求，TLB 中有对应项、也有效、但对应项只读）。TLB&#x2F;XTLB 重填异常有专门的入口向量（向量 0 和向量 1），而其他几种异常使用通用入口向量（向量 3）。</p>
+<h3 id="BADV-出错虚地址"><a href="#BADV-出错虚地址" class="headerlink" title="BADV 出错虚地址"></a>BADV 出错虚地址</h3><p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2015.png"></p>
+<h3 id="虚拟地址结构"><a href="#虚拟地址结构" class="headerlink" title="虚拟地址结构"></a>虚拟地址结构</h3><p>32位系统的页面大小4KB。PGD和PTE占10位，故页表项4B，页目录表4KB，页目录表中每个有效表项对应一个 4KB 页表。</p>
+<p>虚拟地址    10：10：12 （PGD：PTE：PAGE_OFFSET）</p>
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2016.png"></p>
+<h3 id="PGD-全局目录基址"><a href="#PGD-全局目录基址" class="headerlink" title="PGD 全局目录基址"></a>PGD 全局目录基址</h3><p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2017.png"></p>
+<p>PGDL+PGDOFFSET &#x3D; BADV对应PGD物理地址</p>
+<h3 id="TLBSRCH"><a href="#TLBSRCH" class="headerlink" title="TLBSRCH"></a>TLBSRCH</h3><p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2018.png"></p>
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2019.png"></p>
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2020.png"></p>
+<h3 id="TLBELO0-1"><a href="#TLBELO0-1" class="headerlink" title="TLBELO0,1"></a>TLBELO0,1</h3><p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2021.png"></p>
+<h3 id="ld-w和st-w指令"><a href="#ld-w和st-w指令" class="headerlink" title="ld.w和st.w指令"></a>ld.w和st.w指令</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ld.w   rd, rj, <span class="number">0</span>   <span class="comment">/* 将rj内存中的数据装入到rd寄存器 */</span></span><br><span class="line">st.w   rd, rj, <span class="number">0</span>   <span class="comment">/* 将rd寄存器中的数据存入rj内存 */</span></span><br></pre></td></tr></table></figure>
+
+<p>Load 用于把内存中的数据装载到寄存器中。 rd &#x3D; *rj<br>Store用于把寄存器中的数据存入内存。 *rj &#x3D; rd</p>
+<h3 id="DBAR-栅障指令"><a href="#DBAR-栅障指令" class="headerlink" title="DBAR 栅障指令"></a>DBAR 栅障指令</h3><p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2022.png"></p>
+<h3 id="ERTN"><a href="#ERTN" class="headerlink" title="ERTN"></a>ERTN</h3><p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2023.png"></p>
+<h3 id="TLBFILL"><a href="#TLBFILL" class="headerlink" title="TLBFILL"></a>TLBFILL</h3><p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2024.png"></p>
+<h3 id="Page-table-bits"><a href="#Page-table-bits" class="headerlink" title="Page table bits"></a>Page table bits</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Page table bits */</span></span><br><span class="line">......</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _PAGE_VALID_SHIFT       0</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _PAGE_DIRTY_SHIFT       1</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _PAGE_PLV_SHIFT         2  <span class="comment">/* 2~3, two bits */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _CACHE_SHIFT            4  <span class="comment">/* 4~5, two bits */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _PAGE_GLOBAL_SHIFT      6</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _PAGE_HUGE_SHIFT        6  <span class="comment">/* HUGE is a PMD bit */</span>  </span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _PAGE_PRESENT_SHIFT     7</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _PAGE_WRITE_SHIFT       8</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _PAGE_PROTNONE_SHIFT    9</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _PAGE_SPECIAL_SHIFT     10</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _PAGE_HGLOBAL_SHIFT     12 <span class="comment">/* HGlobal is a PMD bit */</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _PAGE_PFN_SHIFT         12</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _PAGE_PFN_END_SHIFT     31</span></span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2025.png"></p>
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2026.png"></p>
+<p>虚拟地址划分：最低的2GB（USEG）既缓存又分页；随后的512MB（KSEG0）缓存但不分页，对应物理地址的低 512MB（虚拟地址去掉高三位即为物理地址）；接下来的512MB（KSEG1）既不缓存又不分页，同样对应物理地址的低 512MB（虚拟地址去掉高三位即为物理地址）；最后的 1GB（KSEG2）对应物理既缓存又分页。</p>
+<p><img src="/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86%20ee7dfee507184975b2efae6c21ce9491/Untitled%2027.png"></p>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><h3 id="tlb-load"><a href="#tlb-load" class="headerlink" title="tlb_load"></a>tlb_load</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">SYM_FUNC_START(handle_tlb_store)</span><br><span class="line">        csrwr   ra, EXCEPTION_KS2</span><br><span class="line"></span><br><span class="line">        lu12i.w ra, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x10</span></span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_BADV</span><br><span class="line">        bgeu    t0, ra, vmalloc_store</span><br><span class="line"></span><br><span class="line">        csrrd   t1, LOONGARCH_CSR_PGD</span><br><span class="line"></span><br><span class="line">vmalloc_done_store:</span><br><span class="line">        <span class="comment">/* Get PGD offset in bytes */</span></span><br><span class="line">        srli.w  t0, t0, <span class="number">0x16</span></span><br><span class="line">        andi    t0, t0, <span class="number">0x3ff</span></span><br><span class="line">        slli.w  t0, t0, <span class="number">2</span></span><br><span class="line">        add.w   t1, t1, t0</span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_BADV</span><br><span class="line">        ld.w    t1, t1, <span class="number">0</span></span><br><span class="line">        srli.w  t0, t0, <span class="number">0xc</span></span><br><span class="line">        andi    t0, t0, <span class="number">0x3ff</span></span><br><span class="line">        slli.w  t0, t0, <span class="number">0x2</span></span><br><span class="line">        add.w   t1, t1, t0</span><br><span class="line"></span><br><span class="line">label_smp_pgtable_store:</span><br><span class="line">        ld.w    t0, t1, <span class="number">0</span></span><br><span class="line">        tlbsrch</span><br><span class="line"></span><br><span class="line">        srli.w  ra, t0, _PAGE_PRESENT_SHIFT</span><br><span class="line">        andi    ra, ra, ((_PAGE_PRESENT | _PAGE_WRITE) &gt;&gt; _PAGE_PRESENT_SHIFT)</span><br><span class="line">        xori    ra, ra, ((_PAGE_PRESENT | _PAGE_WRITE) &gt;&gt; _PAGE_PRESENT_SHIFT)</span><br><span class="line">        bne     ra, $r0, nopage_tlb_store</span><br><span class="line"></span><br><span class="line">				ori     t0, t0, (_PAGE_VALID | _PAGE_DIRTY)</span><br><span class="line">        st.w    t0, t1, <span class="number">0</span></span><br><span class="line"><span class="comment">//      beq     t0, $r0, label_smp_pgtable_store</span></span><br><span class="line"></span><br><span class="line">        ori     t1, t1, <span class="number">4</span></span><br><span class="line">        xori    t1, t1, <span class="number">4</span></span><br><span class="line"></span><br><span class="line">        ld.w    t0, t1, <span class="number">0</span></span><br><span class="line">        srli.w  ra, t0, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x8</span></span><br><span class="line">        andi    t0, t0, <span class="number">0xff</span></span><br><span class="line">        add.w   t0, t0, ra</span><br><span class="line">        csrwr   t0, LOONGARCH_CSR_TLBELO0</span><br><span class="line"></span><br><span class="line">        ld.w    t1, t1, <span class="number">4</span></span><br><span class="line">        srli.w  ra, t1, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x8</span></span><br><span class="line">        andi    t1, t1, <span class="number">0xff</span></span><br><span class="line">        add.w   t1, t1, ra</span><br><span class="line">        csrwr   t1, LOONGARCH_CSR_TLBELO1</span><br><span class="line"></span><br><span class="line">        tlbwr</span><br><span class="line"></span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_KS0</span><br><span class="line">        csrrd   t1, LOONGARCH_CSR_KS1</span><br><span class="line">        csrrd   ra, EXCEPTION_KS2</span><br><span class="line">        ertn</span><br><span class="line"></span><br><span class="line">vmalloc_store:</span><br><span class="line">        la.<span class="built_in">abs</span>  t1, swapper_pg_dir</span><br><span class="line">        b       vmalloc_done_store</span><br><span class="line"></span><br><span class="line">nopage_tlb_store:</span><br><span class="line">        dbar    <span class="number">0</span></span><br><span class="line">        csrrd   ra, EXCEPTION_KS2</span><br><span class="line">        la.<span class="built_in">abs</span>  t0, tlb_do_page_fault_1</span><br><span class="line">        jirl    $r0, t0, <span class="number">0</span></span><br><span class="line"></span><br><span class="line">SYM_FUNC_END(handle_tlb_store)</span><br></pre></td></tr></table></figure>
+
+<h3 id="tlb-modify"><a href="#tlb-modify" class="headerlink" title="tlb_modify"></a>tlb_modify</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">SYM_FUNC_START(handle_tlb_modify)</span><br><span class="line">        csrwr   ra, EXCEPTION_KS2</span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * The vmalloc handling is not in the hotpath.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        lu12i.w ra, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x10</span></span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_BADV</span><br><span class="line">        bgeu    t0, ra, vmalloc_modify</span><br><span class="line"></span><br><span class="line">        csrrd   t1, LOONGARCH_CSR_PGD</span><br><span class="line"></span><br><span class="line">vmalloc_done_modify:</span><br><span class="line">        <span class="comment">/* Get PGD offset in bytes */</span></span><br><span class="line">        srli.w  t0, t0, <span class="number">0x16</span></span><br><span class="line">        andi    t0, t0, <span class="number">0x3ff</span></span><br><span class="line">        slli.w  t0, t0, <span class="number">2</span></span><br><span class="line">        add.w   t1, t1, t0</span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_BADV</span><br><span class="line">        ld.w    t1, t1, <span class="number">0</span></span><br><span class="line">        srli.w  t0, t0, <span class="number">0xc</span></span><br><span class="line">        andi    t0, t0, <span class="number">0x3ff</span></span><br><span class="line">        slli.w  t0, t0, <span class="number">0x2</span></span><br><span class="line">        add.w   t1, t1, t0</span><br><span class="line"></span><br><span class="line">label_smp_pgtable_modify:</span><br><span class="line">        ld.w    t0, t1, <span class="number">0</span></span><br><span class="line">        tlbsrch</span><br><span class="line"></span><br><span class="line">        srli.w  ra, t0, _PAGE_WRITE_SHIFT</span><br><span class="line">        andi    ra, ra, <span class="number">1</span></span><br><span class="line">        beq     ra, $r0, nopage_tlb_modify</span><br><span class="line"></span><br><span class="line">        ori     t0, t0, (_PAGE_VALID | _PAGE_DIRTY)</span><br><span class="line">        st.w    t0, t1, <span class="number">0</span></span><br><span class="line"><span class="comment">//      beq     t0, $r0, label_smp_pgtable_modify</span></span><br><span class="line"></span><br><span class="line">        ori     t1, t1, <span class="number">4</span></span><br><span class="line">        xori    t1, t1, <span class="number">4</span></span><br><span class="line"></span><br><span class="line">        ld.w    t0, t1, <span class="number">0</span></span><br><span class="line">        srli.w  ra, t0, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x8</span></span><br><span class="line">        andi    t0, t0, <span class="number">0xff</span></span><br><span class="line">        add.w   t0, t0, ra</span><br><span class="line">        csrwr   t0, LOONGARCH_CSR_TLBELO0</span><br><span class="line"></span><br><span class="line">        ld.w    t1, t1, <span class="number">0x4</span></span><br><span class="line">        srli.w  ra, t1, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x8</span></span><br><span class="line">        andi    t1, t1, <span class="number">0xff</span></span><br><span class="line">        add.w   t1, t1, ra</span><br><span class="line">        csrwr   t1, LOONGARCH_CSR_TLBELO1</span><br><span class="line"></span><br><span class="line">        tlbwr</span><br><span class="line"></span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_KS0</span><br><span class="line">        csrrd   t1, LOONGARCH_CSR_KS1</span><br><span class="line">        csrrd   ra, EXCEPTION_KS2</span><br><span class="line">        ertn</span><br><span class="line"></span><br><span class="line">vmalloc_modify:</span><br><span class="line">        la.<span class="built_in">abs</span>  t1, swapper_pg_dir</span><br><span class="line">        b       vmalloc_done_modify</span><br><span class="line"></span><br><span class="line">nopage_tlb_modify:</span><br><span class="line">        dbar    <span class="number">0</span></span><br><span class="line">        csrrd   ra, EXCEPTION_KS2</span><br><span class="line">        la.<span class="built_in">abs</span>  t0, tlb_do_page_fault_1</span><br><span class="line">        jirl    $r0, t0, <span class="number">0</span></span><br><span class="line"></span><br><span class="line">SYM_FUNC_END(handle_tlb_modify)</span><br></pre></td></tr></table></figure>
+
+<h3 id="tlb-refill"><a href="#tlb-refill" class="headerlink" title="tlb_refill"></a>tlb_refill</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">SYM_FUNC_START(handle_tlb_refill)</span><br><span class="line">        csrwr   t0, LOONGARCH_CSR_KS0</span><br><span class="line">        csrwr   t1, LOONGARCH_CSR_KS1</span><br><span class="line">        csrwr   ra, EXCEPTION_KS2</span><br><span class="line"></span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_PGD</span><br><span class="line">        csrrd   t1, LOONGARCH_CSR_BADV</span><br><span class="line">        srli.w  t1, t1, <span class="number">0x16</span></span><br><span class="line">        slli.w  t1, t1, <span class="number">0x2</span></span><br><span class="line">        add.w   t0, t0, t1</span><br><span class="line">        ld.w    t0, t0, <span class="number">0</span></span><br><span class="line"></span><br><span class="line">        csrrd   t1, LOONGARCH_CSR_BADV</span><br><span class="line">        srli.w  t1, t1, <span class="number">0xa</span></span><br><span class="line">        andi    t1, t1, <span class="number">0xff8</span></span><br><span class="line">        add.w   t0, t0, t1</span><br><span class="line"></span><br><span class="line">        ld.w    t1, t0, <span class="number">0</span></span><br><span class="line">        srli.w  ra, t1, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x8</span></span><br><span class="line">        andi    t1, t1, <span class="number">0xff</span></span><br><span class="line">        add.w   t1, t1, ra</span><br><span class="line">        csrwr   t1, LOONGARCH_CSR_TLBELO0</span><br><span class="line"></span><br><span class="line">        ld.w    t1, t0, <span class="number">0x4</span></span><br><span class="line">        srli.w  ra, t1, <span class="number">0xc</span></span><br><span class="line">        slli.w  ra, ra, <span class="number">0x8</span></span><br><span class="line">        andi    t1, t1, <span class="number">0xff</span></span><br><span class="line">				add.w   t1, t1, ra</span><br><span class="line">        csrwr   t1, LOONGARCH_CSR_TLBELO1</span><br><span class="line"></span><br><span class="line">        tlbfill</span><br><span class="line">        csrrd   t0, LOONGARCH_CSR_KS0</span><br><span class="line">        csrrd   t1, LOONGARCH_CSR_KS1</span><br><span class="line">        csrrd   ra, EXCEPTION_KS2</span><br><span class="line">        ertn</span><br><span class="line"><span class="title function_">SYM_FUNC_END</span><span class="params">(handle_tlb_refill)</span></span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://azreallem.github.io/2021/10/21/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" data-id="cl1ccwd0w0006ec21cssn1c06" data-title="tlb异常处理" class="article-share-link">分享</a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/tlbex/" rel="tag">tlbex</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2021/10/26/%E7%8A%B6%E6%80%81%E6%9C%BA/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">前一篇</strong>
+      <div class="article-nav-title">
+        
+          状态机
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2021/07/30/EOF/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">后一篇</strong>
+      <div class="article-nav-title">EOF</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">内核分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">基础概念</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B%E6%96%87%E6%A1%A3/">教程文档</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FSM/" rel="tag">FSM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/" rel="tag">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/" rel="tag">note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/setup-arch/" rel="tag">setup_arch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source-code/" rel="tag">source code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start-kernel/" rel="tag">start_kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/technique/" rel="tag">technique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tlbex/" rel="tag">tlbex</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/C/" style="font-size: 15px;">C</a> <a href="/tags/FSM/" style="font-size: 10px;">FSM</a> <a href="/tags/book/" style="font-size: 10px;">book</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/setup-arch/" style="font-size: 10px;">setup_arch</a> <a href="/tags/source-code/" style="font-size: 15px;">source code</a> <a href="/tags/start-kernel/" style="font-size: 10px;">start_kernel</a> <a href="/tags/technique/" style="font-size: 10px;">technique</a> <a href="/tags/tlbex/" style="font-size: 10px;">tlbex</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2021/10/31/setup-arch-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">setup_arch()源码分析</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">内核启动过程分析</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/26/%E7%8A%B6%E6%80%81%E6%9C%BA/">状态机</a>
+          </li>
+        
+          <li>
+            <a href="/2021/10/21/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">tlb异常处理</a>
+          </li>
+        
+          <li>
+            <a href="/2021/07/30/EOF/">EOF</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 Azreallem<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
