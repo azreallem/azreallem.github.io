@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
   <meta charset="utf-8">
+  <link rel="icon" href="/images/cake.webp">
+  <title>状态机 | Azreallem's Blog</title>
+  <meta name="author" content="Azreallem" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
   
+    <meta name="keywords" content="FSM" />
   
-  <title>状态机 | Azreallem&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="什么是状态机？状态机的全称是有限状态自动机，是现实事物运行规则抽象而成的一个数学模型。给定一个状态机，同时给定它的当前状态以及输入，那么输出状态时可以明确的运算出来的。 状态机四大概念下面来给出状态机的四大概念。  第一个是 State ，状态。一个状态机至少要包含两个状态。例如上面自动门的例子，有 open 和 closed 两个状态。 第二个是 Event ，事件。事件就是执行某个操作的触发条">
 <meta property="og:type" content="article">
 <meta property="og:title" content="状态机">
@@ -13,98 +22,152 @@
 <meta property="og:site_name" content="Azreallem&#39;s Blog">
 <meta property="og:description" content="什么是状态机？状态机的全称是有限状态自动机，是现实事物运行规则抽象而成的一个数学模型。给定一个状态机，同时给定它的当前状态以及输入，那么输出状态时可以明确的运算出来的。 状态机四大概念下面来给出状态机的四大概念。  第一个是 State ，状态。一个状态机至少要包含两个状态。例如上面自动门的例子，有 open 和 closed 两个状态。 第二个是 Event ，事件。事件就是执行某个操作的触发条">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://azreallem.github.io/images/cake.webp">
 <meta property="article:published_time" content="2021-10-26T04:12:13.000Z">
 <meta property="article:modified_time" content="2022-03-29T15:17:28.971Z">
 <meta property="article:author" content="Azreallem">
 <meta property="article:tag" content="FSM">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://azreallem.github.io/images/cake.webp">
+<meta name="twitter:site" content="@null">
   
-    <link rel="alternate" href="/atom.xml" title="Azreallem's Blog" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
+  <!-- 站点验证相关 -->
   
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://unpkg.com/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
   
 <meta name="generator" content="Hexo 6.1.0"></head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Azreallem&#39;s Blog</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">做一个纯粹的人</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://azreallem.github.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
 
-      <div class="outer">
-        <section id="main"><article id="post-状态机" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/10/26/%E7%8A%B6%E6%80%81%E6%9C%BA/" class="article-date">
-  <time class="dt-published" datetime="2021-10-26T04:12:13.000Z" itemprop="datePublished">2021-10-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">基础概念</a>
-  </div>
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-archive"></i>档案馆</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-mars-double"></i>朋友们</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/about/"><i class="fa fa-rocket"></i>关于我</a></li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Azreallem&#39;s Blog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Azreallem&#39;s Blog</h2> <br />
+                        <span>做一个纯粹的人</span>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
         
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      状态机
-    </h1>
-  
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="什么是状态机？"><a href="#什么是状态机？" class="headerlink" title="什么是状态机？"></a>什么是状态机？</h1><p>状态机的全称是有限状态自动机，是现实事物运行规则抽象而成的一个数学模型。给定一个状态机，同时给定它的当前状态以及输入，那么输出状态时可以明确的运算出来的。</p>
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">状态机</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2021-10-26</li>
+                <li><i class="fa fa-user"></i> 作者 Azreallem</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        905
+                    
+                    字
+                </li>
+                
+                    <li id="/2021/10/26/%E7%8A%B6%E6%80%81%E6%9C%BA/" class="leancloud_visitors" data-flag-title="状态机">
+                        <i class="fa fa-eye"></i>
+                        <span class="leancloud-visitors-count"> </span> 次阅读
+                    </li>
+                    
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1648567048971"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%8A%B6%E6%80%81%E6%9C%BA%EF%BC%9F"><span class="toc-number">1.</span> <span class="toc-text">什么是状态机？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA%E5%9B%9B%E5%A4%A7%E6%A6%82%E5%BF%B5"><span class="toc-number">1.1.</span> <span class="toc-text">状态机四大概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8"><span class="toc-number">1.2.</span> <span class="toc-text">应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-number">1.3.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <h1 id="什么是状态机？"><a href="#什么是状态机？" class="headerlink" title="什么是状态机？"></a>什么是状态机？</h1><p>状态机的全称是有限状态自动机，是现实事物运行规则抽象而成的一个数学模型。给定一个状态机，同时给定它的当前状态以及输入，那么输出状态时可以明确的运算出来的。</p>
 <h2 id="状态机四大概念"><a href="#状态机四大概念" class="headerlink" title="状态机四大概念"></a>状态机四大概念</h2><p>下面来给出状态机的四大概念。</p>
 <ul>
 <li>第一个是 State ，状态。一个状态机至少要包含两个状态。例如上面自动门的例子，有 open 和 closed 两个状态。</li>
@@ -117,157 +180,377 @@
 <p>总之，状态机应用范围很广，这里就不展开了。插一句，跟状态机类似的概念还有图灵机，图灵机就是计算机底层采用的计算模型。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这就是对状态机概念的一个通俗的简述了。总结一下，状态机不是实际机器设备，而是一个数学模型，通常体现为一个状态转换图。涉及到的相关概念是 State 状态，Event 事件，Action 动作，Transition 转换。状态机是计算机科学的重要基础概念之一，也可以说是一种总结归纳问题的思想，应用范围非常广泛。</p>
 
-      
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
     </div>
-    <footer class="article-footer">
-      <a data-url="https://azreallem.github.io/2021/10/26/%E7%8A%B6%E6%80%81%E6%9C%BA/" data-id="cl1ccwd27001cec215mgi9uv8" data-title="状态机" class="article-share-link">分享</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/FSM/" rel="tag">FSM</a></li></ul>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://azreallem.github.io/2021/10/26/%E7%8A%B6%E6%80%81%E6%9C%BA/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://azreallem.github.io/2021/10/26/%E7%8A%B6%E6%80%81%E6%9C%BA/";
+            const title         = "「状态机」";
+            const excerpt       = `什么是状态机？状态机的全称是有限状态自动机，是现实事物运行规则抽象而成的一个数学模型。给定一个状态机，同时给定它的当前状态以及输入，那么输出状态时可以明确的运算出来的。
+状态机四大概念下面来给出状态机的四大概念。
 
-    </footer>
-  </div>
-  
+第一个是 Stat...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/FSM/" rel="tag">FSM</a>
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2022-03-29</span>
+                </div>
+            </div>
+        </footer>
+    </div>
     
-<nav id="article-nav">
-  
-    <a href="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">前一篇</strong>
-      <div class="article-nav-title">
-        
-          内核启动过程分析
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2021/10/21/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">tlb异常处理</div>
-    </a>
-  
-</nav>
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" tlb异常处理" href="/2021/10/21/tlb异常处理/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 内核启动过程分析" href="/2021/10/30/内核启动过程分析/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+        <div id="v-comments" class="post-comments"></div>
+<script>
+    var load_comm = () => {
+        const init = () => {
+            new Valine({
+                el: '#v-comments',
+                appId: 'Y4RT8kYqhRKjWWeQr1r5HNDx-gzGzoHsz',
+                appKey: 'gMt4uIBOkEnhGwihqUj8CEwR',
+                visitor: true,
+                enableQQ: true,
+                path: '/2021/10/26/%E7%8A%B6%E6%80%81%E6%9C%BA/'
+            });
+        }
+        if (typeof Valine === 'undefined') {
+            const src = 'https://unpkg.com/valine/dist/Valine.min.js';
+            $.getScript(src, init);
+        } else {
+            init();
+        }
+    };
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://valine.js.org/">comments powered by Valine.</a></noscript>
 
-  
+    
 </article>
 
+        
 
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">路漫漫其修远兮，吾将上下而求索~~~</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                8
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                4
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E7%8A%B6%E6%80%81%E6%9C%BA%EF%BC%9F"><span class="toc-text">什么是状态机？</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%8A%B6%E6%80%81%E6%9C%BA%E5%9B%9B%E5%A4%A7%E6%A6%82%E5%BF%B5"><span class="toc-text">状态机四大概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%94%E7%94%A8"><span class="toc-text">应用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">内核分析</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">基础概念</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B%E6%96%87%E6%A1%A3/">教程文档</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">2</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/C/" style="font-size: 0.67em;">C</a> <a href="/tags/FSM/" style="font-size: 0.6em;">FSM</a> <a href="/tags/book/" style="font-size: 0.6em;">book</a> <a href="/tags/hexo/" style="font-size: 0.6em;">hexo</a> <a href="/tags/linux/" style="font-size: 0.8em;">linux</a> <a href="/tags/note/" style="font-size: 0.67em;">note</a> <a href="/tags/setup-arch/" style="font-size: 0.67em;">setup_arch</a> <a href="/tags/source-code/" style="font-size: 0.73em;">source code</a> <a href="/tags/start-kernel/" style="font-size: 0.6em;">start_kernel</a> <a href="/tags/technique/" style="font-size: 0.6em;">technique</a> <a href="/tags/tlbex/" style="font-size: 0.6em;">tlbex</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"><i class="fa  fa-book"></i> iproute2 中 tc qdisc cbs源码分析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/10/31/setup-arch-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"><i class="fa  fa-book"></i> setup_arch()源码分析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/"><i class="fa  fa-book"></i> 内核启动过程分析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/10/26/%E7%8A%B6%E6%80%81%E6%9C%BA/"><i class="fa  fa-book"></i> 状态机</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/10/21/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> tlb异常处理</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
 </section>
         
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">分类</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">内核分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">基础概念</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B%E6%96%87%E6%A1%A3/">教程文档</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a></li></ul>
+        </div>
     </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FSM/" rel="tag">FSM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/" rel="tag">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/" rel="tag">note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/setup-arch/" rel="tag">setup_arch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source-code/" rel="tag">source code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start-kernel/" rel="tag">start_kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/technique/" rel="tag">technique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tlbex/" rel="tag">tlbex</a></li></ul>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:961616044@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://github.com/azreallem"><i class="fa fa-github"></i></a></li>
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 Azreallem's Blog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Azreallem.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
     </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签云</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 15px;">C</a> <a href="/tags/FSM/" style="font-size: 10px;">FSM</a> <a href="/tags/book/" style="font-size: 10px;">book</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/setup-arch/" style="font-size: 10px;">setup_arch</a> <a href="/tags/source-code/" style="font-size: 15px;">source code</a> <a href="/tags/start-kernel/" style="font-size: 10px;">start_kernel</a> <a href="/tags/technique/" style="font-size: 10px;">technique</a> <a href="/tags/tlbex/" style="font-size: 10px;">tlbex</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2021/10/31/setup-arch-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">setup_arch()源码分析</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">内核启动过程分析</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/26/%E7%8A%B6%E6%80%81%E6%9C%BA/">状态机</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/21/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">tlb异常处理</a>
-          </li>
-        
-          <li>
-            <a href="/2021/07/30/EOF/">EOF</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2022 Azreallem<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
 </footer>
+</div>
+</div>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+        <script defer src="https://unpkg.com/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+
+
+    <script defer src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
     
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
+    <script defer src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    <meting-js
+        server="tencent"
+        type="playlist"
+        id="4214690386"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
 
 
 
+    <script defer src="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://unpkg.com/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
 
 
-  </div>
-</body>
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
 </html>

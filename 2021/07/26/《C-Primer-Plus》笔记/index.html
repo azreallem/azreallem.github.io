@@ -1,11 +1,20 @@
 <!DOCTYPE html>
-<html>
-<head>
+<html lang="zh-CN">
+    <head>
+  <!-- 元数据 -->
   <meta charset="utf-8">
+  <link rel="icon" href="/images/cake.webp">
+  <title>《C Primer Plus》笔记 | Azreallem's Blog</title>
+  <meta name="author" content="Azreallem" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
   
+    <meta name="keywords" content="C, book, note" />
   
-  <title>《C Primer Plus》笔记 | Azreallem&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="摘要：从2021&#x2F;07&#x2F;19到2021&#x2F;07&#x2F;26阅读完毕 参考： C在线工具 C Primer Plus 第6版中文版.pdf  基础内容#include#include这行代码是一条C预处理器指令（preprocessor  directive）。通常，C编译器在编译前会对源代码做一些准备工作，即预处理（preprocessing）。 #include">
 <meta property="og:type" content="article">
 <meta property="og:title" content="《C Primer Plus》笔记">
@@ -13,29 +22,7 @@
 <meta property="og:site_name" content="Azreallem&#39;s Blog">
 <meta property="og:description" content="摘要：从2021&#x2F;07&#x2F;19到2021&#x2F;07&#x2F;26阅读完毕 参考： C在线工具 C Primer Plus 第6版中文版.pdf  基础内容#include#include这行代码是一条C预处理器指令（preprocessor  directive）。通常，C编译器在编译前会对源代码做一些准备工作，即预处理（preprocessing）。 #include">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%201.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%202.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%203.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%204.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%205.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%206.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%207.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%208.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%209.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2010.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2011.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2012.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2013.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2014.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2015.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2016.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2017.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2018.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2019.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2020.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2021.png">
-<meta property="og:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2022.png">
+<meta property="og:image" content="https://azreallem.github.io/images/cake.webp">
 <meta property="article:published_time" content="2021-07-26T04:51:22.000Z">
 <meta property="article:modified_time" content="2022-03-29T15:17:28.971Z">
 <meta property="article:author" content="Azreallem">
@@ -43,94 +30,146 @@
 <meta property="article:tag" content="C">
 <meta property="article:tag" content="book">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://azreallem.github.io/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled.png">
+<meta name="twitter:image" content="https://azreallem.github.io/images/cake.webp">
+<meta name="twitter:site" content="@null">
   
-    <link rel="alternate" href="/atom.xml" title="Azreallem's Blog" type="application/atom+xml">
-  
-  
-    <link rel="shortcut icon" href="/favicon.png">
-  
+  <!-- 站点验证相关 -->
   
     
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
-
-  
-  
-<link rel="stylesheet" href="/css/style.css">
-
-  
     
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
-
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  
+    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+  
+  
+  <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
+  
+  
+    <link rel="stylesheet" href="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"></script>
+  
+    <script src="https://unpkg.com/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
   
 <meta name="generator" content="Hexo 6.1.0"></head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Azreallem&#39;s Blog</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">做一个纯粹的人</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS 订阅"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="搜索"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="搜索"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://azreallem.github.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
 
-      <div class="outer">
-        <section id="main"><article id="post-《C-Primer-Plus》笔记" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2021/07/26/%E3%80%8AC-Primer-Plus%E3%80%8B%E7%AC%94%E8%AE%B0/" class="article-date">
-  <time class="dt-published" datetime="2021-07-26T04:51:22.000Z" itemprop="datePublished">2021-07-26</time>
-</a>
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a>
-  </div>
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    
+                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/archives/"><i class="fa fa-archive"></i>档案馆</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/friends/"><i class="fa fa-mars-double"></i>朋友们</a></li>
+                                    
+                                
+                                    
+                                        <li><a href="/about/"><i class="fa fa-rocket"></i>关于我</a></li>
+                                    
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">Azreallem&#39;s Blog</a></div>
+                    <div class="nav-toggle">
+                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>Azreallem&#39;s Blog</h2> <br />
+                        <span>做一个纯粹的人</span>
+                    </a>
+                </div>
+            </div>
+        </div>
 
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+                    
+
         
-  
-    <h1 class="p-name article-title" itemprop="headline name">
-      《C Primer Plus》笔记
-    </h1>
-  
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <p>摘要：从2021&#x2F;07&#x2F;19到2021&#x2F;07&#x2F;26阅读完毕</p>
+            <section class="col-md-8">
+
+        
+
+            <article>
+    <div class="kratos-hentry kratos-post-inner clearfix">
+        <header class="kratos-entry-header">
+            
+                <h1 class="kratos-entry-title text-center">《C Primer Plus》笔记</h1>
+            
+            
+            <ul class="kratos-post-meta text-center">
+                <li><i class="fa fa-calendar"></i> 2021-07-26</li>
+                <li><i class="fa fa-user"></i> 作者 Azreallem</li>
+                <li>
+                    <i class="fa fa-edit"></i> 
+                    
+                    
+                        ~67.97K
+                    
+                    字
+                </li>
+                
+                    <li id="/2021/07/26/%E3%80%8AC-Primer-Plus%E3%80%8B%E7%AC%94%E8%AE%B0/" class="leancloud_visitors" data-flag-title="《C Primer Plus》笔记">
+                        <i class="fa fa-eye"></i>
+                        <span class="leancloud-visitors-count"> </span> 次阅读
+                    </li>
+                    
+                
+            </ul>
+        </header>
+        <div class="kratos-post-content">
+            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
+                <div class="icon"><i class="fa fa-warning"></i></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1648567048971"></time> 前，其中的内容可能需要更新。</p></div>
+            </div>
+            
+                <div class="kratos-post-inner-toc">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9"><span class="toc-number">1.</span> <span class="toc-text">基础内容</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#include"><span class="toc-number">1.1.</span> <span class="toc-text">#include</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">1.2.</span> <span class="toc-text">字符和字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sizeof-%E3%80%81size-t%E5%92%8C-scanf"><span class="toc-number">1.3.</span> <span class="toc-text">sizeof() 、size_t和 scanf()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="toc-number">1.4.</span> <span class="toc-text">字符缓冲区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91%E8%BE%93%E5%85%A5-%E3%80%81-%E9%87%8D%E5%AE%9A%E5%90%91%E8%BE%93%E5%87%BA"><span class="toc-number">1.5.</span> <span class="toc-text">重定向输入 、 重定向输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">1.6.</span> <span class="toc-text">指针和运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%9A-amp"><span class="toc-number">1.6.1.</span> <span class="toc-text">地址运算符：&amp;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-number">1.6.2.</span> <span class="toc-text">指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%B4%E6%8E%A5%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%9A"><span class="toc-number">1.6.3.</span> <span class="toc-text">间接运算符：*</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-number">1.7.</span> <span class="toc-text">指针和数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%BD%A2%E5%BC%8F%E5%8F%82%E6%95%B0%E4%BD%BF%E7%94%A8const"><span class="toc-number">1.8.</span> <span class="toc-text">对形式参数使用const</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="toc-number">1.9.</span> <span class="toc-text">多维数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="toc-number">1.10.</span> <span class="toc-text">命令行参数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">2.</span> <span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-number">2.1.</span> <span class="toc-text">什么是字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E6%8C%87%E9%92%88%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.2.</span> <span class="toc-text">字符串中数组和指针的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%85%A5%E5%AD%97%E7%AC%A6%E4%B8%B2scanf-%E3%80%81gets-%E5%92%8Cfgets"><span class="toc-number">2.3.</span> <span class="toc-text">读入字符串scanf()、gets()和fgets()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fgets-%E5%92%8Cfputs"><span class="toc-number">2.4.</span> <span class="toc-text">fgets()和fputs()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0"><span class="toc-number">2.5.</span> <span class="toc-text">字符串函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E3%80%81%E9%93%BE%E6%8E%A5%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">存储类别、链接和内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB"><span class="toc-number">3.1.</span> <span class="toc-text">存储类别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5"><span class="toc-number">3.2.</span> <span class="toc-text">链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E6%9C%9F"><span class="toc-number">3.3.</span> <span class="toc-text">存储期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-number">3.4.</span> <span class="toc-text">静态变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%97%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%9A%84%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-number">3.4.1.</span> <span class="toc-text">块作用域的静态变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E9%93%BE%E6%8E%A5%E7%9A%84%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-number">3.4.2.</span> <span class="toc-text">内部链接的静态变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E9%83%A8%E9%93%BE%E6%8E%A5%E7%9A%84%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-number">3.4.3.</span> <span class="toc-text">外部链接的静态变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E8%AF%B4%E6%98%8E%E7%AC%A6"><span class="toc-number">3.5.</span> <span class="toc-text">存储类别说明符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E5%92%8C%E5%87%BD%E6%95%B0"><span class="toc-number">3.6.</span> <span class="toc-text">存储类别和函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%87%BD%E6%95%B0%E5%92%8C%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-number">3.7.</span> <span class="toc-text">随机数函数和静态变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%B7%E9%AA%B0%E5%AD%90"><span class="toc-number">3.8.</span> <span class="toc-text">掷骰子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98%EF%BC%9Amalloc-%E5%92%8Cfree"><span class="toc-number">3.9.</span> <span class="toc-text">分配内存：malloc()和free()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#calloc-%E5%87%BD%E6%95%B0"><span class="toc-number">3.9.1.</span> <span class="toc-text">calloc()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%95%BF%E6%95%B0%E7%BB%84"><span class="toc-number">3.9.2.</span> <span class="toc-text">变长数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%95%BF%E4%BA%8C%E4%BD%8D%E6%95%B0%E7%BB%84"><span class="toc-number">3.9.3.</span> <span class="toc-text">变长二位数组</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ANSI-C%E7%B1%BB%E5%9E%8B%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="toc-number">3.10.</span> <span class="toc-text">ANSI C类型限定符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#const%E7%B1%BB%E5%9E%8B%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="toc-number">3.10.1.</span> <span class="toc-text">const类型限定符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#volatile%E7%B1%BB%E5%9E%8B%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="toc-number">3.10.2.</span> <span class="toc-text">volatile类型限定符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#restrict%E7%B1%BB%E5%9E%8B%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="toc-number">3.10.3.</span> <span class="toc-text">restrict类型限定符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Atomic%E7%B1%BB%E5%9E%8B%E9%99%90%E5%AE%9A%E7%AC%A6%EF%BC%88C11%EF%BC%89"><span class="toc-number">3.10.4.</span> <span class="toc-text">_Atomic类型限定符（C11）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5-x2F-%E8%BE%93%E5%87%BA"><span class="toc-number">4.</span> <span class="toc-text">文件输入&#x2F;输出</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8E%E6%96%87%E4%BB%B6%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1"><span class="toc-number">4.1.</span> <span class="toc-text">与文件进行通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%A8%A1%E5%BC%8F%E5%92%8C%E6%96%87%E6%9C%AC%E6%A8%A1%E5%BC%8F"><span class="toc-number">4.1.1.</span> <span class="toc-text">二进制模式和文本模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#I-x2F-O%E7%9A%84%E7%BA%A7%E5%88%AB"><span class="toc-number">4.1.2.</span> <span class="toc-text">I&#x2F;O的级别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%96%87%E4%BB%B6"><span class="toc-number">4.1.3.</span> <span class="toc-text">标准文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86I-x2F-O"><span class="toc-number">4.2.</span> <span class="toc-text">标准I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#getc-%E5%92%8Cputc-%E5%87%BD%E6%95%B0"><span class="toc-number">4.2.1.</span> <span class="toc-text">getc()和putc()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E5%B0%BE"><span class="toc-number">4.2.2.</span> <span class="toc-text">文件结尾</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fclose-%E5%87%BD%E6%95%B0"><span class="toc-number">4.2.3.</span> <span class="toc-text">fclose()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%90%91%E6%A0%87%E5%87%86%E6%96%87%E4%BB%B6%E7%9A%84%E6%8C%87%E9%92%88"><span class="toc-number">4.2.4.</span> <span class="toc-text">指向标准文件的指针</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%96%87%E4%BB%B6%E5%8E%8B%E7%BC%A9%E7%A8%8B%E5%BA%8F"><span class="toc-number">4.3.</span> <span class="toc-text">一个简单的文件压缩程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6I-x2F-O%EF%BC%9Afprintf-%E3%80%81fscanf-%E3%80%81fgets-%E5%92%8Cfputs"><span class="toc-number">4.4.</span> <span class="toc-text">文件I&#x2F;O：fprintf()、fscanf()、fgets()和fputs()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E8%AE%BF%E9%97%AE%EF%BC%9Afseek-%E5%92%8Cftell"><span class="toc-number">4.5.</span> <span class="toc-text">随机访问：fseek()和ftell()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fgetpos-%E5%92%8Cfsetpos-%E5%87%BD%E6%95%B0"><span class="toc-number">4.6.</span> <span class="toc-text">fgetpos()和fsetpos()函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86I-x2F-O%E7%9A%84%E6%9C%BA%E7%90%86"><span class="toc-number">4.7.</span> <span class="toc-text">标准I&#x2F;O的机理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8fopen-%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6"><span class="toc-number">4.7.1.</span> <span class="toc-text">调用fopen()打开文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%EF%BC%9A%E8%B0%83%E7%94%A8fscanf-%E3%80%81getc-%E6%88%96-fgets-%E5%B0%86%E8%BE%93%E5%85%A5%E6%B5%81%E6%8B%B7%E8%B4%9D%E5%88%B0%E8%BE%93%E5%85%A5%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="toc-number">4.7.2.</span> <span class="toc-text">文件输入：调用fscanf()、getc()或 fgets()将输入流拷贝到输入缓冲区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA%EF%BC%9A%E8%B0%83%E7%94%A8fprinf-%E3%80%81putc-%E6%88%96-fputs-%E5%B0%86%E8%BE%93%E5%87%BA%E7%BC%93%E5%86%B2%E5%8C%BA%E6%8B%B7%E8%B4%9D%E5%88%B0%E8%BE%93%E5%87%BA%E6%B5%81"><span class="toc-number">4.7.3.</span> <span class="toc-text">文件输出：调用fprinf()、putc()或 fputs()将输出缓冲区拷贝到输出流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ungetc-%E3%80%81fllush-%E3%80%81setvbuf-%E5%87%BD%E6%95%B0"><span class="toc-number">4.8.</span> <span class="toc-text">ungetc()、fllush()、setvbuf()函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6I-x2F-O%EF%BC%9Afread-%E5%92%8Cfwrite"><span class="toc-number">4.9.</span> <span class="toc-text">二进制I&#x2F;O：fread()和fwrite()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E7%94%A8%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%EF%BC%9F"><span class="toc-number">4.9.1.</span> <span class="toc-text">为什么需要用二进制文件存储？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fwrite-%E5%87%BD%E6%95%B0"><span class="toc-number">4.9.2.</span> <span class="toc-text">fwrite()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fread-%E5%87%BD%E6%95%B0"><span class="toc-number">4.9.3.</span> <span class="toc-text">fread()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%EF%BC%9A%E4%BD%BF%E7%94%A8fread-%E5%92%8Cfwrite-%E5%87%BD%E6%95%B0%E8%BF%9B%E8%A1%8C%E6%8B%B7%E8%B4%9D"><span class="toc-number">4.9.4.</span> <span class="toc-text">程序：使用fread()和fwrite()函数进行拷贝</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%EF%BC%9A%E7%94%A8%E4%BA%8C%E8%BF%9B%E5%88%B6I-x2F-O%E8%BF%9B%E8%A1%8C%E9%9A%8F%E6%9C%BA%E8%AE%BF%E9%97%AE"><span class="toc-number">4.9.5.</span> <span class="toc-text">程序：用二进制I&#x2F;O进行随机访问</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E5%92%8C%E5%85%B6%E4%BB%96%E6%95%B0%E6%8D%AE%E5%BD%A2%E5%BC%8F"><span class="toc-number">5.</span> <span class="toc-text">结构和其他数据形式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E7%BB%93%E6%9E%84%E5%8F%98%E9%87%8F"><span class="toc-number">5.1.</span> <span class="toc-text">定义结构变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E7%BB%93%E6%9E%84"><span class="toc-number">5.1.1.</span> <span class="toc-text">初始化结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E7%BB%93%E6%9E%84%E6%88%90%E5%91%98"><span class="toc-number">5.1.2.</span> <span class="toc-text">访问结构成员</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%BB%93%E6%9E%84%E7%89%B9%E6%80%A7"><span class="toc-number">5.2.</span> <span class="toc-text">其他结构特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%90%88%E5%AD%97%E9%9D%A2%E9%87%8F"><span class="toc-number">5.2.1.</span> <span class="toc-text">复合字面量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%B8%E7%BC%A9%E5%9E%8B%E6%95%B0%E7%BB%84%E6%88%90%E5%91%98%EF%BC%88flexible-array-member%EF%BC%89"><span class="toc-number">5.2.2.</span> <span class="toc-text">伸缩型数组成员（flexible array member）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BF%E5%90%8D%E7%BB%93%E6%9E%84%EF%BC%88C11%EF%BC%89"><span class="toc-number">5.2.3.</span> <span class="toc-text">匿名结构（C11）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A%E7%BB%93%E6%9E%84%E5%86%85%E5%AE%B9%E4%BF%9D%E5%AD%98%E5%88%B0%E6%96%87%E4%BB%B6%E4%B8%AD"><span class="toc-number">5.2.4.</span> <span class="toc-text">把结构内容保存到文件中</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E5%90%88%E7%AE%80%E4%BB%8B"><span class="toc-number">5.3.</span> <span class="toc-text">联合简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BF%E5%90%8D%E8%81%94%E5%90%88%EF%BC%88C11%EF%BC%89"><span class="toc-number">5.3.1.</span> <span class="toc-text">匿名联合（C11）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B"><span class="toc-number">5.4.</span> <span class="toc-text">枚举类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%8B%E5%80%BC"><span class="toc-number">5.4.1.</span> <span class="toc-text">赋值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%90%8D%E7%A7%B0%E7%A9%BA%E9%97%B4"><span class="toc-number">5.5.</span> <span class="toc-text">共享名称空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#typedef%E7%AE%80%E4%BB%8B"><span class="toc-number">5.6.</span> <span class="toc-text">typedef简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%A4%8D%E6%9D%82%E7%9A%84%E5%A3%B0%E6%98%8E"><span class="toc-number">5.7.</span> <span class="toc-text">其他复杂的声明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%92%8C%E6%8C%87%E9%92%88"><span class="toc-number">5.7.1.</span> <span class="toc-text">函数和指针</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%8D%E6%93%8D%E4%BD%9C"><span class="toc-number">6.</span> <span class="toc-text">位操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.1.</span> <span class="toc-text">按位运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%89%E4%BD%8D%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.1.1.</span> <span class="toc-text">按位逻辑运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A%E6%8E%A9%E7%A0%81-amp"><span class="toc-number">6.1.2.</span> <span class="toc-text">用法：掩码&amp;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A%E6%89%93%E5%BC%80%E4%BD%8D%EF%BC%88%E8%AE%BE%E7%BD%AE%E4%BD%8D%EF%BC%89"><span class="toc-number">6.1.3.</span> <span class="toc-text">用法：打开位（设置位）|</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A%E5%85%B3%E9%97%AD%E4%BD%8D%EF%BC%88%E6%B8%85%E7%A9%BA%E4%BD%8D%EF%BC%89-amp"><span class="toc-number">6.1.4.</span> <span class="toc-text">用法：关闭位（清空位）&amp;~</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A%E5%88%87%E6%8D%A2%E4%BD%8D"><span class="toc-number">6.1.5.</span> <span class="toc-text">用法：切换位^</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A%E6%A3%80%E6%9F%A5%E4%BD%8D%E7%9A%84%E5%80%BC"><span class="toc-number">6.1.6.</span> <span class="toc-text">用法：检查位的值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%8D%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.2.</span> <span class="toc-text">位移运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A6%E7%A7%BB%EF%BC%9A-lt-lt"><span class="toc-number">6.2.1.</span> <span class="toc-text">左移：&lt;&lt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%B3%E7%A7%BB%EF%BC%9A-gt-gt"><span class="toc-number">6.2.2.</span> <span class="toc-text">右移：&gt;&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A%E7%A7%BB%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">6.2.3.</span> <span class="toc-text">用法：移位运算符</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%8D%E5%AD%97%E6%AE%B5"><span class="toc-number">6.3.</span> <span class="toc-text">位字段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E5%AD%97%E6%AE%B5%E7%A4%BA%E4%BE%8B"><span class="toc-number">6.3.1.</span> <span class="toc-text">位字段示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E9%BD%90%E7%89%B9%E6%80%A7%EF%BC%88C11%EF%BC%89"><span class="toc-number">6.4.</span> <span class="toc-text">对齐特性（C11）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8%E5%92%8CC%E5%BA%93"><span class="toc-number">7.</span> <span class="toc-text">C预处理器和C库</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#GCC"><span class="toc-number">7.1.</span> <span class="toc-text">GCC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8"><span class="toc-number">7.2.</span> <span class="toc-text">预处理器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BF%BB%E8%AF%91%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AD%A5"><span class="toc-number">7.2.1.</span> <span class="toc-text">翻译程序的第一步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%8E%E7%A4%BA%E5%B8%B8%E9%87%8F%EF%BC%9A-define"><span class="toc-number">7.3.</span> <span class="toc-text">明示常量：#define</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%B0%E5%8F%B7"><span class="toc-number">7.3.1.</span> <span class="toc-text">记号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E4%B9%89%E5%B8%B8%E9%87%8F"><span class="toc-number">7.3.2.</span> <span class="toc-text">重定义常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-define%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%8F%82%E6%95%B0"><span class="toc-number">7.3.3.</span> <span class="toc-text">在#define中使用参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8%E9%BB%8F%E5%90%88%E5%89%82%EF%BC%9A-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-number">7.3.4.</span> <span class="toc-text">预处理器黏合剂：##运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E5%8F%82%E5%AE%8F%EF%BC%9A%E2%80%A6%E5%92%8C-VA-ARGS"><span class="toc-number">7.3.5.</span> <span class="toc-text">变参宏：…和__VA_ARGS__</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8F%E5%92%8C%E5%87%BD%E6%95%B0%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-number">7.3.6.</span> <span class="toc-text">宏和函数的选择</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%EF%BC%9A-include"><span class="toc-number">7.4.</span> <span class="toc-text">文件包含：#include</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%8C%87%E4%BB%A4"><span class="toc-number">7.5.</span> <span class="toc-text">其他指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undef%E6%8C%87%E4%BB%A4"><span class="toc-number">7.5.1.</span> <span class="toc-text">#undef指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="toc-number">7.5.2.</span> <span class="toc-text">条件编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E5%AE%8F"><span class="toc-number">7.5.3.</span> <span class="toc-text">预定义宏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#line%E5%92%8C-error"><span class="toc-number">7.5.4.</span> <span class="toc-text">#line和#error</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pragma"><span class="toc-number">7.5.5.</span> <span class="toc-text">#pragma</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E9%80%89%E6%8B%A9%EF%BC%88C11%EF%BC%89"><span class="toc-number">7.5.6.</span> <span class="toc-text">泛型选择（C11）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0"><span class="toc-number">7.6.</span> <span class="toc-text">内联函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Noreturn%E5%87%BD%E6%95%B0%EF%BC%88C11%EF%BC%89"><span class="toc-number">7.7.</span> <span class="toc-text">_Noreturn函数（C11）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C%E5%BA%93"><span class="toc-number">7.8.</span> <span class="toc-text">C库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%BA%93%E8%A1%A8%E8%BF%B0"><span class="toc-number">7.8.1.</span> <span class="toc-text">使用库表述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E5%BA%93-include-lt-math-h-gt"><span class="toc-number">7.8.2.</span> <span class="toc-text">数学库#include &lt;math.h&gt;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BA%93"><span class="toc-number">7.9.</span> <span class="toc-text">通用工具库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#exit-%E5%92%8Catexit-%E5%87%BD%E6%95%B0"><span class="toc-number">7.9.1.</span> <span class="toc-text">exit()和atexit()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#qsort-%E5%87%BD%E6%95%B0"><span class="toc-number">7.9.2.</span> <span class="toc-text">qsort()函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#string-h%E5%BA%93%E4%B8%AD%E7%9A%84memcpy-%E5%92%8C-memmove"><span class="toc-number">7.10.</span> <span class="toc-text">string.h库中的memcpy()和 memmove()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%EF%BC%9Astdarg-h"><span class="toc-number">7.11.</span> <span class="toc-text">可变参数：stdarg.h</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA"><span class="toc-number">8.</span> <span class="toc-text">高级数据表示</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E6%95%B0%E7%BB%84%E5%88%B0%E9%93%BE%E8%A1%A8"><span class="toc-number">8.1.</span> <span class="toc-text">从数组到链表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%88ADT%EF%BC%89"><span class="toc-number">8.2.</span> <span class="toc-text">抽象数据类型（ADT）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-number">8.2.1.</span> <span class="toc-text">接口函数的实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%8E%A5%E5%8F%A3"><span class="toc-number">8.2.2.</span> <span class="toc-text">使用接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%9F%E5%88%97"><span class="toc-number">8.3.</span> <span class="toc-text">队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-number">8.4.</span> <span class="toc-text">链表和数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="toc-number">8.5.</span> <span class="toc-text">二叉查找树</span></a></li></ol></li></ol>
+                </div>
+            
+            <hr />
+            <p>摘要：从2021&#x2F;07&#x2F;19到2021&#x2F;07&#x2F;26阅读完毕</p>
 <p>参考：</p>
 <p><a target="_blank" rel="noopener" href="https://c.runoob.com/compile/11">C在线工具</a></p>
 <p><a target="_blank" rel="noopener" href="https://www.google.com/search?q=C+Primer+Plus+%E7%AC%AC6%E7%89%88%E4%B8%AD%E6%96%87%E7%89%88+filetype:pdf&newwindow=1&sxsrf=ALeKk03SmmAJuucbGnKsbDAatwPtDIT4pQ:1626680117200&source=hp&ei=NSv1YOLPCLKFr7wPs_yuqA4&iflsig=AINFCbYAAAAAYPU5RS99S3uEXSzPhUY-her1BWef8ded&oq=C+Primer+Plus+%E7%AC%AC6%E7%89%88%E4%B8%AD%E6%96%87%E7%89%88+filetype:pdf&gs_lcp=Cgdnd3Mtd2l6EAM6BwgjEOoCECc6BAgAEAw6BQghEKABUOA_WNdaYIVdaANwAHgAgAGRAYgBhwuSAQM3LjeYAQCgAQKgAQGqAQdnd3Mtd2l6sAEK&sclient=gws-wiz&ved=0ahUKEwiivq7Uz-7xAhWywosBHTO-C-UQ4dUDCAc&uact=5">C Primer Plus 第6版中文版.pdf</a></p>
@@ -785,157 +824,379 @@
 <h2 id="链表和数组"><a href="#链表和数组" class="headerlink" title="链表和数组"></a>链表和数组</h2><p><img src="/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2021.png"></p>
 <h2 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h2><p><img src="/%E3%80%8AC%20Primer%20Plus%E3%80%8B%E7%AC%94%E8%AE%B0%20bf82035910144f66a5c76f9d658a6650/Untitled%2022.png"></p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> <span class="type">char</span>* Item;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">trnode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	Item item;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">trnode</span>* <span class="title">left</span>;</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">trnode</span>* <span class="title">right</span>;</span></span><br><span class="line">&#125; Trnode;</span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">tree</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">	Trnode* root;</span><br><span class="line">	<span class="type">int</span> size;</span><br><span class="line">&#125; Tree;</span><br></pre></td></tr></table></figure>
-      
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+                <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                
+                
+                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                    <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
     </div>
-    <footer class="article-footer">
-      <a data-url="https://azreallem.github.io/2021/07/26/%E3%80%8AC-Primer-Plus%E3%80%8B%E7%AC%94%E8%AE%B0/" data-id="cl1ccwd0z0007ec21htjzh9kb" data-title="《C Primer Plus》笔记" class="article-share-link">分享</a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/book/" rel="tag">book</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/note/" rel="tag">note</a></li></ul>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://azreallem.github.io/2021/07/26/%E3%80%8AC-Primer-Plus%E3%80%8B%E7%AC%94%E8%AE%B0/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://azreallem.github.io/2021/07/26/%E3%80%8AC-Primer-Plus%E3%80%8B%E7%AC%94%E8%AE%B0/";
+            const title         = "「《C Primer Plus》笔记」";
+            const excerpt       = `摘要：从2021&#x2F;07&#x2F;19到2021&#x2F;07&#x2F;26阅读完毕
+参考：
+C在线工具
+C Primer Plus 第6版中文版.pdf
 
-    </footer>
-  </div>
-  
+基础内容#include#include这行代码是一条C预处理...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/C/" rel="tag">C</a>, <a class="tag-none-link" href="/tags/book/" rel="tag">book</a>, <a class="tag-none-link" href="/tags/note/" rel="tag">note</a>
+                </div>
+                <div class="pull-date">
+                <span>最后编辑：2022-03-29</span>
+                </div>
+            </div>
+        </footer>
+    </div>
     
-<nav id="article-nav">
-  
-    <a href="/2021/07/30/EOF/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">前一篇</strong>
-      <div class="article-nav-title">
-        
-          EOF
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2021/07/15/Hexo%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E5%8D%9A%E5%AE%A2/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">后一篇</strong>
-      <div class="article-nav-title">Hexo搭建个人博客</div>
-    </a>
-  
-</nav>
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Hexo搭建个人博客" href="/2021/07/15/Hexo搭建个人博客/">&lt; 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" EOF" href="/2021/07/30/EOF/">下一篇 &gt;</a>
+            </div>
+            
+        </nav>
+    
+    
+        <div id="v-comments" class="post-comments"></div>
+<script>
+    var load_comm = () => {
+        const init = () => {
+            new Valine({
+                el: '#v-comments',
+                appId: 'Y4RT8kYqhRKjWWeQr1r5HNDx-gzGzoHsz',
+                appKey: 'gMt4uIBOkEnhGwihqUj8CEwR',
+                visitor: true,
+                enableQQ: true,
+                path: '/2021/07/26/%E3%80%8AC-Primer-Plus%E3%80%8B%E7%AC%94%E8%AE%B0/'
+            });
+        }
+        if (typeof Valine === 'undefined') {
+            const src = 'https://unpkg.com/valine/dist/Valine.min.js';
+            $.getScript(src, init);
+        } else {
+            init();
+        }
+    };
+</script>
+<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://valine.js.org/">comments powered by Valine.</a></noscript>
 
-  
+    
 </article>
 
+        
 
+            </section>
+
+        
+
+                
+            
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center">路漫漫其修远兮，吾将上下而求索~~~</p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                8
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                4
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                11
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix">
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar"></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E5%86%85%E5%AE%B9"><span class="toc-text">基础内容</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#include"><span class="toc-text">#include</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E5%92%8C%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">字符和字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sizeof-%E3%80%81size-t%E5%92%8C-scanf"><span class="toc-text">sizeof() 、size_t和 scanf()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="toc-text">字符缓冲区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E5%90%91%E8%BE%93%E5%85%A5-%E3%80%81-%E9%87%8D%E5%AE%9A%E5%90%91%E8%BE%93%E5%87%BA"><span class="toc-text">重定向输入 、 重定向输出</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">指针和运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%B0%E5%9D%80%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%9A-amp"><span class="toc-text">地址运算符：&amp;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E9%92%88"><span class="toc-text">指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%97%B4%E6%8E%A5%E8%BF%90%E7%AE%97%E7%AC%A6%EF%BC%9A"><span class="toc-text">间接运算符：*</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%87%E9%92%88%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-text">指针和数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E5%BD%A2%E5%BC%8F%E5%8F%82%E6%95%B0%E4%BD%BF%E7%94%A8const"><span class="toc-text">对形式参数使用const</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A4%9A%E7%BB%B4%E6%95%B0%E7%BB%84"><span class="toc-text">多维数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0"><span class="toc-text">命令行参数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">字符串</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="toc-text">什么是字符串</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E4%B8%AD%E6%95%B0%E7%BB%84%E5%92%8C%E6%8C%87%E9%92%88%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-text">字符串中数组和指针的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%BB%E5%85%A5%E5%AD%97%E7%AC%A6%E4%B8%B2scanf-%E3%80%81gets-%E5%92%8Cfgets"><span class="toc-text">读入字符串scanf()、gets()和fgets()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fgets-%E5%92%8Cfputs"><span class="toc-text">fgets()和fputs()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%87%BD%E6%95%B0"><span class="toc-text">字符串函数</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E3%80%81%E9%93%BE%E6%8E%A5%E5%92%8C%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86"><span class="toc-text">存储类别、链接和内存管理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB"><span class="toc-text">存储类别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5"><span class="toc-text">链接</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E6%9C%9F"><span class="toc-text">存储期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-text">静态变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9D%97%E4%BD%9C%E7%94%A8%E5%9F%9F%E7%9A%84%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-text">块作用域的静态变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%86%85%E9%83%A8%E9%93%BE%E6%8E%A5%E7%9A%84%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-text">内部链接的静态变量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%96%E9%83%A8%E9%93%BE%E6%8E%A5%E7%9A%84%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-text">外部链接的静态变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E8%AF%B4%E6%98%8E%E7%AC%A6"><span class="toc-text">存储类别说明符</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AD%98%E5%82%A8%E7%B1%BB%E5%88%AB%E5%92%8C%E5%87%BD%E6%95%B0"><span class="toc-text">存储类别和函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E6%95%B0%E5%87%BD%E6%95%B0%E5%92%8C%E9%9D%99%E6%80%81%E5%8F%98%E9%87%8F"><span class="toc-text">随机数函数和静态变量</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8E%B7%E9%AA%B0%E5%AD%90"><span class="toc-text">掷骰子</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E9%85%8D%E5%86%85%E5%AD%98%EF%BC%9Amalloc-%E5%92%8Cfree"><span class="toc-text">分配内存：malloc()和free()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#calloc-%E5%87%BD%E6%95%B0"><span class="toc-text">calloc()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%95%BF%E6%95%B0%E7%BB%84"><span class="toc-text">变长数组</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E9%95%BF%E4%BA%8C%E4%BD%8D%E6%95%B0%E7%BB%84"><span class="toc-text">变长二位数组</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ANSI-C%E7%B1%BB%E5%9E%8B%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="toc-text">ANSI C类型限定符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#const%E7%B1%BB%E5%9E%8B%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="toc-text">const类型限定符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#volatile%E7%B1%BB%E5%9E%8B%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="toc-text">volatile类型限定符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#restrict%E7%B1%BB%E5%9E%8B%E9%99%90%E5%AE%9A%E7%AC%A6"><span class="toc-text">restrict类型限定符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Atomic%E7%B1%BB%E5%9E%8B%E9%99%90%E5%AE%9A%E7%AC%A6%EF%BC%88C11%EF%BC%89"><span class="toc-text">_Atomic类型限定符（C11）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5-x2F-%E8%BE%93%E5%87%BA"><span class="toc-text">文件输入&#x2F;输出</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%8E%E6%96%87%E4%BB%B6%E8%BF%9B%E8%A1%8C%E9%80%9A%E4%BF%A1"><span class="toc-text">与文件进行通信</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%A8%A1%E5%BC%8F%E5%92%8C%E6%96%87%E6%9C%AC%E6%A8%A1%E5%BC%8F"><span class="toc-text">二进制模式和文本模式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#I-x2F-O%E7%9A%84%E7%BA%A7%E5%88%AB"><span class="toc-text">I&#x2F;O的级别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A0%87%E5%87%86%E6%96%87%E4%BB%B6"><span class="toc-text">标准文件</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86I-x2F-O"><span class="toc-text">标准I&#x2F;O</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#getc-%E5%92%8Cputc-%E5%87%BD%E6%95%B0"><span class="toc-text">getc()和putc()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E7%BB%93%E5%B0%BE"><span class="toc-text">文件结尾</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fclose-%E5%87%BD%E6%95%B0"><span class="toc-text">fclose()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%87%E5%90%91%E6%A0%87%E5%87%86%E6%96%87%E4%BB%B6%E7%9A%84%E6%8C%87%E9%92%88"><span class="toc-text">指向标准文件的指针</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84%E6%96%87%E4%BB%B6%E5%8E%8B%E7%BC%A9%E7%A8%8B%E5%BA%8F"><span class="toc-text">一个简单的文件压缩程序</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6I-x2F-O%EF%BC%9Afprintf-%E3%80%81fscanf-%E3%80%81fgets-%E5%92%8Cfputs"><span class="toc-text">文件I&#x2F;O：fprintf()、fscanf()、fgets()和fputs()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9A%8F%E6%9C%BA%E8%AE%BF%E9%97%AE%EF%BC%9Afseek-%E5%92%8Cftell"><span class="toc-text">随机访问：fseek()和ftell()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#fgetpos-%E5%92%8Cfsetpos-%E5%87%BD%E6%95%B0"><span class="toc-text">fgetpos()和fsetpos()函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A0%87%E5%87%86I-x2F-O%E7%9A%84%E6%9C%BA%E7%90%86"><span class="toc-text">标准I&#x2F;O的机理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B0%83%E7%94%A8fopen-%E6%89%93%E5%BC%80%E6%96%87%E4%BB%B6"><span class="toc-text">调用fopen()打开文件</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%BE%93%E5%85%A5%EF%BC%9A%E8%B0%83%E7%94%A8fscanf-%E3%80%81getc-%E6%88%96-fgets-%E5%B0%86%E8%BE%93%E5%85%A5%E6%B5%81%E6%8B%B7%E8%B4%9D%E5%88%B0%E8%BE%93%E5%85%A5%E7%BC%93%E5%86%B2%E5%8C%BA"><span class="toc-text">文件输入：调用fscanf()、getc()或 fgets()将输入流拷贝到输入缓冲区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E8%BE%93%E5%87%BA%EF%BC%9A%E8%B0%83%E7%94%A8fprinf-%E3%80%81putc-%E6%88%96-fputs-%E5%B0%86%E8%BE%93%E5%87%BA%E7%BC%93%E5%86%B2%E5%8C%BA%E6%8B%B7%E8%B4%9D%E5%88%B0%E8%BE%93%E5%87%BA%E6%B5%81"><span class="toc-text">文件输出：调用fprinf()、putc()或 fputs()将输出缓冲区拷贝到输出流</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ungetc-%E3%80%81fllush-%E3%80%81setvbuf-%E5%87%BD%E6%95%B0"><span class="toc-text">ungetc()、fllush()、setvbuf()函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E8%BF%9B%E5%88%B6I-x2F-O%EF%BC%9Afread-%E5%92%8Cfwrite"><span class="toc-text">二进制I&#x2F;O：fread()和fwrite()</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E9%9C%80%E8%A6%81%E7%94%A8%E4%BA%8C%E8%BF%9B%E5%88%B6%E6%96%87%E4%BB%B6%E5%AD%98%E5%82%A8%EF%BC%9F"><span class="toc-text">为什么需要用二进制文件存储？</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fwrite-%E5%87%BD%E6%95%B0"><span class="toc-text">fwrite()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#fread-%E5%87%BD%E6%95%B0"><span class="toc-text">fread()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%EF%BC%9A%E4%BD%BF%E7%94%A8fread-%E5%92%8Cfwrite-%E5%87%BD%E6%95%B0%E8%BF%9B%E8%A1%8C%E6%8B%B7%E8%B4%9D"><span class="toc-text">程序：使用fread()和fwrite()函数进行拷贝</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A8%8B%E5%BA%8F%EF%BC%9A%E7%94%A8%E4%BA%8C%E8%BF%9B%E5%88%B6I-x2F-O%E8%BF%9B%E8%A1%8C%E9%9A%8F%E6%9C%BA%E8%AE%BF%E9%97%AE"><span class="toc-text">程序：用二进制I&#x2F;O进行随机访问</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E6%9E%84%E5%92%8C%E5%85%B6%E4%BB%96%E6%95%B0%E6%8D%AE%E5%BD%A2%E5%BC%8F"><span class="toc-text">结构和其他数据形式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%9A%E4%B9%89%E7%BB%93%E6%9E%84%E5%8F%98%E9%87%8F"><span class="toc-text">定义结构变量</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E7%BB%93%E6%9E%84"><span class="toc-text">初始化结构</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%BF%E9%97%AE%E7%BB%93%E6%9E%84%E6%88%90%E5%91%98"><span class="toc-text">访问结构成员</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E7%BB%93%E6%9E%84%E7%89%B9%E6%80%A7"><span class="toc-text">其他结构特性</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%8D%E5%90%88%E5%AD%97%E9%9D%A2%E9%87%8F"><span class="toc-text">复合字面量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BC%B8%E7%BC%A9%E5%9E%8B%E6%95%B0%E7%BB%84%E6%88%90%E5%91%98%EF%BC%88flexible-array-member%EF%BC%89"><span class="toc-text">伸缩型数组成员（flexible array member）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BF%E5%90%8D%E7%BB%93%E6%9E%84%EF%BC%88C11%EF%BC%89"><span class="toc-text">匿名结构（C11）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%8A%E7%BB%93%E6%9E%84%E5%86%85%E5%AE%B9%E4%BF%9D%E5%AD%98%E5%88%B0%E6%96%87%E4%BB%B6%E4%B8%AD"><span class="toc-text">把结构内容保存到文件中</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%81%94%E5%90%88%E7%AE%80%E4%BB%8B"><span class="toc-text">联合简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8C%BF%E5%90%8D%E8%81%94%E5%90%88%EF%BC%88C11%EF%BC%89"><span class="toc-text">匿名联合（C11）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9E%9A%E4%B8%BE%E7%B1%BB%E5%9E%8B"><span class="toc-text">枚举类型</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B5%8B%E5%80%BC"><span class="toc-text">赋值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B1%E4%BA%AB%E5%90%8D%E7%A7%B0%E7%A9%BA%E9%97%B4"><span class="toc-text">共享名称空间</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#typedef%E7%AE%80%E4%BB%8B"><span class="toc-text">typedef简介</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%A4%8D%E6%9D%82%E7%9A%84%E5%A3%B0%E6%98%8E"><span class="toc-text">其他复杂的声明</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E5%92%8C%E6%8C%87%E9%92%88"><span class="toc-text">函数和指针</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BD%8D%E6%93%8D%E4%BD%9C"><span class="toc-text">位操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8C%89%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">按位运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8C%89%E4%BD%8D%E9%80%BB%E8%BE%91%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">按位逻辑运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A%E6%8E%A9%E7%A0%81-amp"><span class="toc-text">用法：掩码&amp;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A%E6%89%93%E5%BC%80%E4%BD%8D%EF%BC%88%E8%AE%BE%E7%BD%AE%E4%BD%8D%EF%BC%89"><span class="toc-text">用法：打开位（设置位）|</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A%E5%85%B3%E9%97%AD%E4%BD%8D%EF%BC%88%E6%B8%85%E7%A9%BA%E4%BD%8D%EF%BC%89-amp"><span class="toc-text">用法：关闭位（清空位）&amp;~</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A%E5%88%87%E6%8D%A2%E4%BD%8D"><span class="toc-text">用法：切换位^</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A%E6%A3%80%E6%9F%A5%E4%BD%8D%E7%9A%84%E5%80%BC"><span class="toc-text">用法：检查位的值</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%8D%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">位移运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B7%A6%E7%A7%BB%EF%BC%9A-lt-lt"><span class="toc-text">左移：&lt;&lt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%B3%E7%A7%BB%EF%BC%9A-gt-gt"><span class="toc-text">右移：&gt;&gt;</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%94%A8%E6%B3%95%EF%BC%9A%E7%A7%BB%E4%BD%8D%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">用法：移位运算符</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%8D%E5%AD%97%E6%AE%B5"><span class="toc-text">位字段</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%8D%E5%AD%97%E6%AE%B5%E7%A4%BA%E4%BE%8B"><span class="toc-text">位字段示例</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AF%B9%E9%BD%90%E7%89%B9%E6%80%A7%EF%BC%88C11%EF%BC%89"><span class="toc-text">对齐特性（C11）</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8%E5%92%8CC%E5%BA%93"><span class="toc-text">C预处理器和C库</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#GCC"><span class="toc-text">GCC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8"><span class="toc-text">预处理器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BF%BB%E8%AF%91%E7%A8%8B%E5%BA%8F%E7%9A%84%E7%AC%AC%E4%B8%80%E6%AD%A5"><span class="toc-text">翻译程序的第一步</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%98%8E%E7%A4%BA%E5%B8%B8%E9%87%8F%EF%BC%9A-define"><span class="toc-text">明示常量：#define</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%AE%B0%E5%8F%B7"><span class="toc-text">记号</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%87%8D%E5%AE%9A%E4%B9%89%E5%B8%B8%E9%87%8F"><span class="toc-text">重定义常量</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8-define%E4%B8%AD%E4%BD%BF%E7%94%A8%E5%8F%82%E6%95%B0"><span class="toc-text">在#define中使用参数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E5%A4%84%E7%90%86%E5%99%A8%E9%BB%8F%E5%90%88%E5%89%82%EF%BC%9A-%E8%BF%90%E7%AE%97%E7%AC%A6"><span class="toc-text">预处理器黏合剂：##运算符</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%98%E5%8F%82%E5%AE%8F%EF%BC%9A%E2%80%A6%E5%92%8C-VA-ARGS"><span class="toc-text">变参宏：…和__VA_ARGS__</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%8F%E5%92%8C%E5%87%BD%E6%95%B0%E7%9A%84%E9%80%89%E6%8B%A9"><span class="toc-text">宏和函数的选择</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB%EF%BC%9A-include"><span class="toc-text">文件包含：#include</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E6%8C%87%E4%BB%A4"><span class="toc-text">其他指令</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#undef%E6%8C%87%E4%BB%A4"><span class="toc-text">#undef指令</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91"><span class="toc-text">条件编译</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E5%AE%8F"><span class="toc-text">预定义宏</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#line%E5%92%8C-error"><span class="toc-text">#line和#error</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#pragma"><span class="toc-text">#pragma</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%9B%E5%9E%8B%E9%80%89%E6%8B%A9%EF%BC%88C11%EF%BC%89"><span class="toc-text">泛型选择（C11）</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E8%81%94%E5%87%BD%E6%95%B0"><span class="toc-text">内联函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Noreturn%E5%87%BD%E6%95%B0%EF%BC%88C11%EF%BC%89"><span class="toc-text">_Noreturn函数（C11）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C%E5%BA%93"><span class="toc-text">C库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%BA%93%E8%A1%A8%E8%BF%B0"><span class="toc-text">使用库表述</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%95%B0%E5%AD%A6%E5%BA%93-include-lt-math-h-gt"><span class="toc-text">数学库#include &lt;math.h&gt;</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%9A%E7%94%A8%E5%B7%A5%E5%85%B7%E5%BA%93"><span class="toc-text">通用工具库</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#exit-%E5%92%8Catexit-%E5%87%BD%E6%95%B0"><span class="toc-text">exit()和atexit()函数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#qsort-%E5%87%BD%E6%95%B0"><span class="toc-text">qsort()函数</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#string-h%E5%BA%93%E4%B8%AD%E7%9A%84memcpy-%E5%92%8C-memmove"><span class="toc-text">string.h库中的memcpy()和 memmove()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%AF%E5%8F%98%E5%8F%82%E6%95%B0%EF%BC%9Astdarg-h"><span class="toc-text">可变参数：stdarg.h</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%AB%98%E7%BA%A7%E6%95%B0%E6%8D%AE%E8%A1%A8%E7%A4%BA"><span class="toc-text">高级数据表示</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E6%95%B0%E7%BB%84%E5%88%B0%E9%93%BE%E8%A1%A8"><span class="toc-text">从数组到链表</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%BD%E8%B1%A1%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%EF%BC%88ADT%EF%BC%89"><span class="toc-text">抽象数据类型（ADT）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8E%A5%E5%8F%A3%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="toc-text">接口函数的实现</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E6%8E%A5%E5%8F%A3"><span class="toc-text">使用接口</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%9F%E5%88%97"><span class="toc-text">队列</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%93%BE%E8%A1%A8%E5%92%8C%E6%95%B0%E7%BB%84"><span class="toc-text">链表和数组</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C%E5%8F%89%E6%9F%A5%E6%89%BE%E6%A0%91"><span class="toc-text">二叉查找树</span></a></li></ol></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">内核分析</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">基础概念</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B%E6%96%87%E6%A1%A3/">教程文档</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">2</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/C/" style="font-size: 0.67em;">C</a> <a href="/tags/FSM/" style="font-size: 0.6em;">FSM</a> <a href="/tags/book/" style="font-size: 0.6em;">book</a> <a href="/tags/hexo/" style="font-size: 0.6em;">hexo</a> <a href="/tags/linux/" style="font-size: 0.8em;">linux</a> <a href="/tags/note/" style="font-size: 0.67em;">note</a> <a href="/tags/setup-arch/" style="font-size: 0.67em;">setup_arch</a> <a href="/tags/source-code/" style="font-size: 0.73em;">source code</a> <a href="/tags/start-kernel/" style="font-size: 0.6em;">start_kernel</a> <a href="/tags/technique/" style="font-size: 0.6em;">technique</a> <a href="/tags/tlbex/" style="font-size: 0.6em;">tlbex</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"><i class="fa  fa-book"></i> iproute2 中 tc qdisc cbs源码分析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/10/31/setup-arch-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/"><i class="fa  fa-book"></i> setup_arch()源码分析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/"><i class="fa  fa-book"></i> 内核启动过程分析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/10/26/%E7%8A%B6%E6%80%81%E6%9C%BA/"><i class="fa  fa-book"></i> 状态机</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/10/21/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/"><i class="fa  fa-book"></i> tlb异常处理</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
 </section>
         
-          <aside id="sidebar">
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">分类</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">内核分析</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5/">基础概念</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B%E6%96%87%E6%A1%A3/">教程文档</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a></li></ul>
+        </div>
     </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签</h3>
-    <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FSM/" rel="tag">FSM</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/" rel="tag">book</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/" rel="tag">note</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/setup-arch/" rel="tag">setup_arch</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source-code/" rel="tag">source code</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start-kernel/" rel="tag">start_kernel</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/technique/" rel="tag">technique</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tlbex/" rel="tag">tlbex</a></li></ul>
+</div>
+<footer>
+    <div id="footer"  class="ap-lrc"  >
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        <li><a href="mailto:961616044@qq.com"><i class="fa fa-envelope"></i></a></li>
+                        
+                        
+                        
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://github.com/azreallem"><i class="fa fa-github"></i></a></li>
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2022 Azreallem's Blog 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Azreallem.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
     </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">标签云</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/C/" style="font-size: 15px;">C</a> <a href="/tags/FSM/" style="font-size: 10px;">FSM</a> <a href="/tags/book/" style="font-size: 10px;">book</a> <a href="/tags/hexo/" style="font-size: 10px;">hexo</a> <a href="/tags/linux/" style="font-size: 20px;">linux</a> <a href="/tags/note/" style="font-size: 15px;">note</a> <a href="/tags/setup-arch/" style="font-size: 10px;">setup_arch</a> <a href="/tags/source-code/" style="font-size: 15px;">source code</a> <a href="/tags/start-kernel/" style="font-size: 10px;">start_kernel</a> <a href="/tags/technique/" style="font-size: 10px;">technique</a> <a href="/tags/tlbex/" style="font-size: 10px;">tlbex</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">最新文章</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2021/10/31/setup-arch-%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/">setup_arch()源码分析</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/30/%E5%86%85%E6%A0%B8%E5%90%AF%E5%8A%A8%E8%BF%87%E7%A8%8B%E5%88%86%E6%9E%90/">内核启动过程分析</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/26/%E7%8A%B6%E6%80%81%E6%9C%BA/">状态机</a>
-          </li>
-        
-          <li>
-            <a href="/2021/10/21/tlb%E5%BC%82%E5%B8%B8%E5%A4%84%E7%90%86/">tlb异常处理</a>
-          </li>
-        
-          <li>
-            <a href="/2021/07/30/EOF/">EOF</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
-      </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      
-      &copy; 2022 Azreallem<br>
-      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
-    </div>
-  </div>
 </footer>
+</div>
+</div>
 
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
+        <script defer src="https://unpkg.com/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+<script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+
+
+    <script defer src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
     
-
-
-<script src="/js/jquery-3.4.1.min.js"></script>
-
-
-
-  
-<script src="/fancybox/jquery.fancybox.min.js"></script>
-
-
-
-
-<script src="/js/script.js"></script>
+    <script defer src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
+    <meting-js
+        server="tencent"
+        type="playlist"
+        id="4214690386"
+        order="random"
+        fixed="true"
+    >
+    </meting-js>
 
 
 
+    <script defer src="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://unpkg.com/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
 
 
-  </div>
-</body>
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+<!-- Extra support for third-party plguins  -->
+
+
+    </body>
 </html>
