@@ -24,7 +24,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://azreallem.github.io/images/cake.webp">
 <meta property="article:published_time" content="2022-04-03T08:57:18.000Z">
-<meta property="article:modified_time" content="2022-04-05T01:02:49.687Z">
+<meta property="article:modified_time" content="2022-04-05T01:17:35.691Z">
 <meta property="article:author" content="Azreallem">
 <meta property="article:tag" content="algorithm">
 <meta property="article:tag" content="c++">
@@ -154,7 +154,7 @@
                     <i class="fa fa-edit"></i> 
                     
                     
-                        ~4.21K
+                        ~4.20K
                     
                     字
                 </li>
@@ -170,7 +170,7 @@
         <div class="kratos-post-content">
             <div id="expire-alert" class="alert alert-warning hidden" role="alert">
                 <div class="icon"><i class="fa fa-warning"></i></div>
-                <div class="text"><p>本文最后编辑于 <time datetime="1649120569687"></time> 前，其中的内容可能需要更新。</p></div>
+                <div class="text"><p>本文最后编辑于 <time datetime="1649121455691"></time> 前，其中的内容可能需要更新。</p></div>
             </div>
             
                 <div class="kratos-post-inner-toc">
@@ -183,9 +183,9 @@
 <p>关于组合问题的求解，可以使用<strong>回溯法</strong>，<code>path[int]</code>用来存储路径，<code>res[int][int]</code>用于存储结果集，对于去重，可以使用<code>used[bool]</code>来标记该层上一个相同结点的枝是否使用过。本题问题的难点在于<strong>如何处理”00112223467899”字符串</strong>，是在回溯递归的函数中逐一处理字符串中的字符，还是先将字符串转换为符合条件的int数组，采用后者的方法更为简洁便利。先将”00112223467899”字符串转换为两位数且小于等于35的全排列的int数组<code>vec</code>，然后对<code>vec</code>进行处理。但是还要知道<strong>字符串中<code>0~9</code>哪些使用过</strong>，所以还需要<code>map&lt;char, int&gt;</code>来标记<code>0~9</code>每个char还剩几个可以使用。</p>
 </blockquote>
 <h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><ol>
-<li>初始化<code>map&lt;char, int&gt; map_str</code>，用来表示”00112223467899”字符串中‘0’～‘9’出现的频率;</li>
+<li>初始化<code>map&lt;char, int&gt; map_str</code>，用来表示”00112223467899”字符串中<code>0～9</code>出现的频率;</li>
 <li>将”00112223467899”字符串转换为两位数且小于等于35的<strong>全排列</strong>数的数组<code>vector&lt;int&gt; vec</code>;</li>
-<li>初始化<code>vec</code>长度的<code>vector&lt;bool&gt; used</code>数组作为backtracking()里的参数，用来判断和标记为同层的树枝是否使用过;</li>
+<li>初始化<code>vec</code>长度的<code>vector&lt;bool&gt; used</code>数组作为<code>backtracking()</code>里的参数，用来判断和标记为同层的树枝是否使用过;</li>
 <li><code>vector&lt;vector&lt;int&gt;&gt; res</code> 该二维数组表示组合结果;</li>
 <li><code>vector&lt;int&gt; path</code> 该数组表示当前的单条路径;</li>
 </ol>
