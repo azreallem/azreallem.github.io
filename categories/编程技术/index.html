@@ -62,7 +62,11 @@
 <meta name="generator" content="Hexo 6.1.0"></head>
 
 
+
+<script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+<script src="/js/Valine-gaoliang-vertify.js"></script>
     <body class="custom-background">
+	<button id="TencentCaptcha"data-appid="666"data-cbfn="callback"type="button" hidden></button>
         <div id="kratos-wrapper">
     <div id="kratos-page">
         <div id="kratos-header">
@@ -424,6 +428,7 @@ C Primer Plus 第6版中文版.pdf
                 appKey: 'gMt4uIBOkEnhGwihqUj8CEwR',
                 visitor: true,
                 enableQQ: true,
+		vertify: ,
                 path: '/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/index.html'
             });
         }

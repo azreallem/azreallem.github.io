@@ -65,7 +65,11 @@
 <meta name="generator" content="Hexo 6.1.0"></head>
 
 
+
+<script src="https://ssl.captcha.qq.com/TCaptcha.js"></script>
+<script src="/js/Valine-gaoliang-vertify.js"></script>
     <body class="custom-background">
+	<button id="TencentCaptcha"data-appid="666"data-cbfn="callback"type="button" hidden></button>
         <div id="kratos-wrapper">
     <div id="kratos-page">
         <div id="kratos-header">
@@ -295,6 +299,7 @@ terminal1234567# gdb...`;
                 appKey: 'gMt4uIBOkEnhGwihqUj8CEwR',
                 visitor: true,
                 enableQQ: true,
+		vertify: ,
                 path: '/2022/04/13/gdb-help/'
             });
         }
