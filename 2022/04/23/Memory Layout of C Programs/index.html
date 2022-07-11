@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-    <head>
-  <!-- 元数据 -->
+<html lang=zh>
+<head>
   <meta charset="utf-8">
-  <link rel="icon" href="/images/cake.webp">
-  <title>Azreallem's Blog</title>
-  <meta name="author" content="Azreallem" />
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
   <meta http-equiv="Cache-Control" content="no-transform" />
   <meta http-equiv="Cache-Control" content="no-siteapp" />
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <meta name="robots" content="index,follow" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-  <meta name="format-detection" content="telphone=no, email=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
   
-    <meta name="keywords" content="link" />
   
+  <title>Hexo</title>
   <meta name="description" content="Memory Layout of C Programs 这篇文章主要讲C程序中的内存布局。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Azreallem&#39;s Blog">
@@ -22,157 +25,359 @@
 <meta property="og:site_name" content="Azreallem&#39;s Blog">
 <meta property="og:description" content="Memory Layout of C Programs 这篇文章主要讲C程序中的内存布局。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://azreallem.github.io/images/cake.webp">
+<meta property="og:image" content="https://azreallem.github.io/2022/04/23/Memory%20Layout%20of%20C%20Programs/memoryLayoutC.jpg">
 <meta property="article:published_time" content="2022-04-23T02:21:10.000Z">
 <meta property="article:modified_time" content="2022-04-23T03:33:04.003Z">
 <meta property="article:author" content="Azreallem">
 <meta property="article:tag" content="link">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://azreallem.github.io/images/cake.webp">
-<meta name="twitter:site" content="@null">
+<meta name="twitter:image" content="https://azreallem.github.io/2022/04/23/Memory%20Layout%20of%20C%20Programs/memoryLayoutC.jpg">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://azreallem.github.io/2022/04/23/Memory%20Layout%20of%20C%20Programs/index.html">
   
-  <!-- 站点验证相关 -->
-  
-    
-    
-    
-  
-  <!-- 样式表文件 -->
-  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
-  
-    <link rel="stylesheet" id="darkmode-css" href="/css/kr-color-dark.min.css" type="text/css" media="(prefers-color-scheme: dark)">
-    <script src="/js/kr-dark.min.js"></script>
+    <link rel="alternate" href="/atom.xml" title="Azreallem&#39;s Blog" type="application/atom+xml">
   
   
-    <link rel="stylesheet" id="highlight-css" href="/css/highlight/night-eighties.min.css" type="text/css" media="all">
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
   
   
-  <link rel="stylesheet" id="fontawe-css" href="https://unpkg.com/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
-  <link rel="stylesheet" id="nprogress-css" href="https://unpkg.com/nprogress@0.2.0/nprogress.css" type="text/css" media="all">
+<link rel="stylesheet" href="/css/style.css">
+
   
   
-  
-    <link rel="stylesheet" href="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.css">
-  
-  
-    <link rel="stylesheet" href="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
-  
-  <!-- 不得不预先加载的一些JS文件 -->
-  <script src="https://unpkg.com/jquery@3.6.0/dist/jquery.min.js"></script>
-  
-    <script src="https://unpkg.com/qrcode_js@1.0.0/qrcode.min.js"></script>
   
   
 <meta name="generator" content="Hexo 6.1.0"></head>
 
 
-    <body class="custom-background">
-        <div id="kratos-wrapper">
-    <div id="kratos-page">
-        <div id="kratos-header">
-            <header id="kratos-desktop-topnav" class="kratos-topnav">
-                <div class="container">
-                    <div class="nav-header">
-                        <nav id="kratos-menu-wrap">
-                            <ul id="kratos-primary-menu" class="sf-menu">
-                                
-                                    
-                                        <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
-                                    
-                                
-                                    
-                                        <li><a href="/archives/"><i class="fa fa-archive"></i>档案馆</a></li>
-                                    
-                                
-                                    
-                                        <li><a href="/tags/"><i class="fa fa-tags"></i>标签栏</a></li>
-                                    
-                                
-                                    
-                                        <li><a href="/search/"><i class="fa fa-search"></i>文章搜索</a></li>
-                                    
-                                
-                                    
-                                        <li><a href="/friends/"><i class="fa fa-bookmark"></i>其他</a></li>
-                                    
-                                
-                                    
-                                        <li><a href="/about/"><i class="fa fa-rocket"></i>关于我</a></li>
-                                    
-                                
-                            </ul>
-                        </nav>
-                    </div>
-                </div>
-            </header>
-            <header id="kratos-mobile-topnav" class="kratos-topnav">
-                <div class="container">
-                    <div class="color-logo"><a href="/">Azreallem&#39;s Blog</a></div>
-                    <div class="nav-toggle">
-                        <a class="kratos-nav-toggle js-kratos-nav-toggle">
-                            <i></i>
-                        </a>
-                    </div>
-                </div>
-            </header>
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://github.com/cofess" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">昵称</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">Web Developer &amp; Designer</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> Shenzhen, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
         </div>
-        <div class="kratos-start kratos-hero-2">
-            <!-- <div class="kratos-overlay"></div> -->
-            <div class="kratos-cover kratos-cover-2 text-center">
-                <div class="desc desc2 animate-box">
-                    <a href="/">
-                        <h2>Azreallem&#39;s Blog</h2> <br />
-                        <span>做一个纯粹的人</span>
-                    </a>
-                </div>
-            </div>
-        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
 
-        <div id="kratos-blog-post">
-            <div class="container">
-                <div id="main" class="row">
-                    
 
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
         
-
-            <section class="col-md-8">
-
         
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-books">
+          <a href="/books">
+            
+            <i class="icon icon-book-fill"></i>
+            
+            <span class="menu-title">书单</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
 
-            <article>
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
     
-    <div class="kratos-hentry kratos-post-inner clearfix">
-        <header class="kratos-entry-header">
-            
-            
-            <ul class="kratos-post-meta text-center">
-                <li><i class="fa fa-calendar"></i> 2022-04-23</li>
-                <li><i class="fa fa-user"></i> 作者 Azreallem</li>
-                <li>
-                    <i class="fa fa-edit"></i> 
-                    
-                    
-                        ~18.70K
-                    
-                    字
-                </li>
-                
-                    <li id="/2022/04/23/Memory%20Layout%20of%20C%20Programs/" class="leancloud_visitors" data-flag-title="">
-                        <i class="fa fa-eye"></i>
-                        <span class="leancloud-visitors-count"> </span> 次阅读
-                    </li>
-                    
-                
-            </ul>
-        </header>
-        <div class="kratos-post-content">
-            <div id="expire-alert" class="alert alert-warning hidden" role="alert">
-                <div class="icon"><i class="fa fa-warning"></i></div>
-                <div class="text"><p>本文最后编辑于 <time datetime="1650684784003"></time> 前，其中的内容可能需要更新。</p></div>
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
             </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/help/">help</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">内核分析</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B%E6%96%87%E6%A1%A3/">教程文档</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/">随手笔记</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/" rel="tag">C</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/FSM/" rel="tag">FSM</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/algorithm/" rel="tag">algorithm</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/backtracking/" rel="tag">backtracking</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/book/" rel="tag">book</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/c/" rel="tag">c++</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/combine/" rel="tag">combine</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/gdb/" rel="tag">gdb</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/help/" rel="tag">help</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/" rel="tag">hexo</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/iproute2/" rel="tag">iproute2</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/link/" rel="tag">link</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/linux/" rel="tag">linux</a><span class="tag-list-count">4</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/note/" rel="tag">note</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/quckily-note/" rel="tag">quckily-note</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/setup-arch/" rel="tag">setup_arch</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/shell/" rel="tag">shell</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/source-code/" rel="tag">source code</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/start-kernel/" rel="tag">start_kernel</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/technique/" rel="tag">technique</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tlbex/" rel="tag">tlbex</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/tmux/" rel="tag">tmux</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vim/" rel="tag">vim</a><span class="tag-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/C/" style="font-size: 13.33px;">C</a> <a href="/tags/FSM/" style="font-size: 13px;">FSM</a> <a href="/tags/Linux/" style="font-size: 13px;">Linux</a> <a href="/tags/algorithm/" style="font-size: 13px;">algorithm</a> <a href="/tags/backtracking/" style="font-size: 13px;">backtracking</a> <a href="/tags/book/" style="font-size: 13.33px;">book</a> <a href="/tags/c/" style="font-size: 13px;">c++</a> <a href="/tags/combine/" style="font-size: 13px;">combine</a> <a href="/tags/gdb/" style="font-size: 13px;">gdb</a> <a href="/tags/help/" style="font-size: 14px;">help</a> <a href="/tags/hexo/" style="font-size: 13px;">hexo</a> <a href="/tags/iproute2/" style="font-size: 13px;">iproute2</a> <a href="/tags/link/" style="font-size: 13.33px;">link</a> <a href="/tags/linux/" style="font-size: 14px;">linux</a> <a href="/tags/note/" style="font-size: 13.67px;">note</a> <a href="/tags/quckily-note/" style="font-size: 13px;">quckily-note</a> <a href="/tags/setup-arch/" style="font-size: 13px;">setup_arch</a> <a href="/tags/shell/" style="font-size: 13.33px;">shell</a> <a href="/tags/source-code/" style="font-size: 13.67px;">source code</a> <a href="/tags/start-kernel/" style="font-size: 13px;">start_kernel</a> <a href="/tags/technique/" style="font-size: 13px;">technique</a> <a href="/tags/tlbex/" style="font-size: 13px;">tlbex</a> <a href="/tags/tmux/" style="font-size: 13px;">tmux</a> <a href="/tags/vim/" style="font-size: 13px;">vim</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">四月 2022</a><span class="archive-list-count">9</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">三月 2022</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/10/">十月 2021</a><span class="archive-list-count">4</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2021/07/">七月 2021</a><span class="archive-list-count">3</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
             
-            <hr />
-            <p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/memory-layout-of-c-program/">Memory Layout of C Programs</a> 这篇文章主要讲C程序中的内存布局。  </p>
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/04/23/Memory%20Layout%20of%20C%20Programs/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-04-23T02:21:10.000Z" itemprop="datePublished">2022-04-23</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2022/04/16/linuxatemyram/" class="title">(no title)</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-04-16T02:20:11.000Z" itemprop="datePublished">2022-04-16</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/04/13/linux-probe-note/" class="title">linux-probe-note</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-04-13T14:33:18.000Z" itemprop="datePublished">2022-04-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/help/">help</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/04/13/shell-help/" class="title">shell-help</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-04-13T14:27:23.000Z" itemprop="datePublished">2022-04-13</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/help/">help</a>
+              </p>
+              <p class="item-title">
+                <a href="/2022/04/13/vim-help/" class="title">vim-help</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2022-04-13T14:24:13.000Z" itemprop="datePublished">2022-04-13</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Memory Layout of C Programs" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2022/04/23/Memory%20Layout%20of%20C%20Programs/" class="article-date">
+	  <time datetime="2022-04-23T02:21:10.000Z" itemprop="datePublished">2022-04-23</time>
+	</a>
+</span>
+        
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/link/" rel="tag">link</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2022/04/23/Memory%20Layout%20of%20C%20Programs/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/memory-layout-of-c-program/">Memory Layout of C Programs</a> 这篇文章主要讲C程序中的内存布局。  </p>
 <span id="more"></span>
 <h2 id="main"><a href="#main" class="headerlink" title="main"></a>main</h2><p><img src="/2022/04/23/Memory%20Layout%20of%20C%20Programs/memoryLayoutC.jpg"><br>A typical memory representation of a C program consists of the following sections.</p>
 <ol>
@@ -202,375 +407,225 @@
 
 <figure class="highlight dns"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br></pre></td><td class="code"><pre><span class="line">memory_layout:     file format elf64-x86-<span class="number">64</span></span><br><span class="line"></span><br><span class="line">Contents of section .interp:</span><br><span class="line"> <span class="number">0318</span> <span class="number">2f6c6962</span> <span class="number">36342</span>f6c <span class="number">642d6c69</span> <span class="number">6</span>e75782d  /lib64/ld-linux-</span><br><span class="line"> <span class="number">0328</span> <span class="number">7838362d</span> <span class="number">36342e73</span> <span class="number">6f2e3200</span>           x86-<span class="number">64</span>.so.<span class="number">2</span>.    </span><br><span class="line">Contents of section .note.gnu.property:</span><br><span class="line"> <span class="number">0338</span> <span class="number">04000000</span> <span class="number">10000000</span> <span class="number">05000000</span> <span class="number">474e5500</span>  ............GNU.</span><br><span class="line"> <span class="number">0348</span> <span class="number">020000c0</span> <span class="number">04000000</span> <span class="number">03000000</span> <span class="number">00000000</span>  ................</span><br><span class="line">Contents of section .note.gnu.build-id:</span><br><span class="line"> <span class="number">0358</span> <span class="number">04000000</span> <span class="number">14000000</span> <span class="number">03000000</span> <span class="number">474e5500</span>  ............GNU.</span><br><span class="line"> <span class="number">0368</span> bdd76df2 <span class="number">2293d5b4</span> <span class="number">75</span>a2dacb a2c2891a  ..m.&quot;...u.......</span><br><span class="line"> <span class="number">0378</span> a049839d                             .I..            </span><br><span class="line">Contents of section .note.ABI-tag:</span><br><span class="line"> <span class="number">037</span>c <span class="number">04000000</span> <span class="number">10000000</span> <span class="number">01000000</span> <span class="number">474e5500</span>  ............GNU.</span><br><span class="line"> <span class="number">038</span>c <span class="number">00000000</span> <span class="number">03000000</span> <span class="number">02000000</span> <span class="number">00000000</span>  ................</span><br><span class="line">Contents of section .gnu.hash:</span><br><span class="line"> <span class="number">03</span>a<span class="number">0 02000000</span> <span class="number">05000000</span> <span class="number">01000000</span> <span class="number">06000000</span>  ................</span><br><span class="line"> <span class="number">03</span>b<span class="number">0 00008100</span> <span class="number">00000000</span> <span class="number">05000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">03</span>c0 d165ce6d                             .e.m            </span><br><span class="line">Contents of section .dynsym:</span><br><span class="line"> <span class="number">03</span>c<span class="number">8 00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">03d</span><span class="number">8 00000000</span> <span class="number">00000000</span> <span class="number">38000000</span> <span class="number">20000000</span>  ........<span class="number">8</span>... ...</span><br><span class="line"> <span class="number">03</span>e<span class="number">8 00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">03</span>f8 <span class="number">1a000000</span> <span class="number">12000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">0408</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">54000000</span> <span class="number">20000000</span>  ........T... ...</span><br><span class="line"> <span class="number">0418</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">0428</span> <span class="number">63000000</span> <span class="number">20000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  c... ...........</span><br><span class="line"> <span class="number">0438</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">0b000000</span> <span class="number">22000000</span>  ............&quot;...</span><br><span class="line"> <span class="number">0448</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line">Contents of section .dynstr:</span><br><span class="line"> <span class="number">0458</span> <span class="number">006c6962</span> <span class="number">632</span>e736f <span class="number">2</span>e36005f <span class="number">5f637861</span>  .libc.so.<span class="number">6</span>.__cxa</span><br><span class="line"> <span class="number">0468</span> <span class="number">5</span>f66696e <span class="number">616</span>c697a <span class="number">65005</span>f5f <span class="number">6c696263</span>  _finalize.__libc</span><br><span class="line"> <span class="number">0478</span> <span class="number">5f737461</span> <span class="number">72745</span>f6d <span class="number">61696e00</span> <span class="number">474c4942</span>  _start_main.GLIB</span><br><span class="line"> <span class="number">0488</span> <span class="number">435</span>f322e <span class="number">322e3500</span> <span class="number">5</span>f49544d <span class="number">5f646572</span>  C_2.<span class="number">2</span>.<span class="number">5</span>._ITM_der</span><br><span class="line"> <span class="number">0498</span> <span class="number">65676973</span> <span class="number">74657254</span> <span class="number">4d</span>436c6f <span class="number">6e655461</span>  egisterTMCloneTa</span><br><span class="line"> <span class="number">04</span>a8 <span class="number">626c6500</span> <span class="number">5</span>f5f676d <span class="number">6f6e5f73</span> <span class="number">74617274</span>  ble.__gmon_start</span><br><span class="line"> <span class="number">04</span>b8 <span class="number">5</span>f5f005f <span class="number">49544d</span>5f <span class="number">72656769</span> <span class="number">73746572</span>  __._ITM_register</span><br><span class="line"> <span class="number">04</span>c8 <span class="number">544d</span>436c <span class="number">6f6e6554</span> <span class="number">61626c65 00</span>        TMCloneTable.   </span><br><span class="line">Contents of section .gnu.version:</span><br><span class="line"> <span class="number">04d</span><span class="number">6 00000000</span> <span class="number">02000000</span> <span class="number">00000200</span>           ............    </span><br><span class="line">Contents of section .gnu.version_r:</span><br><span class="line"> <span class="number">04</span>e<span class="number">8 01000100</span> <span class="number">01000000</span> <span class="number">10000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">04</span>f8 <span class="number">751a6909</span> <span class="number">00000200</span> <span class="number">2c000000</span> <span class="number">00000000</span>  u.i.....,.......</span><br><span class="line">Contents of section .rela.dyn:</span><br><span class="line"> <span class="number">0508</span> f03d00<span class="number">00 00000000</span> <span class="number">08000000</span> <span class="number">00000000</span>  .=..............</span><br><span class="line"> <span class="number">0518</span> <span class="number">20110000</span> <span class="number">00000000</span> f83d00<span class="number">00 00000000</span>   ........=......</span><br><span class="line"> <span class="number">0528</span> <span class="number">08000000</span> <span class="number">00000000</span> e<span class="number">0100000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">0538</span> <span class="number">08400000</span> <span class="number">00000000</span> <span class="number">08000000</span> <span class="number">00000000</span>  .@..............</span><br><span class="line"> <span class="number">0548</span> <span class="number">08400000</span> <span class="number">00000000</span> d83f00<span class="number">00 00000000</span>  .@.......?......</span><br><span class="line"> <span class="number">0558</span> <span class="number">06000000</span> <span class="number">01000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">0568</span> e03f00<span class="number">00 00000000</span> <span class="number">06000000</span> <span class="number">02000000</span>  .?..............</span><br><span class="line"> <span class="number">0578</span> <span class="number">00000000</span> <span class="number">00000000</span> e83f00<span class="number">00 00000000</span>  .........?......</span><br><span class="line"> <span class="number">0588</span> <span class="number">06000000</span> <span class="number">03000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">0598</span> f03f00<span class="number">00 00000000</span> <span class="number">06000000</span> <span class="number">04000000</span>  .?..............</span><br><span class="line"> <span class="number">05</span>a<span class="number">8 00000000</span> <span class="number">00000000</span> f83f00<span class="number">00 00000000</span>  .........?......</span><br><span class="line"> <span class="number">05</span>b<span class="number">8 06000000</span> <span class="number">05000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line">Contents of section .init:</span><br><span class="line"> <span class="number">1000</span> f30f1efa <span class="number">4883</span>ec08 <span class="number">488b05d9</span> <span class="number">2f000048</span>  ....H...H.../..H</span><br><span class="line"> <span class="number">1010</span> <span class="number">85c07402</span> ffd04883 c408c3             ..t...H....     </span><br><span class="line">Contents of section .plt:</span><br><span class="line"> <span class="number">1020</span> ff35a22f <span class="number">0000</span>f2ff <span class="number">25</span>a32f00 <span class="number">000f1f00</span>  .<span class="number">5</span>./....%./.....</span><br><span class="line">Contents of section .plt.got:</span><br><span class="line"> <span class="number">1030</span> f30f1efa f2ff25bd <span class="number">2</span>f00000f <span class="number">1f440000</span>  ......%./....D..</span><br><span class="line">Contents of section .text:</span><br><span class="line"> <span class="number">1040</span> f30f1efa <span class="number">31</span>ed4989 d15e4889 e<span class="number">24883e4</span>  ....<span class="number">1</span>.I..^H..H..</span><br><span class="line"> <span class="number">1050</span> f050544c <span class="number">8d055601</span> <span class="number">0000488d</span> <span class="number">0d</span>df0000  .PTL..V...H.....</span><br><span class="line"> <span class="number">1060</span> <span class="number">00488d</span>3d c<span class="number">1000000</span> ff15722f <span class="number">0000f490</span>  .H.=......r/....</span><br><span class="line"> <span class="number">1070</span> <span class="number">488d3d99</span> <span class="number">2f000048</span> <span class="number">8d</span>05922f <span class="number">00004839</span>  H.=./..H.../..H9</span><br><span class="line"> <span class="number">1080</span> f<span class="number">8741548</span> <span class="number">8</span>b054e2f <span class="number">00004885</span> c07409ff  .t.H..N/..H..t..</span><br><span class="line"> <span class="number">1090</span> e00f1f<span class="number">80 00000000</span> c30f1f<span class="number">80 00000000</span>  ................</span><br><span class="line"> <span class="number">10</span>a0 <span class="number">488d3d69</span> <span class="number">2f000048</span> <span class="number">8d</span>35622f <span class="number">00004829</span>  H.=i/..H.<span class="number">5</span>b/..H)</span><br><span class="line"> <span class="number">10</span>b0 fe4889f0 <span class="number">48</span>c1ee3f <span class="number">48c1f803</span> <span class="number">4801c648</span>  .H..H..?H...H..H</span><br><span class="line"> <span class="number">10</span>c0 d1fe7414 <span class="number">488b0525</span> <span class="number">2f000048</span> <span class="number">85c07408</span>  ..t.H..%/..H..t.</span><br><span class="line"> <span class="number">10d</span>0 ffe0660f <span class="number">1f440000</span> c30f1f<span class="number">80 00000000</span>  ..f..D..........</span><br><span class="line"> <span class="number">10</span>e0 f30f1efa <span class="number">803d</span>252f <span class="number">00000075</span> <span class="number">2b554883</span>  .....=%/...u+UH.</span><br><span class="line"> <span class="number">10</span>f0 <span class="number">3d022f00</span> <span class="number">00004889</span> e5740c48 <span class="number">8</span>b3d062f  =./...H..t.H.=./</span><br><span class="line"> <span class="number">1100</span> <span class="number">0000e829</span> ffffffe8 <span class="number">64</span>ffffff c605fd2e  ...)....d.......</span><br><span class="line"> <span class="number">1110</span> <span class="number">0000015d</span> c30f1f00 c30f1f<span class="number">80 00000000</span>  ...]............</span><br><span class="line"> <span class="number">1120</span> f30f1efa e977ffff fff30f1e fa554889  .....w.......UH.</span><br><span class="line"> <span class="number">1130</span> e<span class="number">5b80000</span> <span class="number">00005d</span>c3 <span class="number">0f1f8400</span> <span class="number">00000000</span>  ......].........</span><br><span class="line"> <span class="number">1140</span> f30f1efa <span class="number">41574</span>c8d <span class="number">3d</span>a32c<span class="number">00 00415649</span>  ....AWL.=.,..AVI</span><br><span class="line"> <span class="number">1150</span> <span class="number">89d64155</span> <span class="number">4989f541</span> <span class="number">544189</span>fc <span class="number">55488d</span>2d  ..AUI..ATA..UH.-</span><br><span class="line"> <span class="number">1160</span> <span class="number">942c0000</span> <span class="number">534</span>c29fd <span class="number">4883</span>ec08 e88ffeff  .,..SL).H.......</span><br><span class="line"> <span class="number">1170</span> ff48c1fd <span class="number">03741f31</span> db0f1f<span class="number">80 00000000</span>  .H...t.<span class="number">1</span>........</span><br><span class="line"> <span class="number">1180</span> <span class="number">4</span>c89f24c <span class="number">89</span>ee4489 e741ff14 df4883c3  L..L..D..<span class="keyword">A</span>...H..</span><br><span class="line"> <span class="number">1190</span> <span class="number">014839d</span>d <span class="number">75</span>ea4883 c4085b5d <span class="number">415</span>c415d  .H9.u.H...[]<span class="keyword">A</span>\<span class="keyword">A</span>]</span><br><span class="line"> <span class="number">11</span>a0 <span class="number">415</span>e415f c366662e <span class="number">0f1f8400</span> <span class="number">00000000</span>  <span class="keyword">A</span>^A_.ff.........</span><br><span class="line"> <span class="number">11</span>b0 f30f1efa c3                          .....           </span><br><span class="line">Contents of section .fini:</span><br><span class="line"> <span class="number">11</span>b8 f30f1efa <span class="number">4883</span>ec08 <span class="number">4883c408</span> c3        ....H...H....   </span><br><span class="line">Contents of section .rodata:</span><br><span class="line"> <span class="number">2000</span> <span class="number">01000200</span>                             ....            </span><br><span class="line">Contents of section .eh_frame_hdr:</span><br><span class="line"> <span class="number">2004</span> <span class="number">011</span>b033b <span class="number">38000000</span> <span class="number">06000000</span> <span class="number">1</span>cf0ffff  ...<span class="comment">;8...........</span></span><br><span class="line"> <span class="number">2014</span> <span class="number">6c000000</span> <span class="number">2</span>cf0ffff <span class="number">94000000</span> <span class="number">3</span>cf0ffff  l...,.......&lt;...</span><br><span class="line"> <span class="number">2024</span> <span class="number">54000000</span> <span class="number">25</span>f1ffff ac000000 <span class="number">3</span>cf1ffff  T...%.......&lt;...</span><br><span class="line"> <span class="number">2034</span> cc000000 acf1ffff <span class="number">14010000</span>           ............    </span><br><span class="line">Contents of section .eh_frame:</span><br><span class="line"> <span class="number">2040</span> <span class="number">14000000</span> <span class="number">00000000</span> <span class="number">017a5200</span> <span class="number">01781001</span>  .........zR..x..</span><br><span class="line"> <span class="number">2050</span> <span class="number">1b0c0708</span> <span class="number">90010000</span> <span class="number">14000000</span> <span class="number">1c000000</span>  ................</span><br><span class="line"> <span class="number">2060</span> e0efffff <span class="number">2f000000</span> <span class="number">00440710</span> <span class="number">00000000</span>  ..../....D......</span><br><span class="line"> <span class="number">2070</span> <span class="number">24000000</span> <span class="number">34000000</span> a8efffff <span class="number">10000000</span>  $...<span class="number">4</span>...........</span><br><span class="line"> <span class="number">2080</span> <span class="number">000e1046</span> <span class="number">0</span>e184a0f <span class="number">0b770880</span> <span class="number">003</span>f1a3a  ...F..J..w...?.:</span><br><span class="line"> <span class="number">2090</span> <span class="number">2a332422</span> <span class="number">00000000</span> <span class="number">14000000</span> <span class="number">5c000000</span>  *<span class="number">3</span>$&quot;........\...</span><br><span class="line"> <span class="number">20</span>a0 <span class="number">90</span>efffff <span class="number">10000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">20</span>b0 <span class="number">1c000000</span> <span class="number">74000000</span> <span class="number">71</span>f0ffff <span class="number">0f000000</span>  ....t...q.......</span><br><span class="line"> <span class="number">20</span>c<span class="number">0 00450e10</span> <span class="number">8602430d</span> <span class="number">06460c07</span> <span class="number">08000000</span>  .E....C..F......</span><br><span class="line"> <span class="number">20d</span><span class="number">0 44000000</span> <span class="number">94000000</span> <span class="number">68</span>f0ffff <span class="number">65000000</span>  D.......h...e...</span><br><span class="line"> <span class="number">20</span>e<span class="number">0 00460e10</span> <span class="number">8</span>f02490e <span class="number">188e0345</span> <span class="number">0e208d04</span>  .F....I....E. ..</span><br><span class="line"> <span class="number">20</span>f0 <span class="number">450</span>e288c <span class="number">05440e30</span> <span class="number">8606480</span>e <span class="number">38830747</span>  E.(..D.<span class="number">0</span>..H.<span class="number">8</span>..G</span><br><span class="line"> <span class="number">2100</span> <span class="number">0</span>e406e0e <span class="number">38410e30</span> <span class="number">410e2842</span> <span class="number">0</span>e20420e  .@n.<span class="number">8</span><span class="keyword">A</span>.<span class="number">0</span><span class="keyword">A</span>.(B. B.</span><br><span class="line"> <span class="number">2110</span> <span class="number">18420e10</span> <span class="number">420e0800</span> <span class="number">10000000</span> dc000000  .B..B...........</span><br><span class="line"> <span class="number">2120</span> <span class="number">90</span>f0ffff <span class="number">05000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line">Contents of section .init_array:</span><br><span class="line"> <span class="number">3d</span>f<span class="number">0 20110000</span> <span class="number">00000000</span>                     .......        </span><br><span class="line">Contents of section .fini_array:</span><br><span class="line"> <span class="number">3d</span>f8 e<span class="number">0100000</span> <span class="number">00000000</span>                    ........        </span><br><span class="line">Contents of section .dynamic:</span><br><span class="line"> <span class="number">3</span>e<span class="number">00 01000000</span> <span class="number">00000000</span> <span class="number">01000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>e10 <span class="number">0c000000</span> <span class="number">00000000</span> <span class="number">00100000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>e20 <span class="number">0d000000</span> <span class="number">00000000</span> b<span class="number">8110000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>e<span class="number">30 19000000</span> <span class="number">00000000</span> f03d00<span class="number">00 00000000</span>  .........=......</span><br><span class="line"> <span class="number">3</span>e40 <span class="number">1b000000</span> <span class="number">00000000</span> <span class="number">08000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>e50 <span class="number">1a000000</span> <span class="number">00000000</span> f83d00<span class="number">00 00000000</span>  .........=......</span><br><span class="line"> <span class="number">3</span>e60 <span class="number">1c000000</span> <span class="number">00000000</span> <span class="number">08000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>e70 f5feff6f <span class="number">00000000</span> a<span class="number">0030000</span> <span class="number">00000000</span>  ...o............</span><br><span class="line"> <span class="number">3</span>e<span class="number">80 05000000</span> <span class="number">00000000</span> <span class="number">58040000</span> <span class="number">00000000</span>  ........X.......</span><br><span class="line"> <span class="number">3</span>e<span class="number">90 06000000</span> <span class="number">00000000</span> c<span class="number">8030000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>ea0 <span class="number">0a000000</span> <span class="number">00000000</span> <span class="number">7d000000</span> <span class="number">00000000</span>  ........&#125;.......</span><br><span class="line"> <span class="number">3</span>eb0 <span class="number">0b000000</span> <span class="number">00000000</span> <span class="number">18000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>ec<span class="number">0 15000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>ed<span class="number">0 03000000</span> <span class="number">00000000</span> c03f00<span class="number">00 00000000</span>  .........?......</span><br><span class="line"> <span class="number">3</span>ee<span class="number">0 07000000</span> <span class="number">00000000</span> <span class="number">08050000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>ef<span class="number">0 08000000</span> <span class="number">00000000</span> c<span class="number">0000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>f<span class="number">00 09000000</span> <span class="number">00000000</span> <span class="number">18000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>f10 <span class="number">1e000000</span> <span class="number">00000000</span> <span class="number">08000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>f20 fbffff6f <span class="number">00000000</span> <span class="number">01000008</span> <span class="number">00000000</span>  ...o............</span><br><span class="line"> <span class="number">3</span>f30 feffff6f <span class="number">00000000</span> e<span class="number">8040000</span> <span class="number">00000000</span>  ...o............</span><br><span class="line"> <span class="number">3</span>f40 ffffff6f <span class="number">00000000</span> <span class="number">01000000</span> <span class="number">00000000</span>  ...o............</span><br><span class="line"> <span class="number">3</span>f50 f0ffff6f <span class="number">00000000</span> d<span class="number">6040000</span> <span class="number">00000000</span>  ...o............</span><br><span class="line"> <span class="number">3</span>f60 f9ffff6f <span class="number">00000000</span> <span class="number">03000000</span> <span class="number">00000000</span>  ...o............</span><br><span class="line"> <span class="number">3</span>f<span class="number">70 00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>f<span class="number">80 00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>f<span class="number">90 00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>fa<span class="number">0 00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>fb<span class="number">0 00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line">Contents of section .got:</span><br><span class="line"> <span class="number">3</span>fc0 <span class="number">003e0000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  .&gt;..............</span><br><span class="line"> <span class="number">3</span>fd<span class="number">0 00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>fe<span class="number">0 00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line"> <span class="number">3</span>ff<span class="number">0 00000000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">00000000</span>  ................</span><br><span class="line">Contents of section .data:</span><br><span class="line"> <span class="number">4000</span> <span class="number">00000000</span> <span class="number">00000000</span> <span class="number">08400000</span> <span class="number">00000000</span>  .........@......</span><br><span class="line">Contents of section .comment:</span><br><span class="line"> <span class="number">0000</span> <span class="number">4743433</span>a <span class="number">20285562</span> <span class="number">756e7475</span> <span class="number">20392e34</span>  GCC: (Ubuntu <span class="number">9</span>.<span class="number">4</span></span><br><span class="line"> <span class="number">0010</span> <span class="number">2e302d31</span> <span class="number">7562756</span>e <span class="number">7475317</span>e <span class="number">32302e30</span>  .<span class="number">0</span>-<span class="number">1</span>ubuntu1~<span class="number">20</span>.<span class="number">0</span></span><br><span class="line"> <span class="number">0020</span> <span class="number">342e3129</span> <span class="number">20392e34</span> <span class="number">2</span>e3000             <span class="number">4</span>.<span class="number">1</span>) <span class="number">9</span>.<span class="number">4</span>.<span class="number">0</span>.     </span><br><span class="line"></span><br><span class="line">Disassembly of section .init:</span><br><span class="line"></span><br><span class="line"><span class="number">0000000000001000</span> &lt;_init&gt;:</span><br><span class="line">    <span class="number">1000</span>:	f3 <span class="number">0</span>f <span class="number">1</span>e fa          	endbr64 </span><br><span class="line">    <span class="number">1004</span>:	<span class="number">48</span> <span class="number">83</span> ec <span class="number">08</span>          	sub    $<span class="number">0</span>x8,%rsp</span><br><span class="line">    <span class="number">1008</span>:	<span class="number">48</span> <span class="number">8</span>b <span class="number">05</span> d9 <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span> 	mov    <span class="number">0</span>x2fd9(%rip),%rax        # <span class="number">3</span>fe8 &lt;__gmon_start__&gt;</span><br><span class="line">    <span class="number">100</span>f:	<span class="number">48</span> <span class="number">85</span> c0             	test   %rax,%rax</span><br><span class="line">    <span class="number">1012</span>:	<span class="number">74</span> <span class="number">02</span>                	je     <span class="number">1016</span> &lt;_init+<span class="number">0</span>x16&gt;</span><br><span class="line">    <span class="number">1014</span>:	ff d0                	callq  *%rax</span><br><span class="line">    <span class="number">1016</span>:	<span class="number">48</span> <span class="number">83</span> c4 <span class="number">08</span>          	add    $<span class="number">0</span>x8,%rsp</span><br><span class="line">    <span class="number">101</span>a:	c3                   	retq   </span><br><span class="line"></span><br><span class="line">Disassembly of section .plt:</span><br><span class="line"></span><br><span class="line"><span class="number">0000000000001020</span> &lt;.plt&gt;:</span><br><span class="line">    <span class="number">1020</span>:	ff <span class="number">35</span> a2 <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span>    	pushq  <span class="number">0</span>x2fa2(%rip)        # <span class="number">3</span>fc8 &lt;_GLOBAL_OFFSET_TABLE_+<span class="number">0</span>x8&gt;</span><br><span class="line">    <span class="number">1026</span>:	f2 ff <span class="number">25</span> a3 <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span> 	bnd jmpq *<span class="number">0</span>x2fa3(%rip)        # <span class="number">3</span>fd0 &lt;_GLOBAL_OFFSET_TABLE_+<span class="number">0</span>x10&gt;</span><br><span class="line">    <span class="number">102d</span>:	<span class="number">0</span>f <span class="number">1</span>f <span class="number">00</span>             	nopl   (%rax)</span><br><span class="line"></span><br><span class="line">Disassembly of section .plt.got:</span><br><span class="line"></span><br><span class="line"><span class="number">0000000000001030</span> &lt;__cxa_finalize@plt&gt;:</span><br><span class="line">    <span class="number">1030</span>:	f3 <span class="number">0</span>f <span class="number">1</span>e fa          	endbr64 </span><br><span class="line">    <span class="number">1034</span>:	f2 ff <span class="number">25</span> bd <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span> 	bnd jmpq *<span class="number">0</span>x2fbd(%rip)        # <span class="number">3</span>ff8 &lt;__cxa_finalize@GLIBC_2.<span class="number">2</span>.<span class="number">5</span>&gt;</span><br><span class="line">    <span class="number">103</span>b:	<span class="number">0</span>f <span class="number">1</span>f <span class="number">44</span> <span class="number">00</span> <span class="number">00</span>       	nopl   <span class="number">0</span>x0(%rax,%rax,<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line"><span class="number">0000000000001040</span> &lt;_start&gt;:</span><br><span class="line">    <span class="number">1040</span>:	f3 <span class="number">0</span>f <span class="number">1</span>e fa          	endbr64 </span><br><span class="line">    <span class="number">1044</span>:	<span class="number">31</span> ed                	xor    %ebp,%ebp</span><br><span class="line">    <span class="number">1046</span>:	<span class="number">49</span> <span class="number">89</span> d1             	mov    %rdx,%r9</span><br><span class="line">    <span class="number">1049</span>:	<span class="number">5</span>e                   	pop    %rsi</span><br><span class="line">    <span class="number">104</span>a:	<span class="number">48</span> <span class="number">89</span> e2             	mov    %rsp,%rdx</span><br><span class="line">    <span class="number">104d</span>:	<span class="number">48</span> <span class="number">83</span> e4 f0          	and    $<span class="number">0</span>xfffffffffffffff0,%rsp</span><br><span class="line">    <span class="number">1051</span>:	<span class="number">50</span>                   	push   %rax</span><br><span class="line">    <span class="number">1052</span>:	<span class="number">54</span>                   	push   %rsp</span><br><span class="line">    <span class="number">1053</span>:	<span class="number">4</span>c <span class="number">8d</span> <span class="number">05 56 01 00</span> <span class="number">00</span> 	lea    <span class="number">0</span>x156(%rip),%r8        # <span class="number">11</span>b0 &lt;__libc_csu_fini&gt;</span><br><span class="line">    <span class="number">105</span>a:	<span class="number">48</span> <span class="number">8d</span> <span class="number">0d</span> df <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> 	lea    <span class="number">0</span>xdf(%rip),%rcx        # <span class="number">1140</span> &lt;__libc_csu_init&gt;</span><br><span class="line">    <span class="number">1061</span>:	<span class="number">48</span> <span class="number">8d</span> <span class="number">3d</span> c<span class="number">1 00 00 00</span> 	lea    <span class="number">0</span>xc1(%rip),%rdi        # <span class="number">1129</span> &lt;main&gt;</span><br><span class="line">    <span class="number">1068</span>:	ff <span class="number">15</span> <span class="number">72</span> <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span>    	callq  *<span class="number">0</span>x2f72(%rip)        # <span class="number">3</span>fe0 &lt;__libc_start_main@GLIBC_2.<span class="number">2</span>.<span class="number">5</span>&gt;</span><br><span class="line">    <span class="number">106</span>e:	f4                   	hlt    </span><br><span class="line">    <span class="number">106</span>f:	<span class="number">90</span>                   	nop</span><br><span class="line"></span><br><span class="line"><span class="number">0000000000001070</span> &lt;deregister_tm_clones&gt;:</span><br><span class="line">    <span class="number">1070</span>:	<span class="number">48</span> <span class="number">8d</span> <span class="number">3d</span> <span class="number">99</span> <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span> 	lea    <span class="number">0</span>x2f99(%rip),%rdi        # <span class="number">4010</span> &lt;__TMC_END__&gt;</span><br><span class="line">    <span class="number">1077</span>:	<span class="number">48</span> <span class="number">8d</span> <span class="number">05</span> <span class="number">92</span> <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span> 	lea    <span class="number">0</span>x2f92(%rip),%rax        # <span class="number">4010</span> &lt;__TMC_END__&gt;</span><br><span class="line">    <span class="number">107</span>e:	<span class="number">48</span> <span class="number">39</span> f8             	cmp    %rdi,%rax</span><br><span class="line">    <span class="number">1081</span>:	<span class="number">74</span> <span class="number">15</span>                	je     <span class="number">1098</span> &lt;deregister_tm_clones+<span class="number">0</span>x28&gt;</span><br><span class="line">    <span class="number">1083</span>:	<span class="number">48</span> <span class="number">8</span>b <span class="number">05</span> <span class="number">4</span>e <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span> 	mov    <span class="number">0</span>x2f4e(%rip),%rax        # <span class="number">3</span>fd8 &lt;_ITM_deregisterTMCloneTable&gt;</span><br><span class="line">    <span class="number">108</span>a:	<span class="number">48</span> <span class="number">85</span> c0             	test   %rax,%rax</span><br><span class="line">    <span class="number">108d</span>:	<span class="number">74</span> <span class="number">09</span>                	je     <span class="number">1098</span> &lt;deregister_tm_clones+<span class="number">0</span>x28&gt;</span><br><span class="line">    <span class="number">108</span>f:	ff e0                	jmpq   *%rax</span><br><span class="line">    <span class="number">1091</span>:	<span class="number">0</span>f <span class="number">1</span>f <span class="number">80 00 00 00</span> <span class="number">00</span> 	nopl   <span class="number">0</span>x0(%rax)</span><br><span class="line">    <span class="number">1098</span>:	c3                   	retq   </span><br><span class="line">    <span class="number">1099</span>:	<span class="number">0</span>f <span class="number">1</span>f <span class="number">80 00 00 00</span> <span class="number">00</span> 	nopl   <span class="number">0</span>x0(%rax)</span><br><span class="line"></span><br><span class="line"><span class="number">00000000000010</span>a0 &lt;register_tm_clones&gt;:</span><br><span class="line">    <span class="number">10</span>a0:	<span class="number">48</span> <span class="number">8d</span> <span class="number">3d</span> <span class="number">69</span> <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span> 	lea    <span class="number">0</span>x2f69(%rip),%rdi        # <span class="number">4010</span> &lt;__TMC_END__&gt;</span><br><span class="line">    <span class="number">10</span>a7:	<span class="number">48</span> <span class="number">8d</span> <span class="number">35</span> <span class="number">62</span> <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span> 	lea    <span class="number">0</span>x2f62(%rip),%rsi        # <span class="number">4010</span> &lt;__TMC_END__&gt;</span><br><span class="line">    <span class="number">10</span>ae:	<span class="number">48</span> <span class="number">29</span> fe             	sub    %rdi,%rsi</span><br><span class="line">    <span class="number">10</span>b1:	<span class="number">48</span> <span class="number">89</span> f0             	mov    %rsi,%rax</span><br><span class="line">    <span class="number">10</span>b4:	<span class="number">48</span> c1 ee <span class="number">3</span>f          	shr    $<span class="number">0</span>x3f,%rsi</span><br><span class="line">    <span class="number">10</span>b8:	<span class="number">48</span> c1 f8 <span class="number">03</span>          	sar    $<span class="number">0</span>x3,%rax</span><br><span class="line">    <span class="number">10</span>bc:	<span class="number">48</span> <span class="number">01</span> c6             	add    %rax,%rsi</span><br><span class="line">    <span class="number">10</span>bf:	<span class="number">48</span> d1 fe             	sar    %rsi</span><br><span class="line">    <span class="number">10</span>c2:	<span class="number">74</span> <span class="number">14</span>                	je     <span class="number">10d</span>8 &lt;register_tm_clones+<span class="number">0</span>x38&gt;</span><br><span class="line">    <span class="number">10</span>c4:	<span class="number">48</span> <span class="number">8</span>b <span class="number">05</span> <span class="number">25</span> <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span> 	mov    <span class="number">0</span>x2f25(%rip),%rax        # <span class="number">3</span>ff0 &lt;_ITM_registerTMCloneTable&gt;</span><br><span class="line">    <span class="number">10</span>cb:	<span class="number">48</span> <span class="number">85</span> c0             	test   %rax,%rax</span><br><span class="line">    <span class="number">10</span>ce:	<span class="number">74</span> <span class="number">08</span>                	je     <span class="number">10d</span>8 &lt;register_tm_clones+<span class="number">0</span>x38&gt;</span><br><span class="line">    <span class="number">10d</span>0:	ff e0                	jmpq   *%rax</span><br><span class="line">    <span class="number">10d</span>2:	<span class="number">66</span> <span class="number">0</span>f <span class="number">1</span>f <span class="number">44</span> <span class="number">00</span> <span class="number">00</span>    	nopw   <span class="number">0</span>x0(%rax,%rax,<span class="number">1</span>)</span><br><span class="line">    <span class="number">10d</span>8:	c3                   	retq   </span><br><span class="line">    <span class="number">10d</span>9:	<span class="number">0</span>f <span class="number">1</span>f <span class="number">80 00 00 00</span> <span class="number">00</span> 	nopl   <span class="number">0</span>x0(%rax)</span><br><span class="line"></span><br><span class="line"><span class="number">00000000000010</span>e0 &lt;__do_global_dtors_aux&gt;:</span><br><span class="line">    <span class="number">10</span>e0:	f3 <span class="number">0</span>f <span class="number">1</span>e fa          	endbr64 </span><br><span class="line">    <span class="number">10</span>e4:	<span class="number">80</span> <span class="number">3d</span> <span class="number">25</span> <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span> <span class="number">00</span> 	cmpb   $<span class="number">0</span>x<span class="number">0,0x2f25</span>(%rip)        # <span class="number">4010</span> &lt;__TMC_END__&gt;</span><br><span class="line">    <span class="number">10</span>eb:	<span class="number">75</span> <span class="number">2</span>b                	jne    <span class="number">1118</span> &lt;__do_global_dtors_aux+<span class="number">0</span>x38&gt;</span><br><span class="line">    <span class="number">10</span>ed:	<span class="number">55</span>                   	push   %rbp</span><br><span class="line">    <span class="number">10</span>ee:	<span class="number">48</span> <span class="number">83</span> <span class="number">3d</span> <span class="number">02</span> <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span> 	cmpq   $<span class="number">0</span>x<span class="number">0,0x2f02</span>(%rip)        # <span class="number">3</span>ff8 &lt;__cxa_finalize@GLIBC_2.<span class="number">2</span>.<span class="number">5</span>&gt;</span><br><span class="line">    <span class="number">10</span>f5:	<span class="number">00</span> </span><br><span class="line">    <span class="number">10</span>f6:	<span class="number">48</span> <span class="number">89</span> e5             	mov    %rsp,%rbp</span><br><span class="line">    <span class="number">10</span>f9:	<span class="number">74</span> <span class="number">0</span>c                	je     <span class="number">1107</span> &lt;__do_global_dtors_aux+<span class="number">0</span>x27&gt;</span><br><span class="line">    <span class="number">10</span>fb:	<span class="number">48</span> <span class="number">8</span>b <span class="number">3d</span> <span class="number">06</span> <span class="number">2</span>f <span class="number">00</span> <span class="number">00</span> 	mov    <span class="number">0</span>x2f06(%rip),%rdi        # <span class="number">4008</span> &lt;__dso_handle&gt;</span><br><span class="line">    <span class="number">1102</span>:	e8 <span class="number">29</span> ff ff ff       	callq  <span class="number">1030</span> &lt;__cxa_finalize@plt&gt;</span><br><span class="line">    <span class="number">1107</span>:	e8 <span class="number">64</span> ff ff ff       	callq  <span class="number">1070</span> &lt;deregister_tm_clones&gt;</span><br><span class="line">    <span class="number">110</span>c:	c6 <span class="number">05</span> fd <span class="number">2</span>e <span class="number">00</span> <span class="number">00</span> <span class="number">01</span> 	movb   $<span class="number">0</span>x1,<span class="number">0</span>x2efd(%rip)        # <span class="number">4010</span> &lt;__TMC_END__&gt;</span><br><span class="line">    <span class="number">1113</span>:	<span class="number">5d</span>                   	pop    %rbp</span><br><span class="line">    <span class="number">1114</span>:	c3                   	retq   </span><br><span class="line">    <span class="number">1115</span>:	<span class="number">0</span>f <span class="number">1</span>f <span class="number">00</span>             	nopl   (%rax)</span><br><span class="line">    <span class="number">1118</span>:	c3                   	retq   </span><br><span class="line">    <span class="number">1119</span>:	<span class="number">0</span>f <span class="number">1</span>f <span class="number">80 00 00 00</span> <span class="number">00</span> 	nopl   <span class="number">0</span>x0(%rax)</span><br><span class="line"></span><br><span class="line"><span class="number">0000000000001120</span> &lt;frame_dummy&gt;:</span><br><span class="line">    <span class="number">1120</span>:	f3 <span class="number">0</span>f <span class="number">1</span>e fa          	endbr64 </span><br><span class="line">    <span class="number">1124</span>:	e9 <span class="number">77</span> ff ff ff       	jmpq   <span class="number">10</span>a0 &lt;register_tm_clones&gt;</span><br><span class="line"></span><br><span class="line"><span class="number">0000000000001129</span> &lt;main&gt;:</span><br><span class="line">    <span class="number">1129</span>:	f3 <span class="number">0</span>f <span class="number">1</span>e fa          	endbr64 </span><br><span class="line">    <span class="number">112d</span>:	<span class="number">55</span>                   	push   %rbp</span><br><span class="line">    <span class="number">112</span>e:	<span class="number">48</span> <span class="number">89</span> e5             	mov    %rsp,%rbp</span><br><span class="line">    <span class="number">1131</span>:	b<span class="number">8 00 00 00</span> <span class="number">00</span>       	mov    $<span class="number">0</span>x0,%eax</span><br><span class="line">    <span class="number">1136</span>:	<span class="number">5d</span>                   	pop    %rbp</span><br><span class="line">    <span class="number">1137</span>:	c3                   	retq   </span><br><span class="line">    <span class="number">1138</span>:	<span class="number">0</span>f <span class="number">1</span>f <span class="number">84 00 00 00</span> <span class="number">00</span> 	nopl   <span class="number">0</span>x0(%rax,%rax,<span class="number">1</span>)</span><br><span class="line">    <span class="number">113</span>f:	<span class="number">00</span> </span><br><span class="line"></span><br><span class="line"><span class="number">0000000000001140</span> &lt;__libc_csu_init&gt;:</span><br><span class="line">    <span class="number">1140</span>:	f3 <span class="number">0</span>f <span class="number">1</span>e fa          	endbr64 </span><br><span class="line">    <span class="number">1144</span>:	<span class="number">41</span> <span class="number">57</span>                	push   %r15</span><br><span class="line">    <span class="number">1146</span>:	<span class="number">4</span>c <span class="number">8d</span> <span class="number">3d</span> a3 <span class="number">2</span>c <span class="number">00</span> <span class="number">00</span> 	lea    <span class="number">0</span>x2ca3(%rip),%r15        # <span class="number">3d</span>f0 &lt;__frame_dummy_init_array_entry&gt;</span><br><span class="line">    <span class="number">114d</span>:	<span class="number">41</span> <span class="number">56</span>                	push   %r14</span><br><span class="line">    <span class="number">114</span>f:	<span class="number">49</span> <span class="number">89</span> d6             	mov    %rdx,%r14</span><br><span class="line">    <span class="number">1152</span>:	<span class="number">41</span> <span class="number">55</span>                	push   %r13</span><br><span class="line">    <span class="number">1154</span>:	<span class="number">49</span> <span class="number">89</span> f5             	mov    %rsi,%r13</span><br><span class="line">    <span class="number">1157</span>:	<span class="number">41</span> <span class="number">54</span>                	push   %r12</span><br><span class="line">    <span class="number">1159</span>:	<span class="number">41</span> <span class="number">89</span> fc             	mov    %edi,%r12d</span><br><span class="line">    <span class="number">115</span>c:	<span class="number">55</span>                   	push   %rbp</span><br><span class="line">    <span class="number">115d</span>:	<span class="number">48</span> <span class="number">8d</span> <span class="number">2d</span> <span class="number">94</span> <span class="number">2</span>c <span class="number">00</span> <span class="number">00</span> 	lea    <span class="number">0</span>x2c94(%rip),%rbp        # <span class="number">3d</span>f8 &lt;__do_global_dtors_aux_fini_array_entry&gt;</span><br><span class="line">    <span class="number">1164</span>:	<span class="number">53</span>                   	push   %rbx</span><br><span class="line">    <span class="number">1165</span>:	<span class="number">4</span>c <span class="number">29</span> fd             	sub    %r15,%rbp</span><br><span class="line">    <span class="number">1168</span>:	<span class="number">48</span> <span class="number">83</span> ec <span class="number">08</span>          	sub    $<span class="number">0</span>x8,%rsp</span><br><span class="line">    <span class="number">116</span>c:	e8 <span class="number">8</span>f fe ff ff       	callq  <span class="number">1000</span> &lt;_init&gt;</span><br><span class="line">    <span class="number">1171</span>:	<span class="number">48</span> c1 fd <span class="number">03</span>          	sar    $<span class="number">0</span>x3,%rbp</span><br><span class="line">    <span class="number">1175</span>:	<span class="number">74</span> <span class="number">1</span>f                	je     <span class="number">1196</span> &lt;__libc_csu_init+<span class="number">0</span>x56&gt;</span><br><span class="line">    <span class="number">1177</span>:	<span class="number">31</span> db                	xor    %ebx,%ebx</span><br><span class="line">    <span class="number">1179</span>:	<span class="number">0</span>f <span class="number">1</span>f <span class="number">80 00 00 00</span> <span class="number">00</span> 	nopl   <span class="number">0</span>x0(%rax)</span><br><span class="line">    <span class="number">1180</span>:	<span class="number">4</span>c <span class="number">89</span> f2             	mov    %r14,%rdx</span><br><span class="line">    <span class="number">1183</span>:	<span class="number">4</span>c <span class="number">89</span> ee             	mov    %r13,%rsi</span><br><span class="line">    <span class="number">1186</span>:	<span class="number">44</span> <span class="number">89</span> e7             	mov    %r12d,%edi</span><br><span class="line">    <span class="number">1189</span>:	<span class="number">41</span> ff <span class="number">14</span> df          	callq  *(%r15,%rbx,<span class="number">8</span>)</span><br><span class="line">    <span class="number">118d</span>:	<span class="number">48</span> <span class="number">83</span> c3 <span class="number">01</span>          	add    $<span class="number">0</span>x1,%rbx</span><br><span class="line">    <span class="number">1191</span>:	<span class="number">48</span> <span class="number">39</span> dd             	cmp    %rbx,%rbp</span><br><span class="line">    <span class="number">1194</span>:	<span class="number">75</span> ea                	jne    <span class="number">1180</span> &lt;__libc_csu_init+<span class="number">0</span>x40&gt;</span><br><span class="line">    <span class="number">1196</span>:	<span class="number">48</span> <span class="number">83</span> c4 <span class="number">08</span>          	add    $<span class="number">0</span>x8,%rsp</span><br><span class="line">    <span class="number">119</span>a:	<span class="number">5</span>b                   	pop    %rbx</span><br><span class="line">    <span class="number">119</span>b:	<span class="number">5d</span>                   	pop    %rbp</span><br><span class="line">    <span class="number">119</span>c:	<span class="number">41</span> <span class="number">5</span>c                	pop    %r12</span><br><span class="line">    <span class="number">119</span>e:	<span class="number">41</span> <span class="number">5d</span>                	pop    %r13</span><br><span class="line">    <span class="number">11</span>a0:	<span class="number">41</span> <span class="number">5</span>e                	pop    %r14</span><br><span class="line">    <span class="number">11</span>a2:	<span class="number">41</span> <span class="number">5</span>f                	pop    %r15</span><br><span class="line">    <span class="number">11</span>a4:	c3                   	retq   </span><br><span class="line">    <span class="number">11</span>a5:	<span class="number">66</span> <span class="number">66</span> <span class="number">2</span>e <span class="number">0</span>f <span class="number">1</span>f <span class="number">84</span> <span class="number">00</span> 	data16 nopw %cs:<span class="number">0</span>x0(%rax,%rax,<span class="number">1</span>)</span><br><span class="line">    <span class="number">11</span>ac:	<span class="number">00 00 00 00</span> </span><br><span class="line"></span><br><span class="line"><span class="number">00000000000011</span>b0 &lt;__libc_csu_fini&gt;:</span><br><span class="line">    <span class="number">11</span>b0:	f3 <span class="number">0</span>f <span class="number">1</span>e fa          	endbr64 </span><br><span class="line">    <span class="number">11</span>b4:	c3                   	retq   </span><br><span class="line"></span><br><span class="line">Disassembly of section .fini:</span><br><span class="line"></span><br><span class="line"><span class="number">00000000000011</span>b8 &lt;_fini&gt;:</span><br><span class="line">    <span class="number">11</span>b8:	f3 <span class="number">0</span>f <span class="number">1</span>e fa          	endbr64 </span><br><span class="line">    <span class="number">11</span>bc:	<span class="number">48</span> <span class="number">83</span> ec <span class="number">08</span>          	sub    $<span class="number">0</span>x8,%rsp</span><br><span class="line">    <span class="number">11</span>c0:	<span class="number">48</span> <span class="number">83</span> c4 <span class="number">08</span>          	add    $<span class="number">0</span>x8,%rsp</span><br><span class="line">    <span class="number">11</span>c4:	c3                   	retq   </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-        </div>
-        
-        <footer class="kratos-entry-footer clearfix">
-            
-                <div class="post-like-donate text-center clearfix" id="post-like-donate">
-                
-                
-                    <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
-                    <div class="share-wrap" style="display: none;">
-    <div class="share-group">
-        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
-            <div class="icon-wrap">
-                <i class="fa fa-qq"></i>
-            </div>
-        </a>
-        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
-            <div class="icon-wrap">
-                <i class="fa fa-star"></i>
-            </div>
-        </a>
-        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
-            <div class="icon-wrap">
-                <i class="fa fa-weixin"></i>
-            </div>
-            <div class="share-int">
-                <div class="qrcode" id="wechat-qr"></div>
-                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
-            </div>
-        </a>
-        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
-            <div class="icon-wrap">
-                <i class="fa fa-weibo"></i>
-            </div>
-        </a>
-        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
-            <div class="icon-wrap">
-                <i class="fa fa-facebook"></i>
-            </div>
-        </a>
-        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
-            <div class="icon-wrap">
-                <i class="fa fa-twitter"></i>
-            </div>
-        </a>
+      
     </div>
-    <script type="text/javascript">
-        $(()=>{
-            new QRCode("wechat-qr", {
-                text: "https://azreallem.github.io/2022/04/23/Memory%20Layout%20of%20C%20Programs/",
-                width: 150,
-                height: 150,
-                correctLevel : QRCode.CorrectLevel.H
-            });
-        });
-        function share(dest) {
-            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
-            const weiboBase     = "https://service.weibo.com/share/share.php?";
-            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
-            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
-            const twitterBase   = "https://twitter.com/intent/tweet?";
-            const hostUrl       = "https://azreallem.github.io/2022/04/23/Memory%20Layout%20of%20C%20Programs/";
-            const title         = "「」";
-            const excerpt       = `Memory Layout of C Programs 这篇文章主要讲C程序中的内存布局。`;
-            let _URL;
-            switch (dest) {
-                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
-                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
-                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
-                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
-                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
-            }
-            window.open(_URL);
-        };
-    </script>
-</div>
-                
-                </div>
-            
-            <div class="footer-tag clearfix">
-                <div class="pull-left">
-                <i class="fa fa-tags"></i>
-                    <a class="tag-none-link" href="/tags/link/" rel="tag">link</a>
-                </div>
-                <div class="pull-date">
-                <span>最后编辑：2022-04-23</span>
-                </div>
-            </div>
-        </footer>
-    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
     
-        <nav class="navigation post-navigation clearfix" role="navigation">
-            
-            <div class="nav-previous clearfix">
-                <a title=" (无标题)" href="/2022/04/16/linuxatemyram/">&lt; 上一篇</a>
-            </div>
-            
-            
-        </nav>
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://azreallem.github.io/2022/04/23/Memory%20Layout%20of%20C%20Programs/" title="" target="_blank" rel="external">https://azreallem.github.io/2022/04/23/Memory Layout of C Programs/</a>
+    </li>
     
-    
-        <div id="v-comments" class="post-comments"></div>
-<script>
-    var load_comm = () => {
-        const init = () => {
-            new Valine({
-                el: '#v-comments',
-                appId: 'Y4RT8kYqhRKjWWeQr1r5HNDx-gzGzoHsz',
-                appKey: 'gMt4uIBOkEnhGwihqUj8CEwR',
-                visitor: true,
-                enableQQ: true,
-                path: '/2022/04/23/Memory%20Layout%20of%20C%20Programs/'
-            });
-        }
-        if (typeof Valine === 'undefined') {
-            const src = 'https://unpkg.com/valine/dist/Valine.min.js';
-            $.getScript(src, init);
-        } else {
-            init();
-        }
-    };
-</script>
-<noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="https://valine.js.org/">comments powered by Valine.</a></noscript>
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
 
-    
-</article>
 
-        
-
-            </section>
-
-        
-
-                
-            
-
-<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
-    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
-    
-    
-                <aside id="krw-about" class="widget widget-kratos-about clearfix">
-    <div class="photo-background"></div>
-    <div class="photo-wrapper clearfix">
-        <div class="photo-wrapper-tip text-center">
-            <img class="about-photo" src="/images/avatar.webp" />
-        </div>
-    </div>
-    <div class="textwidget">
-        <p class="text-center">路漫漫其修远兮，吾将上下而求索</p>
-    </div>
-    <div class="site-meta">
-        <a class="meta-item" href="/archives/">
-            <span class="title">
-                文章
-            </span>
-            <span class="count">
-                17
-            </span>
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://github.com/cofess" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
         </a>
-        <a class="meta-item" href="/categories/">
-            <span class="title">
-                分类
-            </span>
-            <span class="count">
-                5
-            </span>
-        </a>
-        <a class="meta-item" href="/tags/">
-            <span class="title">
-                标签
-            </span>
-            <span class="count">
-                24
-            </span>
-        </a>
-    </div>
-</aside>
-            
-                    <div class="sticky-area">
-                
-                
-  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
-    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/help/">help</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">内核分析</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E6%95%99%E7%A8%8B%E6%96%87%E6%A1%A3/">教程文档</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BC%96%E7%A8%8B%E6%8A%80%E6%9C%AF/">编程技术</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9A%8F%E6%89%8B%E7%AC%94%E8%AE%B0/">随手笔记</a><span class="category-list-count">2</span></li></ul>
-  </aside>
-
-
-            
-                
-  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
-    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
-      <div class="tag-clouds">
-        <a href="/tags/C/" style="font-size: 0.67em;">C</a> <a href="/tags/FSM/" style="font-size: 0.6em;">FSM</a> <a href="/tags/Linux/" style="font-size: 0.6em;">Linux</a> <a href="/tags/algorithm/" style="font-size: 0.6em;">algorithm</a> <a href="/tags/backtracking/" style="font-size: 0.6em;">backtracking</a> <a href="/tags/book/" style="font-size: 0.67em;">book</a> <a href="/tags/c/" style="font-size: 0.6em;">c++</a> <a href="/tags/combine/" style="font-size: 0.6em;">combine</a> <a href="/tags/gdb/" style="font-size: 0.6em;">gdb</a> <a href="/tags/help/" style="font-size: 0.8em;">help</a> <a href="/tags/hexo/" style="font-size: 0.6em;">hexo</a> <a href="/tags/iproute2/" style="font-size: 0.6em;">iproute2</a> <a href="/tags/link/" style="font-size: 0.67em;">link</a> <a href="/tags/linux/" style="font-size: 0.8em;">linux</a> <a href="/tags/note/" style="font-size: 0.73em;">note</a> <a href="/tags/quckily-note/" style="font-size: 0.6em;">quckily-note</a> <a href="/tags/setup-arch/" style="font-size: 0.6em;">setup_arch</a> <a href="/tags/shell/" style="font-size: 0.67em;">shell</a>
       </div>
-  </aside>
-
-            
-                
-  <aside id="krw-posts" class="widget widget-kratos-posts">
-  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
-  <div class="tab-content">
-      <ul class="list-group">
-        
-        
-          
-          
-        
-          
-          
-        
-          
-          
-            <a class="list-group-item" href="/2022/04/13/linux-probe-note/"><i class="fa  fa-book"></i> linux-probe-note</a>
-            
-          
-        
-          
-          
-            <a class="list-group-item" href="/2022/04/13/shell-help/"><i class="fa  fa-book"></i> shell-help</a>
-            
-          
-        
-          
-          
-            <a class="list-group-item" href="/2022/04/13/vim-help/"><i class="fa  fa-book"></i> vim-help</a>
-            
-          
-        
-          
-          
-            <a class="list-group-item" href="/2022/04/13/tmux-help/"><i class="fa  fa-book"></i> tmux-help</a>
-            
-          
-        
-          
-          
-            <a class="list-group-item" href="/2022/04/13/gdb-help/"><i class="fa  fa-book"></i> gdb-help</a>
-            
-          
-        
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-          
-            
-      </ul>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://github.com/cofess" target="_blank"><span class="text-dark">昵称</span><small class="ml-1x">Web Developer &amp; Designer</small></a></h3>
+        <div>个人简介。</div>
+      </div>
+    </figure>
   </div>
-  </aside>
-
-            
-    </div>
-</section>
-        
-        </div>
-    </div>
 </div>
-<footer>
-    <div id="footer"  class="ap-lrc"  >
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-md-offset-3 footer-list text-center">
-                    <ul class="kratos-social-icons">
-                        
-                        <li><a href="mailto:961616044@qq.com"><i class="fa fa-envelope"></i></a></li>
-                        
-                        
-                        
-                        
-                        
-                        <li><a target="_blank" rel="nofollow" href="https://github.com/azreallem"><i class="fa fa-github"></i></a></li>
-                        
-                    </ul>
-                    <ul class="kratos-copyright">
-                        <div>
-                            <li>&copy; 2022 Azreallem's Blog 版权所有.</li>
-                            <li>本站已运行<span id="span_dt">Loading...</span></li>
-                        </div>
-                        <div>
-                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
-                            <li>Site built with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by Azreallem.</li>
-                        </div>
-                        <div>
-                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
-                            
-                        </div>
-                        <div>
-                            
-                            
-                        </div>
-                    </ul>
-                </div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+      <div id="vcomments"></div>
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2022/04/16/linuxatemyram/" title="(no title)"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  <!-- Button trigger modal -->
+  <button type="button" class="btn btn-fancy btn-donate pop-onhover bg-gradient-warning" data-toggle="modal" data-target="#donateModal"><span>赏</span></button>
+  <!-- <div class="wave-icon wave-icon-danger btn-donate" data-toggle="modal" data-target="#donateModal">
+    <div class="wave-circle"><span class="icon"><i class="icon icon-bill"></i></span></div>
+  </div> -->
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+<!-- Modal -->
+<div class="modal modal-center modal-small modal-xs-full fade" id="donateModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content donate">
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="modal-body">
+        <div class="donate-box">
+          <div class="donate-head">
+            <p>感谢您的支持，我会继续努力的!</p>
+          </div>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade active in" id="alipay">
+              <div class="donate-payimg">
+                <img src="/images/donate/alipayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开支付宝扫一扫，即可进行扫码打赏哦</p>
             </div>
+            <div role="tabpanel" class="tab-pane fade" id="wechatpay">
+              <div class="donate-payimg">
+                <img src="/images/donate/wechatpayimg.png" alt="扫码支持" title="扫一扫" />
+              </div>
+              <p class="text-muted mv">扫码打赏，你说多少就多少</p>
+              <p class="text-grey">打开微信扫一扫，即可进行扫码打赏哦</p>
+            </div>
+          </div>
+          <div class="donate-footer">
+            <ul class="nav nav-tabs nav-justified" role="tablist">
+              <li role="presentation" class="active">
+                <a href="#alipay" id="alipay-tab" role="tab" data-toggle="tab" aria-controls="alipay" aria-expanded="true"><i class="icon icon-alipay"></i> 支付宝</a>
+              </li>
+              <li role="presentation" class="">
+                <a href="#wechatpay" role="tab" id="wechatpay-tab" data-toggle="tab" aria-controls="wechatpay" aria-expanded="false"><i class="icon icon-wepay"></i> 微信支付</a>
+              </li>
+            </ul>
+          </div>
         </div>
-        <div class="kr-tool text-center">
-            <div class="tool">
-                
-                    <div class="box search-box">
-                        <a href="/search/">
-                            <span class="fa fa-search"></span>
-                        </a>
-                    </div>
-                
-                
-                    <div class="box theme-box" id="darkmode-switch">
-                        <span class="fa fa-adjust"></span>
-                    </div>
-                
-                
-            </div>
-            <div class="box gotop-box">
-                <span class="fa fa-chevron-up"></span>
-            </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/cofess" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="http://weibo.com/cofess" target="_blank" title="Weibo" data-toggle=tooltip data-placement=top><i class="icon icon-weibo"></i></a></li>
+        
+        <li><a href="https://twitter.com/iwebued" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+        <li><a href="https://www.behance.net/cofess" target="_blank" title="Behance" data-toggle=tooltip data-placement=top><i class="icon icon-behance"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
         </div>
     </div>
 </footer>
-</div>
-</div>
-
-        <script defer src="https://unpkg.com/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
-<script defer src="https://unpkg.com/nprogress@0.2.0/nprogress.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
 <script>
-    if (!window.kr) {
-        window.kr = {};
-    }
-    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
-    window.kr.siteRoot = "/";
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
 </script>
 
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+
+<script src="/js/insight.js"></script>
 
 
 
-    <script defer src="https://unpkg.com/aplayer@1.10.1/dist/APlayer.min.js"></script>
+
+
+
+   
+
+
+
+
+   
     
-    <script defer src="https://unpkg.com/meting@2/dist/Meting.min.js"></script>
-    <meting-js
-        server="tencent"
-        type="playlist"
-        id="4214690386"
-        order="random"
-        fixed="true"
-    >
-    </meting-js>
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/valine"></script>
+  <script type="text/javascript">
+  var GUEST = ['nick', 'mail', 'link'];
+  var meta = 'nick,mail,link';
+  meta = meta.split(',').filter(function(item) {
+    return GUEST.indexOf(item) > -1;
+  });
+  new Valine({
+    el: '#vcomments',
+    verify: false,
+    notify: false,
+    appId: '',
+    appKey: '',
+    placeholder: 'Just go go',
+    avatar: 'mm',
+    meta: meta,
+    pageSize: '10' || 10,
+    visitor: false
+  });
+  </script>
+
+     
 
 
 
-    <script defer src="https://unpkg.com/@fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-
-<script defer src="https://unpkg.com/clipboard@2.0.6/dist/clipboard.min.js"></script>
-<script defer src="/js/kratosr.min.js"></script>
-<script defer src="/js/pjax.min.js"></script>
 
 
 
-<!-- Extra support for third-party plguins  -->
 
-
-    </body>
+</body>
 </html>
