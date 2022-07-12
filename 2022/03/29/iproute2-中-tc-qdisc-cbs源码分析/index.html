@@ -25,31 +25,31 @@
 <meta property="og:site_name" content="Azreallem&#39;s Blog">
 <meta property="og:description" content="iproute2 用户空间Sched 与 iproute2 的通信，是典型的 Linux 内核模块和用户空间的进程之间的通信，这 种通信一般由 Netlink Socket 来提供这种双向的通信连接。这种连接由标准的提供给用户进程的 socket 和提供给内核模块的 API 组成，用户空间的接口简单的说就是创建一个 family 为 AF_NETLINK 的 socket，然后使用这个 socke">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://azreallem.github.io/Untitled.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%201.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%202.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%203.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%204.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%205.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%206.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%207.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%208.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%209.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2010.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2011.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2012.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2013.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2014.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2015.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2016.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2017.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2018.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2019.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2020.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2021.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2022.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2023.png">
-<meta property="og:image" content="https://azreallem.github.io/Untitled%2024.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%201.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%202.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%203.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%204.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%205.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%206.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%207.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%208.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%209.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2010.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2011.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2012.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2013.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2014.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2015.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2016.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2017.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2018.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2019.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2020.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2021.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2022.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2023.png">
+<meta property="og:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2024.png">
 <meta property="article:published_time" content="2022-03-29T14:27:26.000Z">
 <meta property="article:modified_time" content="2022-03-29T18:55:39.000Z">
 <meta property="article:author" content="Azreallem">
@@ -57,7 +57,7 @@
 <meta property="article:tag" content="source code">
 <meta property="article:tag" content="iproute2">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://azreallem.github.io/Untitled.png">
+<meta name="twitter:image" content="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled.png">
   <!-- Canonical links -->
   <link rel="canonical" href="https://azreallem.github.io/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/index.html">
   
@@ -71,6 +71,8 @@
     <link href="//cdn.jsdelivr.net/npm/katex@0.9.0/dist/katex.min.css" rel="stylesheet">
   
   
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
   
   
 <meta name="generator" content="Hexo 6.1.0"></head>
@@ -396,16 +398,16 @@
       
         <h2 id="iproute2-用户空间"><a href="#iproute2-用户空间" class="headerlink" title="iproute2 用户空间"></a>iproute2 用户空间</h2><p>Sched 与 iproute2 的通信，是典型的 Linux 内核模块和用户空间的进程之间的通信，这 种通信一般由 Netlink Socket 来提供这种双向的通信连接。这种连接由标准的提供给用户进程的 socket 和提供给内核模块的 API 组成，用户空间的接口简单的说就是创建一个 family 为 AF_NETLINK 的 socket，然后使用这个 socket 进行通信。</p>
 <p><code>rtnl_open()</code> 函数的作用是打开一个AF_NETLINK 的 socket，<code>rtnl_close()</code> 函数的作用是关闭一个AF_NETLINK 的 socket。</p>
-<p><img src="/Untitled.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled.png"></p>
 <p>用户空间通信前的准备：填充 netlink 包；然后把 netlink 包发送到内核空间去。</p>
 <p>tc.c</p>
-<p><img src="/Untitled%201.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%201.png"></p>
 <p>通过<code>cbs_qdisc_util→cbs_parse_opt</code>调用 q_cbs.c 中的<code>cbs_parse_opt()</code>函数。</p>
-<p><img src="/Untitled%202.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%202.png"></p>
 <p>q_cbs.c</p>
-<p><img src="/Untitled%203.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%203.png"></p>
 <p>最后通过<code>rtnl_talk(&amp;rth, &amp;req.n, NULL)</code>把 netlink 包发送到内核空间去，<code>rtnl_talk()</code>发送过程包括 sendmsg 和 recvmsg。</p>
-<p><img src="/Untitled%204.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%204.png"></p>
 <h2 id="内核模块的初始化"><a href="#内核模块的初始化" class="headerlink" title="内核模块的初始化"></a>内核模块的初始化</h2><p>内核模块的初始化：在 <code>net/sched/sch_api.c</code> 文件中的 <code>void __init pktsched_init (void)</code>函数中，初始化了 <code>link_rtnetlink_table</code> 表，<code>link_rtnetlink_table</code> 是一张 <code>struct rtnetlink_link</code>的表。</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">rtnetlink_link</span> &#123;</span></span><br><span class="line">	<span class="type">int</span> (*doit)(<span class="keyword">struct</span> sk_buff *, <span class="keyword">struct</span> nlmsghdr*, <span class="type">void</span> *attr);</span><br><span class="line">	<span class="type">int</span> (*dumpit)(<span class="keyword">struct</span> sk_buff *, <span class="keyword">struct</span> netlink_callback *cb);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
@@ -416,46 +418,46 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">struct</span> Qdisc *<span class="title function_">qdisc_create</span><span class="params">(<span class="keyword">struct</span> net_device *dev,</span></span><br><span class="line"><span class="params">                                  <span class="keyword">struct</span> netdev_queue *dev_queue,</span></span><br><span class="line"><span class="params">                                  <span class="keyword">struct</span> Qdisc *p, u32 parent, u32 handle,</span></span><br><span class="line"><span class="params">                                  <span class="keyword">struct</span> nlattr **tca, <span class="type">int</span> *errp,</span></span><br><span class="line"><span class="params">                                  <span class="keyword">struct</span> netlink_ext_ack *extack)</span></span><br><span class="line">&#123;</span><br><span class="line"><span class="comment">// ......</span></span><br><span class="line">												rtnl_unlock();</span><br><span class="line">                        request_module(<span class="string">&quot;sch_%s&quot;</span>, name);</span><br><span class="line">                        rtnl_lock();</span><br><span class="line">                        ops = qdisc_lookup_ops(kind);</span><br><span class="line"><span class="comment">// ......</span></span><br><span class="line">				<span class="keyword">if</span> (ops-&gt;init) &#123;</span><br><span class="line">                err = ops-&gt;init(sch, tca[TCA_OPTIONS], extack);</span><br><span class="line">                <span class="keyword">if</span> (err != <span class="number">0</span>)</span><br><span class="line">                        <span class="keyword">goto</span> err_out5;</span><br><span class="line">        &#125;</span><br><span class="line"><span class="comment">// ......</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>sch_cbs.c</p>
-<p><img src="/Untitled%205.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%205.png"></p>
 <h2 id="gdb调试过程"><a href="#gdb调试过程" class="headerlink" title="gdb调试过程"></a>gdb调试过程</h2><h3 id="tc部分分析"><a href="#tc部分分析" class="headerlink" title="tc部分分析"></a>tc部分分析</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">/bin/tc qdisc replace dev eth1 parent 6666:2 handle 7777 cbs \</span><br><span class="line">        idleslope 98688 sendslope -901312 hicredit 153 locredit -1389 \</span><br><span class="line">        offload 1</span><br></pre></td></tr></table></figure>
 
 <p>设置断点。<code>main()</code>—&gt;<code>do_cmd()</code>—&gt;<code>do_qdisc()</code>—&gt;<code>tc_qdisc_modify()</code></p>
-<p><img src="/Untitled%206.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%206.png"></p>
 <p><code>tc_qdisc_modify()</code> 首先解析参数eth1 …… cbs</p>
-<p><img src="/Untitled%207.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%207.png"></p>
 <p>找到<code>cbs_qdisc_util</code></p>
-<p><img src="/Untitled%208.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%208.png"></p>
 <p>通过<code>addttr_l()</code>添加<code>k</code>到NETLINK包里。</p>
-<p><img src="/Untitled%209.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%209.png"></p>
 <p>执行<code>cbs_qdisc_util→parse_qopt</code></p>
-<p><img src="/Untitled%2010.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2010.png"></p>
 <p>通过<code>cbs_parse_opt()</code>解析参数idleslope …… offload 1</p>
-<p><img src="/Untitled%2011.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2011.png"></p>
 <p>通过<code>addattr_l()</code>添加到NETLINK包里。</p>
-<p><img src="/Untitled%2012.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2012.png"></p>
 <p>与内核通信。</p>
-<p><img src="/Untitled%2013.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2013.png"></p>
 <p>此时内核运行完打印消息</p>
-<p><img src="/Untitled%2014.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2014.png"></p>
 <p><code>rtnl_close()</code>结束与内核的通信</p>
-<p><img src="/Untitled%2015.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2015.png"></p>
 <h3 id="内核部分-net-x2F-sched-x2F-sch-api-c"><a href="#内核部分-net-x2F-sched-x2F-sch-api-c" class="headerlink" title="内核部分 net&#x2F;sched&#x2F;sch_api.c"></a>内核部分 net&#x2F;sched&#x2F;sch_api.c</h3><p>断到<code>tc_modify_qdisc()</code>函数。</p>
-<p><img src="/Untitled%2016.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2016.png"></p>
 <p>进入<code>ops→init</code></p>
-<p><img src="/Untitled%2017.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2017.png"></p>
 <p>解析到<code>cbs_init()</code>函数，初始化。</p>
-<p><img src="/Untitled%2018.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2018.png"></p>
 <p>进入<code>cbs_change()</code> —&gt; <code>csb_enable_offload()</code></p>
-<p><img src="/Untitled%2019.png"></p>
-<p><img src="/Untitled%2020.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2019.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2020.png"></p>
 <p><code>ops→ndo_setup_tc()</code>开始进入驱动部分。</p>
-<p><img src="/Untitled%2021.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2021.png"></p>
 <h3 id="gmac网卡驱动部分"><a href="#gmac网卡驱动部分" class="headerlink" title="gmac网卡驱动部分"></a>gmac网卡驱动部分</h3><p>调用<code>stmmac_tc_setup_cbs()</code></p>
-<p><img src="/Untitled%2022.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2022.png"></p>
 <p>在<code>stmmac_config_cbs()</code>中对寄存器进行读写配置。</p>
-<p><img src="/Untitled%2023.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2023.png"></p>
 <p>对CBS相关的DMA寄存器进行读写操作。</p>
-<p><img src="/Untitled%2024.png"></p>
+<p><img src="/2022/03/29/iproute2-%E4%B8%AD-tc-qdisc-cbs%E6%BA%90%E7%A0%81%E5%88%86%E6%9E%90/Untitled%2024.png"></p>
 
       
     </div>
@@ -628,6 +630,35 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
      
 
 
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
 
 
 

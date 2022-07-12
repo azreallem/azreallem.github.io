@@ -25,13 +25,13 @@
 <meta property="og:site_name" content="Azreallem&#39;s Blog">
 <meta property="og:description" content="Memory Layout of C Programs 这篇文章主要讲C程序中的内存布局。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://azreallem.github.io/memoryLayoutC.jpg">
+<meta property="og:image" content="https://azreallem.github.io/2022/04/23/Memory%20Layout%20of%20C%20Programs/memoryLayoutC.jpg">
 <meta property="article:published_time" content="2022-04-23T02:21:10.000Z">
 <meta property="article:modified_time" content="2022-04-23T03:33:04.003Z">
 <meta property="article:author" content="Azreallem">
 <meta property="article:tag" content="link">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://azreallem.github.io/memoryLayoutC.jpg">
+<meta name="twitter:image" content="https://azreallem.github.io/2022/04/23/Memory%20Layout%20of%20C%20Programs/memoryLayoutC.jpg">
   <!-- Canonical links -->
   <link rel="canonical" href="https://azreallem.github.io/2022/04/23/Memory%20Layout%20of%20C%20Programs/index.html">
   
@@ -43,6 +43,8 @@
 
   
   
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
   
   
 <meta name="generator" content="Hexo 6.1.0"></head>
@@ -346,7 +348,7 @@
       
         <p><a target="_blank" rel="noopener" href="https://www.geeksforgeeks.org/memory-layout-of-c-program/">Memory Layout of C Programs</a> 这篇文章主要讲C程序中的内存布局。  </p>
 <span id="more"></span>
-<h2 id="main"><a href="#main" class="headerlink" title="main"></a>main</h2><p><img src="/memoryLayoutC.jpg"><br>A typical memory representation of a C program consists of the following sections.</p>
+<h2 id="main"><a href="#main" class="headerlink" title="main"></a>main</h2><p><img src="/2022/04/23/Memory%20Layout%20of%20C%20Programs/memoryLayoutC.jpg"><br>A typical memory representation of a C program consists of the following sections.</p>
 <ol>
 <li>Text segment  (i.e. instructions)<br> frequently executed programs<blockquote>
 <p>read-only</p>
@@ -533,6 +535,35 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
      
 
 
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
 
 
 
